@@ -54,6 +54,6 @@ public class EntityNPC extends EntityCreature
 
     public boolean canInteractWith(EntityPlayer entityplayer)
     {
-        return this.isDead ? false : entityplayer.getDistanceSqToEntity(this) <= 64.0D;
+        return !this.isDead || entityplayer.getDistanceSqToEntity(this) <= 64.0D;
     }
 }

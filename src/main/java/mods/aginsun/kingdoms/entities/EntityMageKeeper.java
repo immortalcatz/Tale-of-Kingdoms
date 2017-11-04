@@ -1,57 +1,53 @@
 package mods.aginsun.kingdoms.entities;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import mods.aginsun.kingdoms.client.guis.GuiMageHall;
 import mods.aginsun.kingdoms.entities.api.EntityNPC;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public final class EntityMageKeeper extends EntityNPC {
+public final class EntityMageKeeper extends EntityNPC
+{
+    public EntityMageKeeper(World world)
+    {
+        super(world, new ItemStack(Items.stick), 100.0F);
+        this.isImmuneToFire = true;
+    }
 
-   private World field_70170_p = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
 
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
 
-   public EntityMageKeeper(World world) {
-      super(world, new ItemStack(Items.stick), 100.0F);
-      this.field_70170_p = world;
-      this.isImmuneToFire = false;
-   }
+    @Override
+    protected boolean isMovementCeased()
+    {
+        return true;
+    }
 
-   protected boolean canDespawn() {
-      return false;
-   }
-
-   public boolean canInteractWith(EntityPlayer entityplayer) {
-      return this.isDead?false:entityplayer.getDistanceSqToEntity(this) <= 64.0D;
-   }
-
-   public boolean canBePushed() {
-      return false;
-   }
-
-   protected void updateEntityActionState() {
-      super.updateEntityActionState();
-   }
-
-   protected boolean isMovementCeased() {
-      return true;
-   }
-
-   public boolean interact(EntityPlayer entityplayer) {
-      if(this.canInteractWith(entityplayer)) {
-         this.heal(100.0F);
-         Minecraft minecraft = Minecraft.getMinecraft();
-         if(!this.field_70170_p.isRemote) {
-            entityplayer.addChatMessage(new ChatComponentText("Head Mage: Welcome to the mage hall, hero."));
-         }
-
-         minecraft.displayGuiScreen(new GuiMageHall(entityplayer, this.field_70170_p));
-      }
-
-      return true;
-   }
+    @Override
+    public boolean interact(EntityPlayer entityplayer)
+    {
+        if(this.canInteractWith(entityplayer))
+        {
+            this.heal(100.0F);
+            if(!this.world.isRemote)
+            {
+                entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.headMage.dialog")));
+            }
+            Minecraft.getMinecraft().displayGuiScreen(new GuiMageHall(entityplayer, this.world));
+        }
+        return true;
+    }
 }

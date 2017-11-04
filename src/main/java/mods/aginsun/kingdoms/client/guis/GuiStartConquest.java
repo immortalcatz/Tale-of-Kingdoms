@@ -55,11 +55,6 @@ public final class GuiStartConquest extends GuiScreenToK
         this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_4"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_4")) / 2, this.height / 2 - 40, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_5"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_5")) / 2, this.height / 2, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_6"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_6")) / 2, this.height / 2 + 10, 16777215);
-
-        for (Object aButtonList : this.buttonList)
-        {
-            GuiButton guibutton = (GuiButton) aButtonList;
-            guibutton.drawButton(this.mc, i, j);
-        }
+        super.drawScreen(i, j, f);
     }
 }

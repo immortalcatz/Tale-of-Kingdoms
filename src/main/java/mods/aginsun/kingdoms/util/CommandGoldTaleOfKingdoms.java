@@ -31,6 +31,11 @@ public final class CommandGoldTaleOfKingdoms extends CommandBase
             WorthyKeeper.getInstance().addWorthy(10000.0F);
             sender.addChatMessage(new ChatComponentText(I18n.format("command.tok.worthy")));
         }
+        else if (args[0].equals("gold"))
+        {
+            GoldKeeper.addGold(10000);
+            sender.addChatMessage(new ChatComponentText("Gold added!"));
+        }
         else
         {
             ResourceHandler.getInstance().addcobbleResource(2400);

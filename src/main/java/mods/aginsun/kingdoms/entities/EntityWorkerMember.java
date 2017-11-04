@@ -84,7 +84,7 @@ public final class EntityWorkerMember extends EntityNPC {
             for(int var11 = (int)this.posX - 5; (double)var11 < this.posX + 5.0D; ++var11) {
                for(int l = 0; l < 10; ++l) {
                   for(int i1 = (int)this.posZ - 5; (double)i1 < this.posZ + 5.0D; ++i1) {
-                     if(this.world.getBlock(var11, var10, i1) == Block.getBlockById(17) && !flag) {
+                     if(this.world.getBlock(var11, var10, i1) == Blocks.log && !flag) {
                         for(int entity2 = var11 - 5; entity2 <= var11 + 5; ++entity2) {
                            for(int k1 = var10 - 5; k1 <= var10 + 5; ++k1) {
                               for(int l1 = i1 - 5; l1 <= i1 + 5; ++l1) {

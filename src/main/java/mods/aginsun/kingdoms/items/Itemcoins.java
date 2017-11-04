@@ -8,7 +8,6 @@ public final class Itemcoins extends Item
 {
     public Itemcoins()
     {
-        this.setCreativeTab(CreativeTabs.tabMaterials);
         this.maxStackSize = 1;
     }
 

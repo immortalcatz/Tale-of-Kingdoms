@@ -34,7 +34,7 @@ public final class GuiWorker extends GuiScreenToK {
          EntityWorkerMember.defaultHeldItem = new ItemStack(Items.iron_axe, 1);
          this.member.worktype = 1;
          this.member.follow = true;
-         this.mc.displayGuiScreen((GuiScreen)null);
+         this.mc.displayGuiScreen(null);
       }
 
       if(guibutton.id == 2) {
@@ -43,11 +43,11 @@ public final class GuiWorker extends GuiScreenToK {
          EntityWorkerMember.defaultHeldItem = new ItemStack(Items.iron_pickaxe, 1);
          this.member.worktype = 2;
          this.member.follow = true;
-         this.mc.displayGuiScreen((GuiScreen)null);
+         this.mc.displayGuiScreen(null);
       }
 
       if(guibutton.id == 3) {
-         this.mc.displayGuiScreen((GuiScreen)null);
+         this.mc.displayGuiScreen(null);
       }
 
    }

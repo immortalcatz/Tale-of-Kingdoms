@@ -4,6 +4,7 @@ import mods.aginsun.kingdoms.handlers.GoldKeeper;
 import mods.aginsun.kingdoms.handlers.ResourceHandler;
 import mods.aginsun.kingdoms.handlers.WorkerHandler;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -12,79 +13,86 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public final class GuiLumber extends GuiScreenToK {
+public final class GuiLumber extends GuiScreenToK
+{
+    private World worldObj;
+    public GoldKeeper gold;
+    private GuiPriceBar bar;
+    public EntityPlayer player;
+    boolean goldchecker = false;
 
-   private World worldObj;
-   public EntityPlayer player;
-   public GoldKeeper gold;
-   boolean goldchecker = false;
-   private GuiPriceBar bar;
+    public GuiLumber(EntityPlayer player, World world)
+    {
+        this.player = player;
+        this.worldObj = world;
+    }
 
+    @Override
+    public void initGui()
+    {
+        this.bar = new GuiPriceBar(0, this.width / 2 - 45, 40, 90, 12, 1.0F, "red");
+        this.bar.setBar((float)ResourceHandler.getInstance().getWoodPool() / 320.0F);
+        this.buttonList.add(new GuiButton(1, this.width / 2 - 45, 77, 90, 20, I18n.format("gui.foreman.takeStack")));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 45, 100, 90, 20, I18n.format("gui.foreman.buyWorker")));
+        this.buttonList.add(new GuiButton(3, this.width / 2 - 45, 123, 90, 20, I18n.format("gui.cancel")));
+    }
 
-   public GuiLumber(EntityPlayer entityplayer1, World world) {
-      this.player = entityplayer1;
-      this.worldObj = world;
-   }
+    @Override
+    protected void actionPerformed(GuiButton button)
+    {
+        switch (button.id)
+        {
+            case 1:
+                if (ResourceHandler.getInstance().getWoodPool() >= 64)
+                {
+                    this.worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, this.player.posX, this.player.posY, this.player.posZ, new ItemStack(Item.getItemFromBlock(Blocks.log), 64)));
+                    this.goldchecker = false;
+                    ResourceHandler.getInstance().decreaseWoodPool(64);
+                }
+                else
+                {
+                    this.player.addChatMessage(new ChatComponentText(I18n.format("gui.foreman.notResources")));
+                }
+                break;
+            case 2:
+                if(GoldKeeper.getGoldTotal() >= 1500)
+                {
+                    if(WorkerHandler.getInstance().getLumberMembers() < 12)
+                    {
+                        WorkerHandler.getInstance().addLumberMember();
+                        GoldKeeper.decreaseGold(1500);
+                        this.player.addChatMessage(new ChatComponentText(I18n.format("gui.foreman.boughtWorker")));
+                    }
+                    else
+                    {
+                        this.player.addChatMessage(new ChatComponentText(I18n.format("gui.foreman.limitWorkers")));
+                    }
+                }
+                else
+                {
+                    this.goldchecker = true;
+                }
+                break;
+            case 3:
+                this.mc.displayGuiScreen(null);
+                break;
+        }
+    }
 
-   public void initGui() {
-      this.bar = new GuiPriceBar(0, this.width / 2 - 100, 40, 90, 12, 1.0F, "red");
-      this.bar.setBar((float)ResourceHandler.getInstance().getWoodPool() / 320.0F);
-      this.buttonList.add(new GuiButton(1, this.width / 2 - 100, 75, 90, 20, "Collect 64"));
-      this.buttonList.add(new GuiButton(2, this.width / 2 - 100, 95, 90, 20, "Buy Worker."));
-      this.buttonList.add(new GuiButton(3, this.width / 2 - 100, 115, 90, 20, "Cancel."));
-   }
+    @Override
+    public void drawScreen(int i, int j, float f)
+    {
+        super.drawScreen(i, j, f);
 
-   protected void actionPerformed(GuiButton guibutton) {
-      if(guibutton.id == 1 && ResourceHandler.getInstance().getWoodPool() >= 64) {
-         ItemStack itemstack = new ItemStack(Item.getItemFromBlock(Blocks.log), 64, 0);
-         EntityItem entityitem = new EntityItem(this.worldObj, this.player.posX, this.player.posY, this.player.posZ, itemstack);
-         this.worldObj.spawnEntityInWorld(entityitem);
-         this.goldchecker = false;
-         ResourceHandler.getInstance().decreaseWoodPool(64);
-      } else if(!this.worldObj.isRemote) {
-         this.player.addChatMessage(new ChatComponentText("Foreman: Come back again later when we have the resources."));
-      }
+        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.title", GoldKeeper.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.title", GoldKeeper.getGoldTotal())) / 2, 15, 16777215);
 
-      if(guibutton.id == 2) {
-         if(GoldKeeper.getGoldTotal() >= 1500) {
-            if(WorkerHandler.getInstance().getLumberMembers() < 12) {
-               WorkerHandler.getInstance().addLumberMember();
-               GoldKeeper.decreaseGold(1500);
-               if(!this.worldObj.isRemote) {
-                  this.player.addChatMessage(new ChatComponentText("Foreman: He will begin to work immediately."));
-               }
-            } else if(!this.worldObj.isRemote) {
-               this.player.addChatMessage(new ChatComponentText("Foreman: We have reached the capacity of men. Hire civilian workers instead."));
-            }
-         } else {
-            this.goldchecker = true;
-         }
-      }
+        if (this.goldchecker)
+        {
+            this.drawString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.notEnough")) / 2, 27, 16777215);
+        }
 
-      if(guibutton.id == 3) {
-         this.mc.displayGuiScreen(null);
-      }
-
-   }
-
-   public void drawScreen(int i, int j, float f) {
-      for(int k = 0; k < this.buttonList.size(); ++k) {
-         if(this.buttonList.get(k) instanceof GuiButtonShop) {
-            GuiButtonShop guibutton = (GuiButtonShop)this.buttonList.get(k);
-            guibutton.drawButton(this.mc, i, j);
-         }
-
-         GuiButton var6 = (GuiButton)this.buttonList.get(k);
-         var6.drawButton(this.mc, i, j);
-      }
-
-      if(!this.goldchecker) {
-         this.drawString(this.fontRendererObj, "Foreman Menu - Total Money: " + GoldKeeper.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16777215);
-      } else {
-         this.drawString(this.fontRendererObj, "Foreman Menu - Total Money: " + GoldKeeper.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 15, 16777215);
-      }
-
-      this.drawString(this.fontRendererObj, "-Resources-    Note: Worker cost 1500 gold coins.", this.width / 2 - 87, 55, 16777215);
-      this.bar.drawBar();
-   }
+        this.bar.drawBar();
+        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.bar.label"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.bar.label")) / 2, 42, 16777215);
+        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.note.workerPrice"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.note.workerPrice")) / 2, 60, 16777215);
+    }
 }

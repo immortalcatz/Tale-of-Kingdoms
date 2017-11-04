@@ -75,7 +75,7 @@ public final class Schematic
 
     private void writeEntities(NBTTagCompound nbt)
     {
-        NBTTagList list = nbt.getTagList("Entities", 0);
+        NBTTagList list = nbt.getTagList("Entities", 10);
 
         for (int i = 0; i < list.tagCount(); ++i)
         {
@@ -90,7 +90,7 @@ public final class Schematic
 
     private void writeEntitiesTier4(NBTTagCompound nbt)
     {
-        NBTTagList list = nbt.getTagList("Entities", 0);
+        NBTTagList list = nbt.getTagList("Entities", 10);
 
         for (int i = 0; i < list.tagCount(); ++i)
         {
@@ -105,7 +105,7 @@ public final class Schematic
 
     private void writeEntitiesTier3(NBTTagCompound nbt)
     {
-        NBTTagList list = nbt.getTagList("Entities", 0);
+        NBTTagList list = nbt.getTagList("Entities", 10);
 
         for (int i = 0; i < list.tagCount(); ++i)
         {

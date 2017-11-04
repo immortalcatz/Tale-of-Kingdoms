@@ -15,16 +15,19 @@ public final class EntityFisher extends EntityNPC
         super(par1World, new ItemStack(Items.fishing_rod), 40.0F);
     }
 
+    @Override
     public boolean canBePushed()
     {
         return false;
     }
 
+    @Override
     protected boolean isMovementCeased()
     {
         return true;
     }
 
+    @Override
     public boolean interact(EntityPlayer entityplayer)
     {
         if(this.canInteractWith(entityplayer))

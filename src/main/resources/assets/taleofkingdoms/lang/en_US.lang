@@ -7,22 +7,24 @@ command.tok.worthy=Added worthy!
 entity.BuilderKeeper.name=City builder
 entity.Banker.name=Banker
 entity.Fisher.name=Fisher
+entity.Lumber.name=Foreman
+entity.MageKeeper.name=Main mage
 
 gui.bank.title=Bank
 gui.bank.deposit=Deposit
 gui.bank.deposit.all=Deposit all
 gui.bank.withdraw=Withdraw
 gui.bank.withdraw.all=Withdraw all
-gui.bank.totalMoney.player=Total money you have: %s Gold Coins
-gui.bank.totalMoney.bank=Total money in the bank: %s Gold Coins
+gui.bank.totalMoney.player=Total money you have: %s Gold coins
+gui.bank.totalMoney.bank=Total money in the bank: %s Gold coins
 
 gui.build.resources.logs=Logs resource
 gui.build.resources.cobble=Cobblestone resource
-gui.build.stage_1=Build Tier 1 - Total Money: %s Gold Coins
-gui.build.stage_2=Build Tier 2 - Total Money: %s Gold Coins
-gui.build.stage_3=Build Tier 3 - Total Money: %s Gold Coins
-gui.build.give.logs=Give 64 Wood Logs
-gui.build.give.cobble=Give 64 Cobblestone
+gui.build.stage_1=Build Tier 1 - Total money: %s Gold coins
+gui.build.stage_2=Build Tier 2 - Total money: %s Gold coins
+gui.build.stage_3=Build Tier 3 - Total money: %s Gold coins
+gui.build.give.logs=Give stack wood logs
+gui.build.give.cobble=Give stack cobblestone
 gui.build.buildings.stage_1=Tier 1 City base
 gui.build.buildings.stage_2=Tier 2 City base
 gui.build.buildings.stage_3=Tier 3 City base
@@ -52,11 +54,29 @@ gui.build.buildings.stables=Stables
 gui.build.buildings.zeppelin=Zeppelin
 gui.build.buildings.castle=Castle
 
-gui.notEnough=You don't have enough gold!
-gui.conquest.start=Start new Conquest
+gui.foreman.notResources=Foreman: Come back again later when we have the resources.
+gui.foreman.boughtWorker=Foreman: He will begin to work immediately.
+gui.foreman.limitWorkers=Foreman: You hired the maximum number of employees.
+gui.foreman.takeStack=Collect resources
+gui.foreman.buyWorker=Buy worker
+gui.foreman.title=Foreman - Total money: %s Gold coins
+gui.foreman.bar.label=- Resources -
+gui.foreman.note.workerPrice=Note: Hiring an employee can be for 1.500 gold coins.
 
 gui.fishingRod=Get Fishing Rod!
 gui.fisher.dialog.for=Get your best fishing rods here lad.
+
+gui.mage.bye=Head Mage: Magic dwells in you.
+gui.mage.enchant=Enchant item
+gui.mage.recruit=Recruit a Mage
+gui.mage.enchanted=Head Mage: Item '%s' has been enchanted!
+gui.mage.dontEnchant=Head Mage: I can't enchant this item.
+gui.mage.title=The Mage Hall - Total money: %s Gold coins
+gui.mage.enchant.selected=Note: Selected Item Cost to enchant: 500
+gui.mage.recruit.price=Note: Recruiting a mage cost 2.000
+
+gui.notEnough=You don't have enough gold!
+gui.conquest.start=Start new Conquest
 
 gui.startConquest.line_1=The Great Tides of Darkness has come.
 gui.startConquest.line_2=The Reficules have come and it is up to you to save what is left.
@@ -71,10 +91,11 @@ gui.exit=Exit
 npc.banker.dialog.welcome=Banker: I will keep your gold safe.
 npc.banker.dialog.bye=Banker: I promise I won't spend this!
 
-npc.cityBuilder.dialog_1=City Builder: My king! You are still not worthy of creating a kingdom. The Guild Master will prepare you.
-npc.cityBuilder.dialog_2=City Builder: Lets start building!
-npc.cityBuilder.dialog_3=City Builder: Let us build your city my liege! Lead the way!
+npc.cityBuilder.dialog_1=City builder: My king! You are still not worthy of creating a kingdom. The Guild Master will prepare you.
+npc.cityBuilder.dialog_2=City builder: Lets start building!
+npc.cityBuilder.dialog_3=City builder: Let us build your city my liege! Lead the way!
 
 npc.fisher.dialog.fishingRod=Here ya go, your new beautiful fishing rod!
-
+npc.foreman.dialog=Foreman: Do you need resources sir?
+npc.headMage.dialog=Head Mage: Welcome to the mage hall, hero.
 npc.warden.dialog=Warden: The guild's warden at your service.
