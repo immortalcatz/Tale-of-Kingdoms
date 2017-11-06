@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 public final class EntityForgeKeeper extends EntityNPC {
 
    private World field_70170_p;
-   Integer[] itemget = new Integer[200];
+   Item[] items = new Item[200];
    private GoldKeeper gold;
    private StringTranslate st = new StringTranslate();
 
@@ -67,7 +67,7 @@ public final class EntityForgeKeeper extends EntityNPC {
                                }
 
                               if(k > 0 && !s2.equals("null.name") && !s2.equals(s3)) {
-                                 //this.itemget[i] = Integer.valueOf(itemstack.itemID);
+                                 this.items[i] = itemstack.getItem();
                                  ++i;
                               }
                            }
@@ -78,7 +78,7 @@ public final class EntityForgeKeeper extends EntityNPC {
             }
          }
 
-         minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.field_70170_p, this.itemget));
+         minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.field_70170_p, this.items));
       }
 
       return true;

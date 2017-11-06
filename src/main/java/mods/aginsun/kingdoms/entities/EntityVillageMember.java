@@ -16,10 +16,9 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public final class EntityVillageMember extends EntityNPC {
-
-   private boolean hasAxe = false;
-   private boolean hasPick = false;
+public final class EntityVillageMember extends EntityNPC
+{
+    private boolean hasAxe = false, hasPick = false;
 
 
    public EntityVillageMember(World world) {

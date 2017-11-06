@@ -60,7 +60,7 @@ public final class ClientProxy extends CommonProxy
         setRender(EntityWorkerMember.class, "worker");
         setRender(EntityMageKeeper.class, "headmage");
         setRender(EntityQuarry.class, "foremanquarry");
-        setRender(EntityStableMaster.class, "");
+        setRender(EntityStableMaster.class, "stable");
         setRender(EntityFisher.class, "fisher");
     }
 

@@ -22,7 +22,7 @@ import net.minecraft.command.CommandHandler;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 
-@Mod(modid = "taleofkingdoms", name = "Tale of Kingdoms", version = "1.0-1.7.10")
+@Mod(modid = "taleofkingdoms", name = "Tale of Kingdoms", version = "1.0.1.1")
 public class TaleOfKingdoms
 {
     @Instance("taleofkingdoms")

@@ -1,53 +1,86 @@
 package mods.aginsun.kingdoms.client.guis;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import mods.aginsun.kingdoms.handlers.GoldKeeper;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.World;
 
-import java.awt.*;
+public final class GuiStableMaster extends GuiScreenToK
+{
+    public EntityPlayer player;
+    private boolean goldchecker = false;
+    private World world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
 
-public final class GuiStableMaster extends GuiScreen {
+    public GuiStableMaster(EntityPlayer player, World world)
+    {
+        this.player = player;
+        this.world = world;
+    }
 
-   public void initGui() {
-      this.buttonList.clear();
-      this.buttonList.add(new GuiButton(1, this.width / 2 - 60, this.height / 2 - 10, 120, 20, "Buy Starter Kit!"));
-      this.buttonList.add(new GuiButton(2, this.width / 2 - 60, this.height / 2 - 10, 120, 20, "Buy Expert Kit!"));
-      this.buttonList.add(new GuiButton(3, this.width / 2 - 60, this.height / 2 + 10, 120, 20, "Exit!"));
-   }
+    @Override
+    public void initGui()
+    {
+        this.buttonList.clear();
+        this.buttonList.add(new GuiButton(1, this.width / 2 - 60, this.height / 2 - 25, 120, 20, I18n.format("gui.stable.starter")));
+        this.buttonList.add(new GuiButton(2, this.width / 2 - 60, this.height / 2, 120, 20, I18n.format("gui.stable.expert")));
+        this.buttonList.add(new GuiButton(3, this.width / 2 - 60, this.height / 2 + 25, 120, 20, I18n.format("gui.exit")));
+    }
 
-   public void actionPerformed(GuiButton guibutton) {
-      if(guibutton.id == 1) {
-         if(GoldKeeper.getGoldTotal() >= 1500) {
-            this.mc.thePlayer.dropItem(Items.saddle, 1);
-            this.mc.thePlayer.dropItem(Items.lead, 1);
-            this.mc.thePlayer.dropItem(Items.wheat, 15);
-            this.mc.thePlayer.dropItem(Items.name_tag, 1);
-         } else {
-            this.mc.thePlayer.addChatMessage(new ChatComponentText("You don\'t have enough money!"));
-         }
-      } else if(guibutton.id == 2) {
-         if(GoldKeeper.getGoldTotal() >= 7500) {
-            this.mc.thePlayer.dropItem(Items.diamond_horse_armor, 1);
-            this.mc.thePlayer.dropItem(Items.wheat, 64);
-            EntityHorse entity = new EntityHorse(this.mc.theWorld);
-            entity.setHorseType(0);
-            this.mc.theWorld.spawnEntityInWorld(entity);
-         } else {
-            this.mc.thePlayer.addChatMessage(new ChatComponentText("You don\'t have enough money!"));
-         }
-      } else if(guibutton.id == 3) {
-         this.mc.setIngameFocus();
-      }
+    @Override
+    public void actionPerformed(GuiButton button)
+    {
+        switch (button.id)
+        {
+            case 1:
+                if(GoldKeeper.getGoldTotal() >= 1500)
+                {
+                    this.player.dropItem(Items.saddle, 1);
+                    this.player.dropItem(Items.lead, 1);
+                    this.player.dropItem(Items.wheat, 15);
+                    this.player.dropItem(Items.name_tag, 1);
+                    GoldKeeper.decreaseGold(1500);
+                }
+                else
+                {
+                    this.goldchecker = true;
+                }
+                break;
+            case 2:
+                if(GoldKeeper.getGoldTotal() >= 7500)
+                {
+                    this.player.dropItem(Items.diamond_horse_armor, 1);
+                    this.player.dropItem(Items.wheat, 64);
+                    EntityHorse horse = new EntityHorse(world);
+                    world.spawnEntityInWorld(horse);
+                    GoldKeeper.decreaseGold(7500);
+                }
+                else
+                {
+                    this.goldchecker = true;
+                }
+                break;
+            case 3:
+                this.mc.displayGuiScreen(null);
+                this.goldchecker = false;
+                break;
+        }
+    }
 
-   }
-
-   public void drawScreen(int i, int j, float f) {
-      String s = "Starter Kit: Saddle, lead, wheat and a name tag for the price of 1500 gold!";
-      String s1 = "Expert Kit: Horse armor, a stack of wheat and a horse for the low price of 7500 gold!";
-      this.drawString(this.fontRendererObj, s, this.width / 2 - fontRendererObj.getStringWidth(s) / 2, this.height / 2 - 30, Color.ORANGE.getRGB());
-      this.drawString(this.fontRendererObj, s, this.width / 2 - fontRendererObj.getStringWidth(s1) / 2, this.height / 2 - 30, Color.ORANGE.getRGB());
-   }
+    @Override
+    public void drawScreen(int i, int j, float f)
+    {
+        this.drawDefaultBackground();
+        super.drawScreen(i, j, f);
+        this.drawString(this.fontRendererObj, I18n.format("gui.stable.title", GoldKeeper.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", GoldKeeper.getGoldTotal())) / 2, this.height / 2 - 90, 16763904);
+        if (this.goldchecker)
+        {
+            this.drawString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.notEnough")) / 2, this.height / 2 - 45, 16763904);
+        }
+        this.drawString(this.fontRendererObj, I18n.format("gui.stable.starter.desc"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.stable.starter.desc")) / 2, this.height / 2 - 75, 16763904);
+        this.drawString(this.fontRendererObj, I18n.format("gui.stable.expert.desc"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.stable.expert.desc")) / 2, this.height / 2 - 60, 16763904);
+    }
 }

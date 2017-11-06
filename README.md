@@ -4,8 +4,6 @@ Not official port for Minecraft 1.7.10.
 **!!!About all bugs please report!!!**
 
 #Known issues:
-* Some mobs have no texture.
-* NCP not spawning.
 * Code is poorly optimized.
 * A lot of bugs.
 

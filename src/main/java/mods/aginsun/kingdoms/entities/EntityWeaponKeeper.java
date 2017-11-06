@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 public final class EntityWeaponKeeper extends EntityNPC {
 
    private World field_70170_p;
-   private Integer[] itemget = new Integer[200];
+   private Item[] items = new Item[200];
    private GoldKeeper gold;
    private StringTranslate st = new StringTranslate();
 
@@ -94,13 +94,13 @@ public final class EntityWeaponKeeper extends EntityNPC {
                }
 
                if(j > 0 && !s1.equals("null.name") && !s1.equals(s2)) {
-                  //this.itemget[i] = itemstack.getItem();
+                  this.items[i] = itemstack.getItem();
                   ++i;
                }
             }
          }
 
-         minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.field_70170_p, this.itemget));
+         minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.field_70170_p, this.items));
       }
 
       return true;

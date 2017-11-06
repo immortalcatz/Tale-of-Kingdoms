@@ -60,7 +60,7 @@ public final class EntityWorkerMember extends EntityNPC {
       boolean flag = false;
       if(this.worktype == 0) {
          Minecraft j = Minecraft.getMinecraft();
-         j.displayGuiScreen(new GuiWorker(entityplayer, this.world, this));
+         j.displayGuiScreen(new GuiWorker(entityplayer, this));
       }
 
       int var10;
@@ -253,19 +253,6 @@ public final class EntityWorkerMember extends EntityNPC {
          this.setPathToEntity(pathentity);
       }
 
-   }
-
-   public boolean attackEntityFrom(DamageSource damagesource, int i) {
-      Entity entity = damagesource.getSourceOfDamage();
-      if(entity instanceof EntityPlayer || entity instanceof EntityPlayerSP) {
-         defaultHeldItem = null;
-         this.follow = false;
-         this.worktype = 0;
-         Minecraft minecraft = Minecraft.getMinecraft();
-         minecraft.displayGuiScreen(new GuiWorker((EntityPlayer)entity, this.world, this));
-      }
-
-      return true;
    }
 
    private void createMine() {

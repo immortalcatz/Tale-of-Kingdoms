@@ -8,25 +8,32 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public final class EntityStableMaster extends EntityNPC {
+public final class EntityStableMaster extends EntityNPC
+{
+    public EntityStableMaster(World world)
+    {
+        super(world, new ItemStack(Items.lead), 40.0F);
+    }
 
-   public EntityStableMaster(World par1World) {
-      super(par1World, new ItemStack(Items.lead), 40.0F);
-   }
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
 
-   public boolean canBePushed() {
-      return false;
-   }
+    @Override
+    protected boolean isMovementCeased()
+    {
+        return true;
+    }
 
-   protected boolean isMovementCeased() {
-      return true;
-   }
-
-   public boolean interact(EntityPlayer entityplayer) {
-      if(this.canInteractWith(entityplayer)) {
-         Minecraft.getMinecraft().displayGuiScreen(new GuiStableMaster());
-      }
-
-      return true;
-   }
+    @Override
+    public boolean interact(final EntityPlayer entityplayer)
+    {
+        if(this.canInteractWith(entityplayer))
+        {
+            Minecraft.getMinecraft().displayGuiScreen(new GuiStableMaster(entityplayer, entityplayer.worldObj));
+        }
+        return true;
+    }
 }

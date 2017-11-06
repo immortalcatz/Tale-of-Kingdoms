@@ -15,103 +15,118 @@ import net.minecraft.item.ItemTool;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
-public final class EntityShopKeeper extends EntityNPC {
+public final class EntityShopKeeper extends EntityNPC
+{
+    private World world;
+    private Item[] items = new Item[200];
+    private StringTranslate st = new StringTranslate();
 
-   private World field_70170_p;
-   private Integer[] itemget = new Integer[200];
-   private StringTranslate st = new StringTranslate();
+    public EntityShopKeeper(World world)
+    {
+        super(world, null, 100.0F);
+        this.world = world;
+        this.isImmuneToFire = false;
+    }
 
+    @Override
+    protected boolean canDespawn()
+    {
+        return false;
+    }
 
-   public EntityShopKeeper(World world) {
-      super(world, null, 100.0F);
-      this.field_70170_p = world;
-      this.isImmuneToFire = false;
-   }
+    @Override
+    public boolean canInteractWith(EntityPlayer entityplayer)
+    {
+        return !this.isDead && entityplayer.getDistanceSqToEntity(this) <= 64.0D;
+    }
 
-   protected boolean canDespawn() {
-      return false;
-   }
+    @Override
+    protected boolean isMovementCeased()
+    {
+        return true;
+    }
 
-   public boolean canInteractWith(EntityPlayer entityplayer) {
-      return this.isDead?false:entityplayer.getDistanceSqToEntity(this) <= 64.0D;
-   }
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
 
-   protected void jump() {}
+    @Override
+    public boolean interact(EntityPlayer entityplayer)
+    {
+        if (this.canInteractWith(entityplayer))
+        {
+            this.heal(100.0F);
+            final Minecraft minecraft = Minecraft.getMinecraft();
+            int i = 0, j = 0;
+            String s = "";
 
-   protected boolean isMovementCeased() {
-      return true;
-   }
+            for (int k = 256; k < 32000; ++k)
+            {
+                boolean flag2 = false;
+                boolean flag3 = false;
+                if(Item.getItemById(k) != null)
+                {
+                    Item item = Item.getItemById(k);
+                    if(item instanceof ItemFood)
+                    {
+                        flag2 = true;
+                    }
 
-   public boolean canBePushed() {
-      return false;
-   }
+                    if(item instanceof ItemArmor)
+                    {
+                        flag3 = true;
+                    }
 
-   public boolean interact(EntityPlayer entityplayer) {
-      if(this.canInteractWith(entityplayer)) {
-         this.heal(100.0F);
-         Minecraft minecraft = Minecraft.getMinecraft();
-         int i = 0;
-         int j = 0;
-         String s = "";
+                    if(item instanceof ItemSword)
+                    {
+                        flag3 = true;
+                    }
 
-         for(int k = 256; k < 32000; ++k) {
-            boolean flag2 = false;
-            boolean flag3 = false;
-            if(Item.getItemById(k) != null) {
-               ItemStack itemstack = new ItemStack(Item.getItemById(k), 1, 0);
-               Item item = itemstack.getItem();
-               if(item instanceof ItemFood) {
-                  flag2 = true;
-               }
+                    if(item instanceof ItemTool)
+                    {
+                        flag3 = true;
+                    }
 
-               if(item instanceof ItemArmor) {
-                  flag3 = true;
-               }
+                    if(item != null)
+                    {
+                        s = item.getUnlocalizedName();
+                    }
 
-               if(item instanceof ItemSword) {
-                  flag3 = true;
-               }
+                    if(s != null)
+                    {
+                        j = GoldKeeper.priceItem(s);
+                    }
 
-               if(item instanceof ItemTool) {
-                  flag3 = true;
-               }
+                    String s1 = item.getUnlocalizedName() + ".name";
+                    String s2 = this.st.translateKey(s1);
+                    Item l = Item.getItemById(k);
+                    if(l == Items.flint_and_steel || l == Items.coal || l == Items.stick ||
+                            l == Items.gunpowder || l == Items.wheat || l == Items.painting ||
+                            l == Items.sign || l == Items.wooden_door || l == Items.bucket ||
+                            l == Items.water_bucket || l == Items.lava_bucket || l == Items.minecart ||
+                            l == Items.saddle || l == Items.iron_door || l == Items.redstone ||
+                            l == Items.boat || l == Items.leather || l == Items.milk_bucket ||
+                            l == Items.reeds || l == Items.paper || l == Items.book ||
+                            l == Items.egg || l == Items.compass || l == Items.fishing_rod ||
+                            l == Items.clock || l == Items.glowstone_dust || l == Items.bone ||
+                            l == Items.sugar || l == Items.bed || l == Items.repeater ||
+                            l == Items.map || l == Items.shears || l == Items.pumpkin_seeds ||
+                            l == Items.melon_seeds || l == Items.ender_pearl || l == Items.emerald || flag2 || flag3)
+                    {
+                        j = 0;
+                    }
 
-               if(item != null) {
-                  s = item.getUnlocalizedName();
-               }
-
-               if(s != null) {
-                  j = GoldKeeper.priceItem(s);
-               }
-
-               String s1 = item.getUnlocalizedName() + ".name";
-               String s2 = this.st.translateKey(s1);
-               Item l = itemstack.getItem();
-               if(l == Item.getItemById(26) || l == Item.getItemById(34) || l == Item.getItemById(36) ||
-                       l == Item.getItemById(43) || l == Item.getItemById(51) || l == Item.getItemById(52) ||
-                       l == Item.getItemById(55) || l == Item.getItemById(59) || l == Item.getItemById(60) ||
-                       l == Item.getItemById(62) || l == Item.getItemById(63) || l == Item.getItemById(64) ||
-                       l == Item.getItemById(68) || l == Item.getItemById(71) || l == Item.getItemById(74) ||
-                       l == Item.getItemById(75) || l == Item.getItemById(78) || l == Item.getItemById(90) ||
-                       l == Item.getItemById(93) || l == Item.getItemById(94) || l == Item.getItemById(97) ||
-                       l == Item.getItemById(99) || l == Item.getItemById(100) || l == Item.getItemById(104) ||
-                       l == Item.getItemById(261) || l == Item.getItemById(262) || l == Item.getItemById(105) ||
-                       l == Item.getItemById(110) || l == Item.getItemById(92) || l == Item.getItemById(354) ||
-                       l == Items.flint || l == Items.clay_ball || l == Items.iron_ingot || l == Items.diamond ||
-                       l == Items.fish || l == Items.apple || l == Items.string || l == Items.feather || flag2 || flag3) {
-                  j = 0;
-               }
-
-               if(j > 0 && !s1.equals("null.name") && !s1.equals(s2)) {
-                  //this.itemget[i] = Integer.valueOf(itemstack.itemID);
-                  ++i;
-               }
+                    if(j > 0 && !s1.equals("null.name") && !s1.equals(s2))
+                    {
+                        this.items[i] = Item.getItemById(k);
+                        ++i;
+                    }
+                }
             }
-         }
-
-         minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.field_70170_p, this.itemget));
-      }
-
-      return true;
-   }
+            minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.world, this.items));
+        }
+        return true;
+    }
 }

@@ -51,7 +51,7 @@ public class GoldKeeper {
 
    public static int priceItem(String s)
    {
-      return 0;
+      return 1;
    }
 
    public static void getRandomStock() {

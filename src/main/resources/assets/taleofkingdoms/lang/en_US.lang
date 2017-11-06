@@ -9,6 +9,8 @@ entity.Banker.name=Banker
 entity.Fisher.name=Fisher
 entity.Lumber.name=Foreman
 entity.MageKeeper.name=Main mage
+entity.StableMaster.name=Stable
+entity.WorkerMember.name=Worker
 
 gui.bank.title=Bank
 gui.bank.deposit=Deposit
@@ -75,6 +77,26 @@ gui.mage.title=The Mage Hall - Total money: %s Gold coins
 gui.mage.enchant.selected=Note: Selected Item Cost to enchant: 500
 gui.mage.recruit.price=Note: Recruiting a mage cost 2.000
 
+gui.shop.title=Shop - Total money: %s Gold coins
+gui.shop.bye=Shop Keeper: Thank you! Come back again!
+gui.shop.next=Next
+gui.shop.back=Back
+gui.shop.buy=Buy item
+gui.shop.sell=Sell item
+gui.shop.sell.sixteen=Buy 16 items
+
+gui.stable.title=Stable - Total money: %s Gold coins
+gui.stable.starter=Buy starter kit!
+gui.stable.starter.desc=Starter Kit: Saddle, lead, wheat and a name tag for the price of 1.500 gold!
+gui.stable.expert=Buy expert kit!
+gui.stable.expert.desc=Expert Kit: Horse armor, a stack of wheat and a horse for the low price of 7.500 gold!
+
+gui.worker.title=Worker
+gui.worker.woodcut=Woodcutting
+gui.worker.mine=Mining
+gui.worker.woodcut.go=Worker: Let's go to cut down the tree!
+gui.worker.mine.go=Worker: Let's go to mine minerals!
+
 gui.notEnough=You don't have enough gold!
 gui.conquest.start=Start new Conquest
 
@@ -98,4 +120,5 @@ npc.cityBuilder.dialog_3=City builder: Let us build your city my liege! Lead the
 npc.fisher.dialog.fishingRod=Here ya go, your new beautiful fishing rod!
 npc.foreman.dialog=Foreman: Do you need resources sir?
 npc.headMage.dialog=Head Mage: Welcome to the mage hall, hero.
+npc.headPriest.dialog=Head Priest: The light order gives blessing to you.
 npc.warden.dialog=Warden: The guild's warden at your service.

@@ -9,18 +9,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 
+import java.util.Random;
+
 public final class PickupHandler
 {
     @SubscribeEvent
     public void onPickUp(PlayerEvent.ItemPickupEvent e)
     {
+        final Random random = new Random();
         Item item = e.pickedUp.getEntityItem().getItem();
 
         if (item == TaleOfKingdoms.coins)
         {
             e.player.inventory.consumeInventoryItem(item);
             GoldKeeper.addGold(2);
-            WorthyKeeper.getInstance().addWorthy(1.0F);
+            WorthyKeeper.getInstance().addWorthy(random.nextInt(15));
         }
     }
 }
