@@ -40,7 +40,9 @@ saves/
 crash-reports/
 usernamecache.json
 options.txt
+build.bat
 *.rar
+*.zip
 
 # Forge info
 forge-*

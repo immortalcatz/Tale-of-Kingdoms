@@ -56,6 +56,10 @@ gui.build.buildings.stables=Stables
 gui.build.buildings.zeppelin=Zeppelin
 gui.build.buildings.castle=Castle
 
+gui.farmer.giveBread=Give me some bread
+gui.farmer.take=Farmer: Here, take a bread!
+gui.farmer.have=Farmer: You got your bread for now!
+
 gui.foreman.notResources=Foreman: Come back again later when we have the resources.
 gui.foreman.boughtWorker=Foreman: He will begin to work immediately.
 gui.foreman.limitWorkers=Foreman: You hired the maximum number of employees.
@@ -107,6 +111,7 @@ gui.startConquest.line_4=Your adventure starts here, hero. The Guild will prepar
 gui.startConquest.line_5=Note: Build outside of the kingdom unless the location is specified for you.
 gui.startConquest.line_6=Note: selling is done through a block next to the npcs.
 
+gui.goldTotal=Gold total:
 gui.cancel=Cancel
 gui.exit=Exit
 

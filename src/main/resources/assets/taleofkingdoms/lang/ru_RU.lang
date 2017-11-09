@@ -56,6 +56,10 @@ gui.build.buildings.stables=Конюшни
 gui.build.buildings.zeppelin=Дирижабль
 gui.build.buildings.castle=Замок
 
+gui.farmer.giveBread=Дай мне хлеба.
+gui.farmer.take=Фермер: Вот, возьми хлеб!
+gui.farmer.have=Фермер: Ты уже получил свой хлеб!
+
 gui.foreman.notResources=Бригадир: Приходите позже, когда у нас будут ресурсы.
 gui.foreman.boughtWorker=Бригадир: Он начнет работать немедленно.
 gui.foreman.limitWorkers=Бригадир: Вы наняли максимальное число работников.
@@ -101,12 +105,13 @@ gui.notEnough=Вам не хватает золота!
 gui.conquest.start=Начать новое завоевание
 
 gui.startConquest.line_1=Наступили Великие Приливы Тьмы.
-gui.startConquest.line_2=Рефикули пришли до тебя, чтобы сохранить то, что осталось.
+gui.startConquest.line_2=Рефикули пришлии и всё зависит от тебя, чтобы сохранить то, что осталось.
 gui.startConquest.line_3=Ты последний наследник престола. Единственная надежда на мир.
 gui.startConquest.line_4=Ваше приключение начинается здесь, герой. Гильдия подготовит тебя.
 gui.startConquest.line_5=Примечание: Строить вне королевства, если местоположение не указано для вас.
 gui.startConquest.line_6=Примечание: Продажа осуществляется через НПС.
 
+gui.goldTotal=Всего золота:
 gui.cancel=Отмена
 gui.exit=Выйти
 
