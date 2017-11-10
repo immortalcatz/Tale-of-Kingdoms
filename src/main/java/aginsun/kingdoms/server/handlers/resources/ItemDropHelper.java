@@ -27,7 +27,7 @@ public final class ItemDropHelper
         {
             for (int i = 0; i < random.nextInt(25); i++)
             {
-                dropItem(TaleOfKingdoms.coins, 1, entityLiving);
+                dropItem(TaleOfKingdoms.proxy.coins, 1, entityLiving);
             }
         }
     }

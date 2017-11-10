@@ -48,7 +48,7 @@ public final class EntityDefendKnight extends EntityNPC {
    }
 
    public void upgrade() {
-      EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("DefendPaladin", this.worldObj);
+      EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("taleofkingdoms.DefendPaladin", this.worldObj);
       entityliving.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
       if(!this.worldObj.isRemote) {
          this.worldObj.spawnEntityInWorld(entityliving);
@@ -77,7 +77,7 @@ public final class EntityDefendKnight extends EntityNPC {
       } else {
          if(!this.createdMarker) {
             System.out.println("Defend Location");
-            this.defend = (EntityDefendMarker)EntityList.createEntityByName("DefendMark", this.worldObj);
+            this.defend = (EntityDefendMarker)EntityList.createEntityByName("taleofkingdoms.DefendMark", this.worldObj);
             this.defend.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.worldObj.spawnEntityInWorld(this.defend);
             this.createdMarker = true;

@@ -61,7 +61,7 @@ public final class SchematicHandler
                             ++this.index;
                         } else if(this.index < arrayList.size() + arrayList1.size()) {
                             FakeEntity var8 = (FakeEntity)arrayList1.get(this.index - arrayList.size());
-                            EntityLiving block = (EntityLiving)EntityList.createEntityByName(var8.entityName, world);
+                            EntityLiving block = (EntityLiving)EntityList.createEntityByName("taleofkingdoms." + var8.entityName, world);
                             if(block != null) {
                                 if(Buildings.getBuilding(1)) {
                                     block.setPosition((double)UtilToK.townX + var8.posX, (double)UtilToK.townY + var8.posY, (double)UtilToK.townZ + var8.posZ);

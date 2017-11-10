@@ -2,61 +2,60 @@ package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import cpw.mods.fml.common.registry.EntityRegistry;
-import java.awt.Color;
+import net.minecraft.entity.Entity;
 
+@Deprecated
 public final class EntityRegistryToK
 {
-    private int id;
+    private int id = 0;
 
-    public void registerEntities()
+    public EntityRegistryToK()
     {
-        registerEntity(EntityStableMaster.class, "StableMaster");
-        registerEntity(EntityFisher.class, "Fisher");
-        registerEntity(EntityLumber.class, "Lumber");
-        registerEntity(EntityWorkerMember.class, "WorkerMember");
-        registerEntity(EntityDefendMarker.class, "DefendMark");
-        registerEntity(EntityMageKeeper.class, "MageKeeper");
-        registerEntity(EntityGuildMaster.class, "GuildMaster");
-        registerEntity(EntityInnKeeper.class, "InnKeeper");
-        registerEntity(EntityHunterKeeper.class, "GuildKeeper");
-        registerEntity(EntityBuilderKeeper.class, "BuilderKeeper");
-        registerEntity(EntityBankerKeeper.class, "Banker");
-        registerEntity(EntityBarracksKeeper.class, "BarracksKeeper");
-        registerEntity(EntityDefendArcher.class, "DefendArcher");
-        registerEntity(EntityDefendBandit.class, "DefendBandit");
-        registerEntity(EntityDefendKnight.class, "DefendKnight");
-        registerEntity(EntityDefendMage.class, "DefendMage");
-        registerEntity(EntityDefendPaladin.class, "DefendPaladin");
-        registerEntity(EntityDefendPriest.class, "DefendPriest");
-        registerEntity(EntityDefendWarrior.class, "DefendWarrior");
-        registerEntity(EntityFarmerKeeper.class, "Farmer");
-        registerEntity(EntityFoodKeeper.class, "FoodKeeper");
-        registerEntity(EntityQuarry.class, "Quarry");
-        registerEntity(EntityWeaponKeeper.class, "WeaponKeeper");
-        registerEntity(EntityGuildMember.class, "GuildMember");
-        registerEntity(EntityHired.class, "Hired");
-        registerEntity(EntityForgeKeeper.class, "ForgeKeeper");
-        registerEntity(EntityHeadCommander.class, "HeadCommander");
-        registerEntity(EntityKingdomWorker.class, "KingdomWorker");
-        registerEntity(EntityLibraryKeeper.class, "LibraryKeeper");
-        registerEntity(EntityLoneTraveller.class, "LoneTraveller");
-        registerEntity(EntityLostVillager.class, "LostVillager");
-        registerEntity(EntityMarkerKeeper.class, "Marker");
-        registerEntity(EntityMarker2Keeper.class, "Marker2");
-        registerEntity(EntityPriestKeeper.class, "PriestKeeper");
-        registerEntity(EntityReficulGuardian.class, "ReficulGuardian");
-        registerEntity(EntityReficulMage.class, "ReficulMage");
-        registerEntity(EntityReficulSoldier.class, "ReficulSoldier");
-        registerEntity(EntityShopKeeper.class, "ShopKeeper");
-        registerEntity(EntityStockKeeper.class, "StockKeeper");
-        registerEntity(EntityTavernKeeper.class, "TavernKeeper");
-        registerEntity(EntityVillageMember.class, "VillageMember");
+        register(EntityStableMaster.class, "StableMaster");
+        register(EntityFisher.class, "Fisher");
+        register(EntityLumber.class, "Lumber");
+        register(EntityWorkerMember.class, "WorkerMember");
+        register(EntityDefendMarker.class, "DefendMark");
+        register(EntityMageKeeper.class, "MageKeeper");
+        register(EntityGuildMaster.class, "GuildMaster");
+        register(EntityInnKeeper.class, "InnKeeper");
+        register(EntityHunterKeeper.class, "GuildKeeper");
+        register(EntityBuilderKeeper.class, "BuilderKeeper");
+        register(EntityBankerKeeper.class, "Banker");
+        register(EntityBarracksKeeper.class, "BarracksKeeper");
+        register(EntityDefendArcher.class, "DefendArcher");
+        register(EntityDefendBandit.class, "DefendBandit");
+        register(EntityDefendKnight.class, "DefendKnight");
+        register(EntityDefendMage.class, "DefendMage");
+        register(EntityDefendPaladin.class, "DefendPaladin");
+        register(EntityDefendPriest.class, "DefendPriest");
+        register(EntityDefendWarrior.class, "DefendWarrior");
+        register(EntityFarmerKeeper.class, "Farmer");
+        register(EntityFoodKeeper.class, "FoodKeeper");
+        register(EntityQuarry.class, "Quarry");
+        register(EntityWeaponKeeper.class, "WeaponKeeper");
+        register(EntityGuildMember.class, "GuildMember");
+        register(EntityHired.class, "Hired");
+        register(EntityForgeKeeper.class, "ForgeKeeper");
+        register(EntityHeadCommander.class, "HeadCommander");
+        register(EntityKingdomWorker.class, "KingdomWorker");
+        register(EntityLibraryKeeper.class, "LibraryKeeper");
+        register(EntityLoneTraveller.class, "LoneTraveller");
+        register(EntityLostVillager.class, "LostVillager");
+        register(EntityMarkerKeeper.class, "Marker");
+        register(EntityMarker2Keeper.class, "Marker2");
+        register(EntityPriestKeeper.class, "PriestKeeper");
+        register(EntityReficulGuardian.class, "ReficulGuardian");
+        register(EntityReficulMage.class, "ReficulMage");
+        register(EntityReficulSoldier.class, "ReficulSoldier");
+        register(EntityShopKeeper.class, "ShopKeeper");
+        register(EntityStockKeeper.class, "StockKeeper");
+        register(EntityTavernKeeper.class, "TavernKeeper");
+        register(EntityVillageMember.class, "VillageMember");
     }
 
-    private void registerEntity(Class entityClass, String name)
+    private void register(Class<? extends Entity> entity, String name)
     {
-        id = EntityRegistry.findGlobalUniqueEntityId();
-        EntityRegistry.registerGlobalEntityID(entityClass, name, id++, Color.red.getRGB(), Color.green.getRGB());
-        EntityRegistry.registerModEntity(entityClass, name, id++, TaleOfKingdoms.instance, 128, 1, true);
+        EntityRegistry.registerModEntity(entity, name, id++, TaleOfKingdoms.instance, 64, 1, false);
     }
 }

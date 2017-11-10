@@ -3,11 +3,11 @@ Not official port for Minecraft 1.7.10.
 
 **!!!About all bugs please report!!!**
 
-#Known issues:
+### Known issues:
 * Code is poorly optimized.
 * A lot of bugs.
 
-#TODO:
+### TODO:
 * Add server side support.
 * Recycle castle.
 * Add full localization.

@@ -7,13 +7,8 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
-import aginsun.kingdoms.server.entities.EntityRegistryToK;
-import aginsun.kingdoms.server.items.ItemCoin;
-import net.minecraft.item.Item;
 
-@Mod(modid = "taleofkingdoms", name = "Tale of Kingdoms", version = "1.0.4")
+@Mod(modid = "taleofkingdoms", name = "Tale of Kingdoms", version = "1.0.6")
 public final class TaleOfKingdoms
 {
     @Instance("taleofkingdoms")
@@ -22,26 +17,20 @@ public final class TaleOfKingdoms
     @SidedProxy(clientSide = "aginsun.kingdoms.client.ClientProxy", serverSide = "aginsun.kingdoms.server.ServerProxy")
     public static ServerProxy proxy;
 
-    public static final Item coins = new ItemCoin().setUnlocalizedName("Coins");
-
     @EventHandler
-    public void preInit(FMLPreInitializationEvent e)
+    public void pre(FMLPreInitializationEvent e)
     {
-        proxy.registerRenderers();
         proxy.pre(e);
-        GameRegistry.registerItem(coins, "Coints");
     }
 
     @EventHandler
-    public void load(FMLInitializationEvent e)
+    public void init(FMLInitializationEvent e)
     {
         proxy.init(e);
-        new EntityRegistryToK().registerEntities();
-        NetworkRegistry.INSTANCE.registerGuiHandler(instance, proxy);
     }
 
     @EventHandler
-    public void serverStarting(FMLServerStartingEvent e)
+    public void starting(FMLServerStartingEvent e)
     {
         proxy.starting(e);
     }

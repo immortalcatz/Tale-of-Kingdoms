@@ -1,4 +1,4 @@
-package aginsun.kingdoms.server.inventory;
+package aginsun.kingdoms.server.container;
 
 import aginsun.kingdoms.server.entities.TileEntitySell;
 import net.minecraft.entity.player.EntityPlayer;

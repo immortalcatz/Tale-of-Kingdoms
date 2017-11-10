@@ -2,7 +2,7 @@ package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import aginsun.kingdoms.server.entities.TileEntitySell;
-import aginsun.kingdoms.server.inventory.ContainerSell;
+import aginsun.kingdoms.server.container.ContainerSell;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;

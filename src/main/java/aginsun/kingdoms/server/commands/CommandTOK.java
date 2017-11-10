@@ -38,7 +38,7 @@ public final class CommandTOK extends CommandBase
     }
 
     @Override
-    public String getCommandUsage(ICommandSender icommandsender)
+    public String getCommandUsage(ICommandSender sender)
     {
         return null;
     }

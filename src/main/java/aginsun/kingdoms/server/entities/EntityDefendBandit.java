@@ -57,7 +57,7 @@ public class EntityDefendBandit extends EntityNPC {
       } else {
          if(!this.createdMarker) {
             System.out.println("Defend Location");
-            this.defend = (EntityDefendMarker)EntityList.createEntityByName("DefendMark", this.worldObj);
+            this.defend = (EntityDefendMarker)EntityList.createEntityByName("taleofkingdoms.DefendMark", this.worldObj);
             this.defend.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.worldObj.spawnEntityInWorld(this.defend);
             this.createdMarker = true;

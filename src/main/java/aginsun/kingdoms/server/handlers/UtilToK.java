@@ -14,7 +14,7 @@ public final class UtilToK
     {
         if (!world.isRemote)
         {
-            EntityLivingBase entityliving = (EntityLivingBase)EntityList.createEntityByName(name, world);
+            EntityLivingBase entityliving = (EntityLivingBase)EntityList.createEntityByName("taleofkingdoms." + name, world);
             entityliving.setLocationAndAngles((double) position.posX, (double) position.posY, (double) position.posZ, 0.0F, 0.0F);
             world.spawnEntityInWorld(entityliving);
         }

@@ -1,17 +1,13 @@
 package aginsun.kingdoms.client;
 
-import aginsun.kingdoms.client.gui.GuiSell;
 import aginsun.kingdoms.client.handlers.ClientEvents;
 import aginsun.kingdoms.server.ServerProxy;
-import aginsun.kingdoms.server.entities.*;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import aginsun.kingdoms.client.render.RenderBipedToK;
+import aginsun.kingdoms.server.handlers.EntitiesRegister;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.entity.Entity;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 
 public final class ClientProxy extends ServerProxy
 {
@@ -19,66 +15,13 @@ public final class ClientProxy extends ServerProxy
     public void pre(FMLPreInitializationEvent e)
     {
         super.pre(e);
+        EntitiesRegister.INSTANCE.render();
         new ClientEvents();
     }
 
-    public void registerRenderers()
-    {
-        setRender(EntityGuildMaster.class, "head");
-        setRender(EntityInnKeeper.class, "inn");
-        setRender(EntityBuilderKeeper.class, "builder");
-        setRender(EntityHunterKeeper.class, "head");
-        setRender(EntityBankerKeeper.class, "banker");
-        setRender(EntityBarracksKeeper.class, "guardelite");
-        setRender(EntityDefendArcher.class, "hunter");
-        setRender(EntityDefendBandit.class, "bandit");
-        setRender(EntityDefendKnight.class, "knight");
-        setRender(EntityDefendMage.class, "wizard");
-        setRender(EntityDefendMarker.class, "");
-        setRender(EntityDefendPaladin.class, "paladin");
-        setRender(EntityDefendPriest.class, "priest");
-        setRender(EntityDefendWarrior.class, "warrior");
-        setRender(EntityFarmerKeeper.class, "inn");
-        setRender(EntityFoodKeeper.class, "food");
-        setRender(EntityLumber.class, "foremanlumber");
-        setRender(EntityWeaponKeeper.class, "smith");
-        setRender(EntityGuildMember.class, "member");
-        setRender(EntityHired.class, "guild");
-        setRender(EntityForgeKeeper.class, "forge");
-        setRender(EntityHeadCommander.class, "headcommander");
-        setRender(EntityKingdomWorker.class, "worker");
-        setRender(EntityLibraryKeeper.class, "librarian");
-        setRender(EntityLoneTraveller.class, "lone");
-        setRender(EntityLostVillager.class, "ac");
-        setRender(EntityMarkerKeeper.class, "");
-        setRender(EntityMarker2Keeper.class, "");
-        setRender(EntityPriestKeeper.class, "headpriest");
-        setRender(EntityReficulGuardian.class, "reficulGuardian");
-        setRender(EntityReficulMage.class, "reficulMage");
-        setRender(EntityReficulSoldier.class, "reficulSoldier");
-        setRender(EntityShopKeeper.class, "forge");
-        setRender(EntityStockKeeper.class, "stock");
-        setRender(EntityTavernKeeper.class, "tavern");
-        setRender(EntityVillageMember.class, "man1");
-        setRender(EntityWorkerMember.class, "worker");
-        setRender(EntityMageKeeper.class, "headmage");
-        setRender(EntityQuarry.class, "foremanquarry");
-        setRender(EntityStableMaster.class, "stable");
-        setRender(EntityFisher.class, "fisher");
-    }
-
     @Override
-    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z)
+    public EntityPlayer getPlayer(MessageContext ctx)
     {
-        if (id == 1)
-        {
-            return new GuiSell(player.inventory, new TileEntitySell());
-        }
-        return super.getClientGuiElement(id, player, world, x, y, z);
-    }
-
-    private void setRender(Class<? extends Entity> entity, String location)
-    {
-        RenderingRegistry.registerEntityRenderingHandler(entity, new RenderBipedToK(new ModelBiped(), 0.4F, location));
+        return ctx.side == Side.CLIENT ? Minecraft.getMinecraft().thePlayer : super.getPlayer(ctx);
     }
 }

@@ -1,5 +1,6 @@
 package aginsun.kingdoms.server.handlers;
 
+import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
 import aginsun.kingdoms.server.handlers.resources.ItemDropHelper;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -9,12 +10,15 @@ import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import aginsun.kingdoms.server.handlers.resources.WorthyKeeper;
 import aginsun.kingdoms.server.PlayerProvider;
+import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
@@ -35,8 +39,47 @@ public final class ServerEvents
         {
             if (e.entity instanceof EntityPlayer)
             {
-                if (e.entity.getExtendedProperties("tokPlayer") == null)
-                    e.entity.registerExtendedProperties("tokPlayer", new PlayerProvider());
+                EntityPlayer player = (EntityPlayer) e.entity;
+
+                if (player.getExtendedProperties("tokPlayer") == null)
+                    player.registerExtendedProperties("tokPlayer", new PlayerProvider());
+            }
+        }
+
+        @SubscribeEvent
+        public void entityJoinWorld(EntityJoinWorldEvent e)
+        {
+            if (e.entity instanceof EntityPlayer)
+            {
+                EntityPlayer player = (EntityPlayer) e.entity;
+                PlayerProvider provider = PlayerProvider.get(player);
+
+                if (provider != null)
+                {
+                    if(!e.world.isRemote)
+                    {
+                        EntityTracker tracker = ((WorldServer) e.world).getEntityTracker();
+                        CPacketSyncDataPlayer packet = new CPacketSyncDataPlayer(provider);
+
+                        for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(player))
+                        {
+                            NetworkHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) entityPlayer);
+                        }
+                    }
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public void playerTracking(PlayerEvent.StartTracking e)
+        {
+            if (e.entity instanceof EntityPlayer)
+            {
+                EntityPlayer player = (EntityPlayer) e.entity;
+                PlayerProvider provider = PlayerProvider.get(player);
+
+                if (provider != null)
+                    NetworkHandler.INSTANCE.sendTo(new CPacketSyncDataPlayer(provider), (EntityPlayerMP) e.entityPlayer);
             }
         }
 
@@ -86,7 +129,7 @@ public final class ServerEvents
             final Random random = new Random();
             final Item item = e.pickedUp.getEntityItem().getItem();
 
-            if (item == TaleOfKingdoms.coins)
+            if (item == TaleOfKingdoms.proxy.coins)
             {
                 e.player.inventory.consumeInventoryItem(item);
                 GoldKeeper.addGold(2);

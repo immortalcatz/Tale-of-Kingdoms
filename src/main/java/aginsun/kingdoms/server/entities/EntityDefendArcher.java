@@ -60,7 +60,7 @@ public final class EntityDefendArcher extends EntityNPC {
       } else {
          if(!this.createdMarker) {
             System.out.println("Defend Location");
-            this.defend = (EntityDefendMarker)EntityList.createEntityByName("DefendMark", this.field_70170_p);
+            this.defend = (EntityDefendMarker)EntityList.createEntityByName("taleofkingdoms.DefendMark", this.field_70170_p);
             this.defend.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.field_70170_p.spawnEntityInWorld(this.defend);
             this.createdMarker = true;

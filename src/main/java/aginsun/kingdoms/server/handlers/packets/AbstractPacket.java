@@ -1,5 +1,6 @@
 package aginsun.kingdoms.server.handlers.packets;
 
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
@@ -18,7 +19,7 @@ public abstract class AbstractPacket<REQ extends IMessage> implements IMessage, 
         }
         else
         {
-            handleClientSide(ctx.getServerHandler().playerEntity);
+            handleClientSide(TaleOfKingdoms.proxy.getPlayer(ctx));
         }
         return null;
     }
