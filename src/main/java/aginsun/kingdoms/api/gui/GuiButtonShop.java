@@ -1,5 +1,7 @@
-package aginsun.kingdoms.client.gui;
+package aginsun.kingdoms.api.gui;
 
+import aginsun.kingdoms.client.gui.GuiShopList;
+import aginsun.kingdoms.client.gui.GuiStockList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
@@ -51,6 +53,7 @@ public final class GuiButtonShop extends GuiButton
         this.text = text;
     }
 
+    @Override
     public int getHoverState(boolean flag)
     {
         byte byte0 = 1;
@@ -76,7 +79,7 @@ public final class GuiButtonShop extends GuiButton
             boolean flag = i >= this.x && j >= this.y && i < this.x + this.field_73747_a && j < this.y + this.field_73745_b;
             int k = this.getHoverState(flag);
 
-            if(this.gui != null)
+            if (this.gui != null)
             {
                 if(this.gui.itemSelected == item)
                 {
@@ -88,9 +91,9 @@ public final class GuiButtonShop extends GuiButton
                 }
             }
 
-            if(this.gui2 != null)
+            if (this.gui2 != null)
             {
-                if(this.gui2.itemSelected == this.item)
+                if (this.gui2.itemSelected == this.item)
                 {
                     k = 2;
                 }
@@ -103,7 +106,7 @@ public final class GuiButtonShop extends GuiButton
             this.drawTexturedModalRect(this.x + this.field_73747_a / 2, this.y, 200 - this.field_73747_a / 2, 46 + k * 20, this.field_73747_a / 2, this.field_73745_b);
             this.mouseDragged(minecraft, i, j);
 
-            if(!flag)
+            if (!flag)
             {
                 this.drawString(fontrenderer, this.text, this.x + this.field_73747_a / 2 - 20, this.y + (this.field_73745_b - 8) / 2, 16777215);
             }

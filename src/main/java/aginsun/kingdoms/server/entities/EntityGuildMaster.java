@@ -3,8 +3,8 @@ package aginsun.kingdoms.server.entities;
 import java.util.List;
 import java.util.Random;
 
-import aginsun.kingdoms.api.EntityNPC;
-import aginsun.kingdoms.server.handlers.UtilToK;
+import aginsun.kingdoms.api.entities.EntityNPC;
+import aginsun.kingdoms.server.handlers.resources.GuildHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.item.EntityItem;
@@ -53,9 +53,9 @@ public final class EntityGuildMaster extends EntityNPC {
       this.player = entityplayer;
       boolean flag = false;
       int j;
-      if(!this.world.loadedEntityList.isEmpty()) {
-         for(j = 0; j < this.world.loadedEntityList.size(); ++j) {
-            Entity k = (Entity)this.world.loadedEntityList.get(j);
+      if(!worldObj.loadedEntityList.isEmpty()) {
+         for(j = 0; j < worldObj.loadedEntityList.size(); ++j) {
+            Entity k = (Entity)worldObj.loadedEntityList.get(j);
             if(k instanceof EntityReficulGuardian && k.getDistanceSqToEntity(this) <= 2000.0D) {
                flag = true;
             }
@@ -70,26 +70,26 @@ public final class EntityGuildMaster extends EntityNPC {
          }
       }
 
-      j = this.world.getWorldInfo().getSpawnX() + 30;
-      int var12 = this.world.getWorldInfo().getSpawnY();
-      int l = this.world.getWorldInfo().getSpawnZ() + 40;
+      j = worldObj.getWorldInfo().getSpawnX() + 30;
+      int var12 = worldObj.getWorldInfo().getSpawnY();
+      int l = worldObj.getWorldInfo().getSpawnZ() + 40;
       int i1 = (int)this.posX;
       int j1 = (int)this.posY;
       int k1 = (int)this.posZ;
       if(this.get) {
          if(j - 50 < i1 && j + 50 > i1 && var12 - 50 < j1 && var12 + 50 > j1 && l - 50 < k1 && l + 50 > k1) {
-            if(flag && !UtilToK.guildFightEnded) {
+            if(flag && !GuildHandler.INSTANCE.getGuildFightEnded()) {
                if(this.talk == 0) {
-                  if(!this.world.isRemote) {
+                  if(!worldObj.isRemote) {
                      this.player.addChatMessage(new ChatComponentText("Guild Master: My apprentice! The guild is under attack, and I came here to ask for your help. Please let us hurry back to the guild!"));
                   }
 
                   ItemStack var13 = new ItemStack(Item.getItemById(267), 1, 0);
-                  EntityItem var14 = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, var13);
+                  EntityItem var14 = new EntityItem(worldObj, this.player.posX, this.player.posY, this.player.posZ, var13);
                   this.player.joinEntityItemWithWorld(var14);
-               } else if(this.talk > 2 && this.talk < 5 && !this.world.isRemote) {
+               } else if(this.talk > 2 && this.talk < 5 && !worldObj.isRemote) {
                   this.player.addChatMessage(new ChatComponentText("Master: Keep close and I will heal you."));
-               } else if(!this.world.isRemote) {
+               } else if(!worldObj.isRemote) {
                   this.player.addChatMessage(new ChatComponentText("Master: Lets take this bastards down. There are still some left."));
                }
 
@@ -109,21 +109,21 @@ public final class EntityGuildMaster extends EntityNPC {
                   }
                }
 
-               if(!this.get && !this.world.isRemote) {
+               if(!this.get && !worldObj.isRemote) {
                   this.player.addChatMessage(new ChatComponentText("Master: We have now supplies to build the guild. Talk to me again if you want to repair the guild."));
-               } else if(!this.world.isRemote) {
+               } else if(!worldObj.isRemote) {
                   this.player.addChatMessage(new ChatComponentText("Master: We did the best we could. Now, we should rebuild the guild and gather 64 wood while the rest do some cleanup and construction."));
                }
             }
-         } else if(!this.world.isRemote) {
+         } else if(!worldObj.isRemote) {
             this.player.addChatMessage(new ChatComponentText("Master: We are too far from the guild!"));
          }
       } else {
-         if(!this.world.isRemote) {
+         if(!worldObj.isRemote) {
             this.player.addChatMessage(new ChatComponentText("Master: Thank you hero, you have proven yourself a worthy leader but your quest for kingship is not over. I will be back at the guild and may you continue this good progress."));
          }
 
-         UtilToK.guildFightEnded = true;
+         GuildHandler.INSTANCE.setGuildFightEnded(true);
          this.setDead();
       }
 
@@ -150,7 +150,7 @@ public final class EntityGuildMaster extends EntityNPC {
          entity1 = (Entity)this.worldObj.loadedEntityList.get(list);
          if(entity1 instanceof EntityPlayer) {
             this.player = (EntityPlayer)entity1;
-            if(this.counterHeal == 5 && !UtilToK.guildFightEnded && !this.said && !this.world.isRemote) {
+            if(this.counterHeal == 5 && !GuildHandler.INSTANCE.getGuildFightEnded() && !this.said && !worldObj.isRemote) {
                this.player.addChatMessage(new ChatComponentText("Guild Master: My apprentice! The guild is under attack and I came here to ask for your help. Please let us hurry back to the guild!"));
                this.said = true;
             }
@@ -172,9 +172,9 @@ public final class EntityGuildMaster extends EntityNPC {
       }
 
       if(this.entityToAttack == null && !this.hasPath()) {
-         List var5 = this.world.getEntitiesWithinAABB(EntityCreature.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 4.0D, 16.0D));
+         List var5 = worldObj.getEntitiesWithinAABB(EntityCreature.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 4.0D, 16.0D));
          if(!var5.isEmpty()) {
-            entity1 = (Entity)var5.get(this.world.rand.nextInt(var5.size()));
+            entity1 = (Entity)var5.get(worldObj.rand.nextInt(var5.size()));
             if(this.canEntityBeSeen(entity1) && (entity1 instanceof EntityMob || entity1 instanceof EntityReficulSoldier || entity1 instanceof EntityReficulGuardian || entity1 instanceof EntityReficulMage)) {
                this.entityToAttack = entity1;
             }
@@ -184,7 +184,7 @@ public final class EntityGuildMaster extends EntityNPC {
    }
 
    private void getPathOrWalkableBlock(Entity entity, float f) {
-      PathEntity pathentity = this.world.getPathEntityToEntity(this, entity, 16.0F, true, false, false, true);
+      PathEntity pathentity = worldObj.getPathEntityToEntity(this, entity, 16.0F, true, false, false, true);
       if(pathentity == null && f > 12.0F) {
          int i = MathHelper.floor_double(entity.posX) - 2;
          int j = MathHelper.floor_double(entity.posZ) - 2;
@@ -192,7 +192,7 @@ public final class EntityGuildMaster extends EntityNPC {
 
          for(int l = 0; l <= 4; ++l) {
             for(int i1 = 0; i1 <= 4; ++i1) {
-               if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && this.world.isBlockNormalCubeDefault(i + l, k - 1, j + i1, false) && !this.world.isBlockNormalCubeDefault(i + l, k, j + i1, false) && !this.world.isBlockNormalCubeDefault(i + l, k + 1, j + i1, false)) {
+               if((l < 1 || i1 < 1 || l > 3 || i1 > 3) && worldObj.isBlockNormalCubeDefault(i + l, k - 1, j + i1, false) && !worldObj.isBlockNormalCubeDefault(i + l, k, j + i1, false) && !worldObj.isBlockNormalCubeDefault(i + l, k + 1, j + i1, false)) {
                   this.setLocationAndAngles((double)((float)(i + l) + 0.5F), (double)k, (double)((float)(j + i1) + 0.5F), this.rotationYaw, this.rotationPitch);
                   return;
                }

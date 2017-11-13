@@ -2,7 +2,7 @@ package aginsun.kingdoms.server.entities;
 
 import java.util.List;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;

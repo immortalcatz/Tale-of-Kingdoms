@@ -5,12 +5,43 @@ keyBinding.conquest=Start Conquest
 command.tok.worthy=Added worthy!
 
 entity.BuilderKeeper.name=City builder
+entity.BarracksKeeper.name=Barracks keeper
 entity.Banker.name=Banker
+entity.DefendArcher.name=Defend archer
+entity.DefendBandit.name=Defend bandit
+entity.DefendKnight.name=Defend knight
+entity.DefendMage.name=Defend mage
+entity.DefendPaladin.name=Defend paladin
+entity.DefendPriest.name=Defend priest
+entity.DefendWarrior.name=Defend warrior
+entity.Farmer.name=Farmer
 entity.Fisher.name=Fisher
+entity.FoodKeeper.name=Food keeper
+entity.ForgeKeeper.name=Forge keeper
+entity.GuildKeeper.name=Guild keeper
+entity.GuildMaster.name=Guild master
+entity.GuildMember.name=Guild member
+entity.HeadCommander.name=Head commander
+entity.Hired.name=Hired
+entity.InnKeeper.name=Inn keeper
+entity.KingdomWorker.name=Kingdom worker
+entity.LibraryKeeper.name=Library keeper
+entity.LoneTraveller.name=Lone traveller
+entity.LostVillager.name=Lost villager
 entity.Lumber.name=Foreman
 entity.MageKeeper.name=Main mage
-entity.StableMaster.name=Stable
-entity.WorkerMember.name=Worker
+entity.PriestKeeper.name=Priest keeper
+entity.Quarry.name=Quarry
+entity.ReficulGuardian.name=Reficul guardian
+entity.ReficulMage.name=Reficul mage
+entity.ReficulSoldier.name=Reficul soldier
+entity.ShopKeeper.name=Shop keeper
+entity.StableMaster.name=Stable master
+entity.StockKeeper.name=Stock keeper
+entity.TavernKeeper.name=Tavern Keeper
+entity.VillageMember.name=Village Member
+entity.WeaponKeeper.name=Weapon keeper
+entity.WorkerMember.name=Worker member
 
 gui.bank.title=Bank
 gui.bank.deposit=Deposit
@@ -72,6 +103,21 @@ gui.foreman.note.workerPrice=Note: Hiring an employee can be for 1.500 gold coin
 gui.fishingRod=Get Fishing Rod!
 gui.fisher.dialog.for=Get your best fishing rods here lad.
 
+gui.guildMaster.bye=Guild Master: Good Hunting.
+gui.guildMaster.title=The Guild Order - Total money: %s Gold coins
+gui.guildMaster.kingship=Path to Kingship
+gui.guildMaster.note=Note: Hiring Cost 1500 gold, Retiring will Refund 1000. Fixing the Guild need 64 wood.
+gui.guildMaster.sigh=Sign contract!
+gui.guildMaster.discard=Discard contract!
+gui.guildMaster.hire=Hire hunters
+gui.guildMaster.retire=Retire Hunters
+gui.guildMaster.fix=Fix the Guild
+gui.guildMaster.needMore=Guild Master: We need more resources.
+gui.guildMaster.fixed=Guild Master: The guild has been fixed. Thank you.
+gui.guildMaster.await=Guild Master: We will await your participation, hero.
+gui.guildMaster.killMobs=Guild Master: You are now one of us my friend. Kill monsters and you will soon be worthy of your title.
+gui.guildMaster.discarded=Guild Master: Why does one wanna do this.
+
 gui.mage.bye=Head Mage: Magic dwells in you.
 gui.mage.enchant=Enchant item
 gui.mage.recruit=Recruit a Mage
@@ -102,7 +148,9 @@ gui.worker.woodcut.go=Worker: Let's go to cut down the tree!
 gui.worker.mine.go=Worker: Let's go to mine minerals!
 
 gui.notEnough=You don't have enough gold!
+
 gui.conquest.start=Start new Conquest
+gui.conquest.created=The Guild is already built!
 
 gui.startConquest.line_1=The Great Tides of Darkness has come.
 gui.startConquest.line_2=The Reficules have come and it is up to you to save what is left.

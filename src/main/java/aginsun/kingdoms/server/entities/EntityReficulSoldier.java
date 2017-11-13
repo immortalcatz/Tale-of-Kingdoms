@@ -1,8 +1,8 @@
 package aginsun.kingdoms.server.entities;
 
 import java.util.Random;
-import aginsun.kingdoms.api.EntityNPC;
-import aginsun.kingdoms.server.handlers.resources.WorthyKeeper;
+import aginsun.kingdoms.api.entities.EntityNPC;
+import aginsun.kingdoms.server.handlers.resources.GloryHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -128,7 +128,7 @@ public class EntityReficulSoldier extends EntityNPC {
    }
 
    public void onDeath(DamageSource damagesource) {
-      WorthyKeeper.getInstance().addWorthy(70.0F);
+      GloryHandler.INSTANCE.addGlory(70);
    }
 
    protected boolean isMovementCeased() {

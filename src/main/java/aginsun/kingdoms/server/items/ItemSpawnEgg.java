@@ -36,6 +36,7 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List list)
     {
         for (EntitiesType type : EntitiesType.values())
@@ -162,8 +163,7 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
 
             if (EntityList.stringToClassMapping.containsKey(nameFull))
             {
-                EntityLiving entity = (EntityLiving) EntityList
-                        .createEntityByName(nameFull, parWorld);
+                EntityLiving entity = (EntityLiving) EntityList.createEntityByName(nameFull, parWorld);
                 entity.setLocationAndAngles(parX, parY, parZ,
                         MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat()
                                 * 360.0F), 0.0F);

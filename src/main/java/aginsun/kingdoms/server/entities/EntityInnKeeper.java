@@ -1,7 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.client.gui.GuiInnMenu;
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;

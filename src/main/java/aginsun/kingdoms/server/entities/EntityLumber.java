@@ -44,9 +44,9 @@ public final class EntityLumber extends EntityCreature
     {
         if (this.canInteractWith(entityplayer))
         {
-            this.heal(100.0F);
             if(!this.worldObj.isRemote)
             {
+                this.heal(100.0F);
                 entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.foreman.dialog")));
             }
             Minecraft.getMinecraft().displayGuiScreen(new GuiLumber(entityplayer, this.worldObj));

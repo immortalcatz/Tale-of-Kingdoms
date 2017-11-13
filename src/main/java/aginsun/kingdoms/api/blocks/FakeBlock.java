@@ -1,4 +1,4 @@
-package aginsun.kingdoms.api;
+package aginsun.kingdoms.api.blocks;
 
 import net.minecraft.block.Block;
 

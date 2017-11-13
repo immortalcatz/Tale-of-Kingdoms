@@ -1,4 +1,4 @@
-package aginsun.kingdoms.api;
+package aginsun.kingdoms.api.entities;
 
 public final class FakeEntity
 {

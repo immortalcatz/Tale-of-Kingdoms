@@ -1,6 +1,7 @@
 package aginsun.kingdoms.client.gui;
 
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
+import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,14 +30,16 @@ public final class GuiTavernGame extends GuiScreenToK {
    private boolean notEnough = false;
 
 
-   public GuiTavernGame(EntityPlayer entityplayer1, World world) {
+   public GuiTavernGame(EntityPlayer entityplayer1, World world)
+   {
+      super(world);
       this.entityplayer = entityplayer1;
    }
 
    public boolean deal(int i) {
       Random random = new Random();
       if(i == 0) {
-         GoldKeeper.decreaseGold(50);
+         EconomyHandler.INSTANCE.decreaseGold(50);
          this.fRollp = random.nextInt(6) + 1;
          this.fRolld = random.nextInt(6) + 1;
          this.sRollp = random.nextInt(6) + 1;
@@ -47,7 +50,7 @@ public final class GuiTavernGame extends GuiScreenToK {
             this.wintype = 4;
             this.gameNotEnded = false;
             this.rolledDouble = false;
-            GoldKeeper.addGold(100);
+            EconomyHandler.INSTANCE.addGold(100);
             this.initGui();
          }
 
@@ -81,7 +84,7 @@ public final class GuiTavernGame extends GuiScreenToK {
 
          return false;
       } else if(i == 2 && this.player > this.dealer) {
-         GoldKeeper.addGold(75);
+         EconomyHandler.INSTANCE.addGold(75);
          return true;
       } else {
          if(i == 3) {
@@ -89,7 +92,7 @@ public final class GuiTavernGame extends GuiScreenToK {
                return true;
             }
 
-            GoldKeeper.decreaseGold(25);
+            EconomyHandler.INSTANCE.decreaseGold(25);
          }
 
          if(i == 4) {
@@ -97,7 +100,7 @@ public final class GuiTavernGame extends GuiScreenToK {
             this.player = this.fRollp + this.sRollp;
             if(this.fRollp == this.sRollp) {
                this.wintype = 4;
-               GoldKeeper.addGold(100);
+               EconomyHandler.INSTANCE.addGold(100);
                this.gameNotEnded = false;
                this.rolledDouble = false;
                this.initGui();
@@ -109,7 +112,7 @@ public final class GuiTavernGame extends GuiScreenToK {
             this.player = this.fRollp + this.sRollp;
             if(this.fRollp == this.sRollp) {
                this.wintype = 4;
-               GoldKeeper.addGold(100);
+               EconomyHandler.INSTANCE.addGold(100);
                this.gameNotEnded = false;
                this.rolledDouble = false;
                this.initGui();
@@ -152,7 +155,7 @@ public final class GuiTavernGame extends GuiScreenToK {
 
    protected void actionPerformed(GuiButton guibutton) {
       if(guibutton.id == 1) {
-         if(GoldKeeper.getGoldTotal() >= 50) {
+         if(EconomyHandler.INSTANCE.getGoldTotal() >= 50) {
             this.game = true;
             this.deal(0);
          } else {
@@ -255,11 +258,11 @@ public final class GuiTavernGame extends GuiScreenToK {
       }
 
       if(!this.notEnough) {
-         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + GoldKeeper.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16777215);
+         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16777215);
       }
 
       if(this.notEnough) {
-         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + GoldKeeper.getGoldTotal() + " Gold Coins -NOT ENOUGH GOLD", this.width / 2, 15, 16777215);
+         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins -NOT ENOUGH GOLD", this.width / 2, 15, 16777215);
       }
 
       super.drawScreen(i, j, f);

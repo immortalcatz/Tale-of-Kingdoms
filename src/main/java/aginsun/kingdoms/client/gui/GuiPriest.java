@@ -1,86 +1,90 @@
 package aginsun.kingdoms.client.gui;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
+import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public final class GuiPriest extends GuiScreenToK {
+public final class GuiPriest extends GuiScreenToK
+{
+    public EntityPlayer player;
+    private boolean goldchecker = false;;
 
-   private World worldObj = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-   public EntityPlayer entityplayer;
-   boolean goldchecker = false;
+    public GuiPriest(EntityPlayer player, World world)
+    {
+        super(world);
+        this.player = player;
+    }
 
+    @Override
+    public void initGui()
+    {
+        this.buttonList.clear();
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 100, 180, 110, 20, "Recruit a Priestess"));
+        this.buttonList.add(new GuiButton(2, this.width / 2 + 100, 200, 110, 20, "Rejuvinate"));
+        this.buttonList.add(new GuiButton(3, this.width / 2 + 100, 220, 110, 20, "Exit"));
+    }
 
-   public GuiPriest(EntityPlayer entityplayer1, World world) {
-      this.entityplayer = entityplayer1;
-      this.worldObj = world;
-   }
+    @Override
+    protected void actionPerformed(GuiButton button)
+    {
+        switch (button.id)
+        {
+            case 1:
+                if (2000 <= EconomyHandler.INSTANCE.getGoldTotal())
+                {
+                    EntityLiving entityliving = (EntityLiving) UltimateHelper.INSTANCE.getEntity("DefendPriest", this.world);
+                    entityliving.setLocationAndAngles(this.player.posX, this.player.posY, this.player.posZ, 0.0F, 0.0F);
+                    this.world.spawnEntityInWorld(entityliving);
+                    EconomyHandler.INSTANCE.decreaseGold(2000);
+                }
+                else
+                {
+                    this.goldchecker = true;
+                }
+                break;
+            case 2:
+                this.player.getFoodStats().setFoodLevel(20);
+                this.player.heal(20.0F);
+                if (!this.world.isRemote)
+                {
+                    this.player.addChatMessage(new ChatComponentText("Head Priest: You are now rejuvinated."));
+                }
+                break;
+            case 3:
+                this.mc.displayGuiScreen(null);
+                this.goldchecker = false;
+                break;
+        }
+    }
 
-   public void initGui() {
-      String s = "";
-      this.buttonList.clear();
-      this.buttonList.add(new GuiButton(1, this.width / 2 + 100, 160, 110, 20, s));
-      this.buttonList.add(new GuiButton(2, this.width / 2 + 100, 180, 110, 20, "Recruit a Priestess"));
-      this.buttonList.add(new GuiButton(4, this.width / 2 + 100, 200, 110, 20, "Rejuvinate"));
-      this.buttonList.add(new GuiButton(3, this.width / 2 + 100, 220, 110, 20, "Exit"));
-   }
+    @Override
+    public void onGuiClosed()
+    {
+        if (!this.world.isRemote)
+        {
+            this.player.addChatMessage(new ChatComponentText("Head Priest: May the light be with you."));
+        }
+    }
 
-   protected void actionPerformed(GuiButton guibutton) {
-      if(guibutton.id == 1) {
-         ;
-      }
+    @Override
+    public void drawScreen(int i, int j, float f)
+    {
+        super.drawScreen(i, j, f);
 
-      if(guibutton.id == 2) {
-         if(2000 <= GoldKeeper.getGoldTotal()) {
-            EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("DefendPriest", this.worldObj);
-            entityliving.setLocationAndAngles(this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, 0.0F, 0.0F);
-            this.worldObj.spawnEntityInWorld(entityliving);
-            GoldKeeper.decreaseGold(2000);
-         } else {
-            this.goldchecker = true;
-         }
-      }
+        if (this.goldchecker)
+        {
+            this.drawString(this.fontRendererObj, "The Chapel Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16763904);
+        }
+        else
+        {
+            this.drawString(this.fontRendererObj, "The Chapel Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins", this.width / 2, 10, 16763904);
+        }
 
-      if(guibutton.id == 3) {
-         this.mc.displayGuiScreen((GuiScreen)null);
-         this.goldchecker = false;
-      }
-
-      if(guibutton.id == 4) {
-         this.entityplayer.getFoodStats().setFoodLevel(20);
-         this.entityplayer.heal(20.0F);
-         if(!this.worldObj.isRemote) {
-            this.entityplayer.addChatMessage(new ChatComponentText("Head Priest: You are now rejuvinated."));
-         }
-      }
-
-   }
-
-   public void onGuiClosed() {
-      if(!this.worldObj.isRemote) {
-         this.entityplayer.addChatMessage(new ChatComponentText("Head Priest: May the light be with you."));
-      }
-   }
-
-   public void drawScreen(int i, int j, float f)
-   {
-      for(int k = 0; k < this.buttonList.size(); ++k) {
-         GuiButton guibutton = (GuiButton)this.buttonList.get(k);
-         guibutton.drawButton(this.mc, i, j);
-      }
-
-      if(this.goldchecker) {
-         this.drawString(this.fontRendererObj, "The Chapel Total Money: " + GoldKeeper.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16763904);
-      } else {
-         this.drawString(this.fontRendererObj, "The Chapel Total Money: " + GoldKeeper.getGoldTotal() + " Gold Coins", this.width / 2, 10, 16763904);
-      }
-
-      this.drawString(this.fontRendererObj, "Note: Recruiting a priest cost 2000", this.width / 2, 20, 16763904);
-   }
+        this.drawString(this.fontRendererObj, "Note: Recruiting a priest cost 2000", this.width / 2, 20, 16763904);
+    }
 }

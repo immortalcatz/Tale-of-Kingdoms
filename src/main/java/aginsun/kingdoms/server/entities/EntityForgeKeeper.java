@@ -1,6 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.client.gui.GuiShopList;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import net.minecraft.block.Block;
@@ -45,7 +45,7 @@ public final class EntityForgeKeeper extends EntityNPC {
                      String s1 = item.getUnlocalizedName();
                      if(s1 != null) {
                         GoldKeeper var10000 = this.gold;
-                        int k = GoldKeeper.priceItem(s1);
+                        int k = GoldKeeper.INSTANCE.priceItem(s1);
                         if(itemstack != null) {
                            String s2 = item.getUnlocalizedName() + ".name";
                            if(s2 != null) {

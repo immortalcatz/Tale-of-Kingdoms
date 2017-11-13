@@ -1,7 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -64,12 +64,12 @@ public final class EntityDefendMage extends EntityNPC {
       this.player = entityplayer;
       if(!this.follow) {
          this.follow = true;
-         if(!this.world.isRemote) {
+         if(!worldObj.isRemote) {
             entityplayer.addChatMessage(new ChatComponentText("Mage: I will follow you."));
          }
       } else {
          this.follow = false;
-         if(!this.world.isRemote) {
+         if(!worldObj.isRemote) {
             entityplayer.addChatMessage(new ChatComponentText("Mage: I will guard this area."));
          }
       }

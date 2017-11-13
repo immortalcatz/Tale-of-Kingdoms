@@ -5,11 +5,42 @@ keyBinding.conquest=Начать завоевание
 command.tok.worthy=Добавлен почёт!
 
 entity.BuilderKeeper.name=Городской строитель
+entity.BarracksKeeper.name=Казарменный
 entity.Banker.name=Банкир
+entity.DefendArcher.name=Лучник защитник
+entity.DefendBandit.name=Бандит защитник
+entity.DefendKnight.name=Король защитник
+entity.DefendMage.name=Маг защитник
+entity.DefendPaladin.name=Паладин защитник
+entity.DefendPriest.name=Священник защитник
+entity.DefendWarrior.name=Воин защитник
+entity.Farmer.name=Фермер
 entity.Fisher.name=Рыбак
+entity.FoodKeeper.name=Продавец
+entity.ForgeKeeper.name=Кузнец
+entity.GuildKeeper.name=Хранитель Гильдии
+entity.GuildMaster.name=Мастер Гильдии
+entity.GuildMember.name=Член Гильдии
+entity.HeadCommander.name=Главный командир
+entity.Hired.name=Наёмник
+entity.InnKeeper.name=Трактирщик
+entity.KingdomWorker.name=Работник королевства
+entity.LibraryKeeper.name=Библиотекарь
+entity.LoneTraveller.name=Одинокий путешественник
+entity.LostVillager.name=Последний житель
 entity.Lumber.name=Бригадир
 entity.MageKeeper.name=Главный маг
+entity.PriestKeeper.name=Священник
+entity.Quarry.name=Бригадир
+entity.ReficulGuardian.name=Рефикуль защитник
+entity.ReficulMage.name=Рефикуль маг
+entity.ReficulSoldier.name=Рефикуль солдат
+entity.ShopKeeper.name=Продавец
 entity.StableMaster.name=Коневод
+entity.StockKeeper.name=Хранитель
+entity.TavernKeeper.name=Трактирщик
+entity.VillageMember.name=Житель
+entity.WeaponKeeper.name=Оружейник
 entity.WorkerMember.name=Рабочий
 
 gui.bank.title=Банк
@@ -102,10 +133,12 @@ gui.worker.woodcut.go=Рабочий: Пойдем рубить дерево!
 gui.worker.mine.go=Рабочий: Пойдем добывать полезные ископаемые!
 
 gui.notEnough=Вам не хватает золота!
+
 gui.conquest.start=Начать новое завоевание
+gui.conquest.created=Гильдия уже построена!
 
 gui.startConquest.line_1=Наступили Великие Приливы Тьмы.
-gui.startConquest.line_2=Рефикули пришлии и всё зависит от тебя, чтобы сохранить то, что осталось.
+gui.startConquest.line_2=Рефикули пришли и всё зависит от тебя, чтобы сохранить то, что осталось.
 gui.startConquest.line_3=Ты последний наследник престола. Единственная надежда на мир.
 gui.startConquest.line_4=Ваше приключение начинается здесь, герой. Гильдия подготовит тебя.
 gui.startConquest.line_5=Примечание: Строить вне королевства, если местоположение не указано для вас.

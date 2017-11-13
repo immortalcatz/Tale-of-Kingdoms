@@ -1,5 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
+import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -29,54 +30,50 @@ public final class TileEntitySell implements IInventory {
             Item item = this.inventory[i].getItem();
             String s = item.getUnlocalizedName();
             GoldKeeper var10000 = this.gold;
-            j = GoldKeeper.priceItem(s);
+            j = GoldKeeper.INSTANCE.priceItem(s);
             float f = 0.0F;
             if(item == Items.flint) {
                var10000 = this.gold;
-               f = GoldKeeper.flint;
+               f = GoldKeeper.INSTANCE.flint;
             }
 
             if(item == Items.clay_ball) {
                var10000 = this.gold;
-               f = GoldKeeper.clay;
+               f = GoldKeeper.INSTANCE.clay;
             }
 
             if(item == Items.iron_ingot) {
                var10000 = this.gold;
-               f = GoldKeeper.iron;
+               f = GoldKeeper.INSTANCE.iron;
             }
 
             if(item == Items.diamond) {
                var10000 = this.gold;
-               f = GoldKeeper.diamond;
+               f = GoldKeeper.INSTANCE.diamond;
             }
 
             if(item == Items.cooked_fished) {
                var10000 = this.gold;
-               f = GoldKeeper.fish;
+               f = GoldKeeper.INSTANCE.fish;
             }
 
             if(item == Items.apple) {
                var10000 = this.gold;
-               f = GoldKeeper.apple;
+               f = GoldKeeper.INSTANCE.apple;
             }
 
             if(item == Items.string) {
                var10000 = this.gold;
-               f = GoldKeeper.string;
+               f = GoldKeeper.INSTANCE.string;
             }
 
             if(item == Items.feather) {
                var10000 = this.gold;
-               f = GoldKeeper.feather;
+               f = GoldKeeper.INSTANCE.feather;
             }
 
             f /= 100.0F;
             j = (int)((float)j + (float)j * f);
-            if(FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-               var10000 = this.gold;
-               GoldKeeper.addGold(j);
-            }
          }
 
          if(j != 0) {

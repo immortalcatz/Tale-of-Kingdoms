@@ -1,7 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;

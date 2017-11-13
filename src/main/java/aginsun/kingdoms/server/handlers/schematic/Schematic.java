@@ -1,7 +1,7 @@
 package aginsun.kingdoms.server.handlers.schematic;
 
-import aginsun.kingdoms.api.FakeBlock;
-import aginsun.kingdoms.api.FakeEntity;
+import aginsun.kingdoms.api.blocks.FakeBlock;
+import aginsun.kingdoms.api.entities.FakeEntity;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,10 +20,12 @@ public final class Schematic
 
     public Schematic(String s)
     {
-        InputStream entityData = TaleOfKingdoms.class.getResourceAsStream(s + ".dat");
-        InputStream schematicData = TaleOfKingdoms.class.getResourceAsStream(s + ".schematic");
-        NBTTagCompound nbtSchematic = null;
-        NBTTagCompound nbtEntities = null;
+        InputStream
+                entityData = TaleOfKingdoms.class.getResourceAsStream(s + ".dat"),
+                schematicData = TaleOfKingdoms.class.getResourceAsStream(s + ".schematic");
+
+        NBTTagCompound
+                nbtSchematic = null, nbtEntities = null;
 
         try
         {

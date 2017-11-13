@@ -1,8 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiWardenMenu;
-import aginsun.kingdoms.api.EntityNPC;
-import net.minecraft.client.Minecraft;
+import aginsun.kingdoms.api.entities.EntityNPC;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -24,16 +23,15 @@ public final class EntityBarracksKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(!this.world.isRemote)
+        if(this.canInteractWith(player))
         {
-            entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.warden.dialog")));
-        }
-
-        if(this.canInteractWith(entityplayer))
-        {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiWardenMenu(entityplayer, this.worldObj));
+            if(!this.worldObj.isRemote)
+            {
+                player.addChatMessage(new ChatComponentText(I18n.format("npc.warden.dialog")));
+            }
+            player.openGui(TaleOfKingdoms.instance, 2, worldObj, 0, 0, 0);
         }
         return true;
     }

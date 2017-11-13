@@ -1,5 +1,7 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiPriceBar;
+import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -13,6 +15,11 @@ public final class GuiToKLoading extends GuiScreenToK
 {
     private GuiPriceBar bar;
 
+    public GuiToKLoading()
+    {
+        super(null);
+    }
+
     @Override
     public void initGui()
     {
@@ -24,7 +31,7 @@ public final class GuiToKLoading extends GuiScreenToK
     @Override
     protected void actionPerformed(GuiButton guibutton)
     {
-        if(guibutton.id == 0)
+        if (guibutton.id == 0)
         {
             this.mc.displayGuiScreen(null);
         }
@@ -34,9 +41,9 @@ public final class GuiToKLoading extends GuiScreenToK
     public void drawScreen(int x, int y, float partial)
     {
         this.drawDefaultBackground();
-        float d = SchematicHandler.getInstance().getProgressCurrentBuilding();
+        float d = SchematicHandler.INSTANCE.getProgressCurrentBuilding();
 
-        if(!SchematicHandler.getInstance().getBuildingList().isEmpty())
+        if (!SchematicHandler.INSTANCE.getBuildingList().isEmpty())
         {
             this.bar.setBar(d / 100.0F);
             this.bar.drawBar();
@@ -48,14 +55,5 @@ public final class GuiToKLoading extends GuiScreenToK
         }
 
         super.drawScreen(x, y, partial);
-    }
-
-    @Override
-    protected void keyTyped(char character, int par2)
-    {
-        if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode())
-        {
-            this.mc.thePlayer.closeScreen();
-        }
     }
 }

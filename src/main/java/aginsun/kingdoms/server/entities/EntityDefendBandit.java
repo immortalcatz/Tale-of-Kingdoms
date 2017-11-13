@@ -3,7 +3,7 @@ package aginsun.kingdoms.server.entities;
 import cpw.mods.fml.client.FMLClientHandler;
 import java.util.List;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -81,7 +81,7 @@ public class EntityDefendBandit extends EntityNPC {
       this.player = entityplayer;
       if(!this.follow) {
          this.follow = true;
-         if(!this.world.isRemote) {
+         if(!worldObj.isRemote) {
             entityplayer.addChatMessage(new ChatComponentText("Bandit: I will follow you."));
          }
 
@@ -89,7 +89,7 @@ public class EntityDefendBandit extends EntityNPC {
          this.createdMarker = false;
       } else {
          this.follow = false;
-         if(!this.world.isRemote) {
+         if(!worldObj.isRemote) {
             entityplayer.addChatMessage(new ChatComponentText("Bandit: I will guard this area."));
          }
       }

@@ -1,9 +1,13 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiButtonShop;
+import aginsun.kingdoms.api.gui.GuiPriceBar;
+import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -15,11 +19,10 @@ import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-public final class GuiStockList extends GuiScreenToK {
-
-   private World worldObj = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
-   private EntityPlayer entityplayer;
-   private StringTranslate st = new StringTranslate();
+public final class GuiStockList extends GuiScreenToK
+{
+    private EntityPlayer entityplayer;
+    private StringTranslate st = new StringTranslate();
    int checkBounty = 0;
    private Item[] item = new Item[9];
    boolean reachedend = false;
@@ -29,9 +32,10 @@ public final class GuiStockList extends GuiScreenToK {
    public int shopcounter = 20;
 
 
-   public GuiStockList(EntityPlayer entityplayer1, World world) {
+   public GuiStockList(EntityPlayer entityplayer1, World world)
+   {
+      super(world);
       this.entityplayer = entityplayer1;
-      this.worldObj = world;
       this.setItemList();
       this.itemSelected = (new ItemStack(Items.flint, 1, 0)).getItem();
    }
@@ -58,14 +62,14 @@ public final class GuiStockList extends GuiScreenToK {
       this.loadbar[5] = new GuiPriceBar(0, this.width / 2 - 100, 143, 90, 12, 1.0F, "red");
       this.loadbar[6] = new GuiPriceBar(0, this.width / 2 - 100, 163, 90, 12, 1.0F, "red");
       this.loadbar[7] = new GuiPriceBar(0, this.width / 2 - 100, 183, 90, 12, 1.0F, "red");
-      this.loadbar[0].setBar(GoldKeeper.flint / 200.0F);
-      this.loadbar[1].setBar(GoldKeeper.clay / 200.0F);
-      this.loadbar[2].setBar(GoldKeeper.iron / 200.0F);
-      this.loadbar[3].setBar(GoldKeeper.diamond / 200.0F);
-      this.loadbar[4].setBar(GoldKeeper.fish / 200.0F);
-      this.loadbar[5].setBar(GoldKeeper.apple / 200.0F);
-      this.loadbar[6].setBar(GoldKeeper.string / 200.0F);
-      this.loadbar[7].setBar(GoldKeeper.feather / 200.0F);
+      this.loadbar[0].setBar(GoldKeeper.INSTANCE.flint / 200.0F);
+      this.loadbar[1].setBar(GoldKeeper.INSTANCE.clay / 200.0F);
+      this.loadbar[2].setBar(GoldKeeper.INSTANCE.iron / 200.0F);
+      this.loadbar[3].setBar(GoldKeeper.INSTANCE.diamond / 200.0F);
+      this.loadbar[4].setBar(GoldKeeper.INSTANCE.fish / 200.0F);
+      this.loadbar[5].setBar(GoldKeeper.INSTANCE.apple / 200.0F);
+      this.loadbar[6].setBar(GoldKeeper.INSTANCE.string / 200.0F);
+      this.loadbar[7].setBar(GoldKeeper.INSTANCE.feather / 200.0F);
       String s7;
       if(this.item[1] != null) {
          s7 = this.item[1].getUnlocalizedName() + ".name";
@@ -125,7 +129,7 @@ public final class GuiStockList extends GuiScreenToK {
    }
 
    public void onGuiClosed() {
-      if(this.worldObj.isRemote) {
+      if(this.world.isRemote) {
          this.entityplayer.addChatMessage(new ChatComponentText("Stock Keeper: Keep a look out on your stock supplies!"));
       }
 
@@ -181,47 +185,47 @@ public final class GuiStockList extends GuiScreenToK {
          itemstack1 = new ItemStack(this.itemSelected, 1, 0);
          item2 = itemstack1.getItem();
          s1 = item2.getUnlocalizedName();
-         j = GoldKeeper.priceItem(s1);
+         j = GoldKeeper.INSTANCE.priceItem(s1);
          f1 = 0.0F;
          if(this.itemSelected == Items.flint) {
-            f1 = GoldKeeper.flint;
+            f1 = GoldKeeper.INSTANCE.flint;
          }
 
          if(this.itemSelected == Items.clay_ball) {
-            f1 = GoldKeeper.clay;
+            f1 = GoldKeeper.INSTANCE.clay;
          }
 
          if(this.itemSelected == Items.iron_ingot) {
-            f1 = GoldKeeper.iron;
+            f1 = GoldKeeper.INSTANCE.iron;
          }
 
          if(this.itemSelected == Items.diamond) {
-            f1 = GoldKeeper.diamond;
+            f1 = GoldKeeper.INSTANCE.diamond;
          }
 
          if(this.itemSelected == Items.cooked_fished) {
-            f1 = GoldKeeper.fish;
+            f1 = GoldKeeper.INSTANCE.fish;
          }
 
          if(this.itemSelected == Items.apple) {
-            f1 = GoldKeeper.apple;
+            f1 = GoldKeeper.INSTANCE.apple;
          }
 
          if(this.itemSelected == Items.string) {
-            f1 = GoldKeeper.string;
+            f1 = GoldKeeper.INSTANCE.string;
          }
 
          if(this.itemSelected == Items.feather) {
-            f1 = GoldKeeper.feather;
+            f1 = GoldKeeper.INSTANCE.feather;
          }
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
-         if(j <= GoldKeeper.getGoldTotal()) {
-            EntityItem entityitem = new EntityItem(this.worldObj, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, itemstack1);
+         if(j <= EconomyHandler.INSTANCE.getGoldTotal()) {
+            EntityItem entityitem = new EntityItem(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, itemstack1);
             this.entityplayer.joinEntityItemWithWorld(entityitem);
             if(FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-               GoldKeeper.decreaseGold(j);
+               EconomyHandler.INSTANCE.decreaseGold(j);
             }
          } else {
             this.goldchecker = true;
@@ -232,43 +236,43 @@ public final class GuiStockList extends GuiScreenToK {
          itemstack1 = new ItemStack(this.itemSelected, 1, 0);
          item2 = itemstack1.getItem();
          s1 = item2.getUnlocalizedName();
-         j = GoldKeeper.priceItem(s1);
+         j = GoldKeeper.INSTANCE.priceItem(s1);
          f1 = 0.0F;
          if(this.itemSelected == Items.flint) {
-            f1 = GoldKeeper.flint;
+            f1 = GoldKeeper.INSTANCE.flint;
          }
 
          if(this.itemSelected == Items.clay_ball) {
-            f1 = GoldKeeper.clay;
+            f1 = GoldKeeper.INSTANCE.clay;
          }
 
          if(this.itemSelected == Items.iron_ingot) {
-            f1 = GoldKeeper.iron;
+            f1 = GoldKeeper.INSTANCE.iron;
          }
 
          if(this.itemSelected == Items.diamond) {
-            f1 = GoldKeeper.diamond;
+            f1 = GoldKeeper.INSTANCE.diamond;
          }
 
          if(this.itemSelected == Items.cooked_fished) {
-            f1 = GoldKeeper.fish;
+            f1 = GoldKeeper.INSTANCE.fish;
          }
 
          if(this.itemSelected == Items.apple) {
-            f1 = GoldKeeper.apple;
+            f1 = GoldKeeper.INSTANCE.apple;
          }
 
          if(this.itemSelected == Items.string) {
-            f1 = GoldKeeper.string;
+            f1 = GoldKeeper.INSTANCE.string;
          }
 
          if(this.itemSelected == Items.feather) {
-            f1 = GoldKeeper.feather;
+            f1 = GoldKeeper.INSTANCE.feather;
          }
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
-         if(j * 16 <= GoldKeeper.getGoldTotal()) {
+         if(j * 16 <= EconomyHandler.INSTANCE.getGoldTotal()) {
             this.shopcounter = 0;
          } else {
             this.goldchecker = true;
@@ -276,7 +280,7 @@ public final class GuiStockList extends GuiScreenToK {
       }
 
       if(guibutton.id == 19) {
-         this.mc.displayGuiScreen((GuiScreen)null);
+         this.mc.displayGuiScreen(null);
          this.goldchecker = false;
       }
 
@@ -292,46 +296,46 @@ public final class GuiStockList extends GuiScreenToK {
          ItemStack s = new ItemStack(this.itemSelected, 1, 0);
          Item s1 = s.getItem();
          String i1 = s1.getUnlocalizedName();
-         f1 = GoldKeeper.priceItem(i1);
+         f1 = GoldKeeper.INSTANCE.priceItem(i1);
          float l1 = 0.0F;
          if(this.itemSelected == Items.flint) {
-            l1 = GoldKeeper.flint;
+            l1 = GoldKeeper.INSTANCE.flint;
          }
 
          if(this.itemSelected == Items.clay_ball) {
-            l1 = GoldKeeper.clay;
+            l1 = GoldKeeper.INSTANCE.clay;
          }
 
          if(this.itemSelected == Items.iron_ingot) {
-            l1 = GoldKeeper.iron;
+            l1 = GoldKeeper.INSTANCE.iron;
          }
 
          if(this.itemSelected == Items.diamond) {
-            l1 = GoldKeeper.diamond;
+            l1 = GoldKeeper.INSTANCE.diamond;
          }
 
          if(this.itemSelected == Items.cooked_fished) {
-            l1 = GoldKeeper.fish;
+            l1 = GoldKeeper.INSTANCE.fish;
          }
 
          if(this.itemSelected == Items.apple) {
-            l1 = GoldKeeper.apple;
+            l1 = GoldKeeper.INSTANCE.apple;
          }
 
          if(this.itemSelected == Items.string) {
-            l1 = GoldKeeper.string;
+            l1 = GoldKeeper.INSTANCE.string;
          }
 
          if(this.itemSelected == Items.feather) {
-            l1 = GoldKeeper.feather;
+            l1 = GoldKeeper.INSTANCE.feather;
          }
 
          l1 /= 100.0F;
          f1 = (int)((float)f1 + (float)f1 * l1);
-         if(f1 <= GoldKeeper.getGoldTotal()) {
-            EntityItem entityitem = new EntityItem(this.worldObj, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, s);
+         if(f1 <= EconomyHandler.INSTANCE.getGoldTotal()) {
+            EntityItem entityitem = new EntityItem(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, s);
             this.entityplayer.joinEntityItemWithWorld(entityitem);
-            GoldKeeper.decreaseGold(f1);
+            EconomyHandler.INSTANCE.decreaseGold(f1);
          }
 
          ++this.shopcounter;
@@ -341,58 +345,47 @@ public final class GuiStockList extends GuiScreenToK {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       short var10 = 255;
       short var12 = 255;
-      ResourceLocation var16 = new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png");
-      this.mc.renderEngine.bindTexture(var16);
+      this.mc.renderEngine.bindTexture(UltimateHelper.BACKGROUND);
       f1 = (this.width - var10) / 2;
       this.drawTexturedModalRect(f1, 0, 0, 0, var10, var12);
 
-      for(int var11 = 0; var11 < this.buttonList.size(); ++var11) {
-         if(this.buttonList.get(var11) instanceof GuiButtonShop) {
-            GuiButtonShop var14 = (GuiButtonShop)this.buttonList.get(var11);
-            var14.drawButton(this.mc, i, j);
-         }
+      super.drawScreen(i, j, f);
 
-         if(this.buttonList.get(var11) instanceof GuiButton) {
-            GuiButton var15 = (GuiButton)this.buttonList.get(var11);
-            var15.drawButton(this.mc, i, j);
-         }
-      }
-
-      this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + GoldKeeper.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
+      this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
       String var13 = this.itemSelected.getUnlocalizedName() + ".name";
       String var17 = this.st.translateKey(var13);
-      int var18 = GoldKeeper.priceItem(String.valueOf(this.itemSelected.getUnlocalizedName()));
+      int var18 = GoldKeeper.INSTANCE.priceItem(String.valueOf(this.itemSelected.getUnlocalizedName()));
       float var19 = 0.0F;
       if(this.itemSelected == Items.flint) {
-         var19 = GoldKeeper.flint;
+         var19 = GoldKeeper.INSTANCE.flint;
       }
 
       if(this.itemSelected == Items.clay_ball) {
-         var19 = GoldKeeper.clay;
+         var19 = GoldKeeper.INSTANCE.clay;
       }
 
       if(this.itemSelected == Items.iron_ingot) {
-         var19 = GoldKeeper.iron;
+         var19 = GoldKeeper.INSTANCE.iron;
       }
 
       if(this.itemSelected == Items.diamond) {
-         var19 = GoldKeeper.diamond;
+         var19 = GoldKeeper.INSTANCE.diamond;
       }
 
       if(this.itemSelected == Items.cooked_fished) {
-         var19 = GoldKeeper.fish;
+         var19 = GoldKeeper.INSTANCE.fish;
       }
 
       if(this.itemSelected == Items.apple) {
-         var19 = GoldKeeper.apple;
+         var19 = GoldKeeper.INSTANCE.apple;
       }
 
       if(this.itemSelected == Items.string) {
-         var19 = GoldKeeper.string;
+         var19 = GoldKeeper.INSTANCE.string;
       }
 
       if(this.itemSelected == Items.feather) {
-         var19 = GoldKeeper.feather;
+         var19 = GoldKeeper.INSTANCE.feather;
       }
 
       var19 /= 100.0F;
@@ -410,12 +403,5 @@ public final class GuiStockList extends GuiScreenToK {
       }
 
       super.drawScreen(i, j, f);
-   }
-
-   protected void keyTyped(char par1, int par2) {
-      if(par2 == 1 || par2 == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
-         this.mc.thePlayer.closeScreen();
-      }
-
    }
 }

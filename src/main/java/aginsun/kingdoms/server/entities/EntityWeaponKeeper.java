@@ -2,7 +2,7 @@ package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.client.gui.GuiShopList;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -68,7 +68,7 @@ public final class EntityWeaponKeeper extends EntityNPC {
 
                if(s != null) {
                   GoldKeeper var10000 = this.gold;
-                  j = GoldKeeper.priceItem(s);
+                  j = GoldKeeper.INSTANCE.priceItem(s);
                }
 
                String s1 = item.getUnlocalizedName() + ".name";

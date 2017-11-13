@@ -1,21 +1,22 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiScreenToK;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
 @SideOnly(Side.CLIENT)
-public final class GuiFisher extends GuiScreen
+public final class GuiFisher extends GuiScreenToK
 {
     private final EntityPlayer player;
 
     public GuiFisher(final EntityPlayer player)
     {
+        super(player.worldObj);
         this.player = player;
     }
 
@@ -30,22 +31,16 @@ public final class GuiFisher extends GuiScreen
     @Override
     public void actionPerformed(final GuiButton guibutton)
     {
-        if(guibutton.id == 1)
+        if (guibutton.id == 1)
         {
-            this.mc.setIngameFocus();
+            this.mc.displayGuiScreen(null);
             this.player.dropItem(Items.fishing_rod, 1);
-            this.player.addChatMessage(new ChatComponentText(I18n.format("npc.fisher.dialog.fishingRod")));
+            this.player.addChatMessage(new ChatComponentTranslation("npc.fisher.dialog.fishingRod"));
         }
-        else if(guibutton.id == 2)
+        else if (guibutton.id == 2)
         {
-            this.mc.setIngameFocus();
+            this.mc.displayGuiScreen(null);
         }
-    }
-
-    @Override
-    public boolean doesGuiPauseGame()
-    {
-        return false;
     }
 
     @Override

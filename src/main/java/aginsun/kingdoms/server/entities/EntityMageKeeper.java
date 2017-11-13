@@ -1,7 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.client.gui.GuiMageHall;
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -41,12 +41,12 @@ public final class EntityMageKeeper extends EntityNPC
     {
         if(this.canInteractWith(entityplayer))
         {
-            this.heal(100.0F);
-            if(!this.world.isRemote)
+            if(!worldObj.isRemote)
             {
+                this.heal(100.0F);
                 entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.headMage.dialog")));
             }
-            Minecraft.getMinecraft().displayGuiScreen(new GuiMageHall(entityplayer, this.world));
+            Minecraft.getMinecraft().displayGuiScreen(new GuiMageHall(entityplayer, worldObj));
         }
         return true;
     }

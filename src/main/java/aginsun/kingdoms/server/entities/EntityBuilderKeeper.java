@@ -1,17 +1,16 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.client.gui.GuiBuildScreen;
-import aginsun.kingdoms.server.handlers.resources.WorthyKeeper;
 import aginsun.kingdoms.server.handlers.Buildings;
+import aginsun.kingdoms.server.handlers.resources.GloryHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 public final class EntityBuilderKeeper extends EntityNPC
@@ -37,25 +36,25 @@ public final class EntityBuilderKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if (!super.world.isRemote)
+        if (!worldObj.isRemote)
         {
-            if(this.canInteractWith(entityplayer) && WorthyKeeper.getInstance().getWorthy() < 10000.0F && !Buildings.kingdomCreated)
+            if (this.canInteractWith(player) && GloryHandler.INSTANCE.getGlory() < 10000.0F && !Buildings.INSTANCE.kingdomCreated)
             {
-                entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.cityBuilder.dialog_1")));
+                player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_1"));
             }
 
-            if(!this.follow || setted || WorthyKeeper.getInstance().getWorthy() >= 10000.0F && Buildings.kingdomCreated)
+            if (!this.follow || setted || GloryHandler.INSTANCE.getGlory() >= 10000.0F && Buildings.INSTANCE.kingdomCreated)
             {
-                entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.cityBuilder.dialog_2")));
-                FMLCommonHandler.instance().showGuiScreen(new GuiBuildScreen(entityplayer, super.world));
+                player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_2"));
+                FMLCommonHandler.instance().showGuiScreen(new GuiBuildScreen(worldObj));
                 this.follow = true;
                 this.setted = true;
             }
-            else if(this.canInteractWith(entityplayer) && WorthyKeeper.getInstance().getWorthy() >= 10000.0F && this.follow && !Buildings.kingdomCreated && !setted)
+            else if (this.canInteractWith(player) && GloryHandler.INSTANCE.getGlory() >= 10000.0F && this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
             {
-                entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.cityBuilder.dialog_3")));
+                player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_3"));
                 this.follow = false;
             }
         }
@@ -66,16 +65,17 @@ public final class EntityBuilderKeeper extends EntityNPC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (!this.follow && !Buildings.kingdomCreated)
+        if (!this.follow && !Buildings.INSTANCE.kingdomCreated)
         {
             EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
             if (player != null)
             {
                 PathEntity pathentity;
-                if(player.getDistanceToEntity(this) > 3.5F && player.getDistanceToEntity(this) < 25.0F)
+
+                if (player.getDistanceToEntity(this) > 3.5F && player.getDistanceToEntity(this) < 25.0F)
                 {
-                    pathentity = super.world.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+                    pathentity = worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
                 }
                 else
                 {

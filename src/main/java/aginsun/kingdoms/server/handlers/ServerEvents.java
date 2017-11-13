@@ -1,14 +1,13 @@
 package aginsun.kingdoms.server.handlers;
 
 import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
-import aginsun.kingdoms.server.handlers.resources.ItemDropHelper;
 import aginsun.kingdoms.server.TaleOfKingdoms;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
+import aginsun.kingdoms.server.handlers.resources.GloryHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
-import aginsun.kingdoms.server.handlers.resources.WorthyKeeper;
 import aginsun.kingdoms.server.PlayerProvider;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
@@ -56,7 +55,7 @@ public final class ServerEvents
 
                 if (provider != null)
                 {
-                    if(!e.world.isRemote)
+                    if (!e.world.isRemote)
                     {
                         EntityTracker tracker = ((WorldServer) e.world).getEntityTracker();
                         CPacketSyncDataPlayer packet = new CPacketSyncDataPlayer(provider);
@@ -117,7 +116,7 @@ public final class ServerEvents
 
                     if (world != null)
                     {
-                        SchematicHandler.getInstance().update(world);
+                        SchematicHandler.INSTANCE.update(world);
                     }
                 }
             }
@@ -132,15 +131,15 @@ public final class ServerEvents
             if (item == TaleOfKingdoms.proxy.coins)
             {
                 e.player.inventory.consumeInventoryItem(item);
-                GoldKeeper.addGold(2);
-                WorthyKeeper.getInstance().addWorthy(random.nextInt(15));
+                EconomyHandler.INSTANCE.addGold(2);
+                GloryHandler.INSTANCE.addGlory(random.nextInt(15));
             }
         }
 
         @SubscribeEvent
         public void onPlayerLogin(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent e)
         {
-            Buildings.registerBuildings();
+            Buildings.INSTANCE.registerBuildings();
         }
     }
 }

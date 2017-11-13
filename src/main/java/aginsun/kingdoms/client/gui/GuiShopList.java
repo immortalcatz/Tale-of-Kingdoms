@@ -1,6 +1,9 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiButtonShop;
+import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.TaleOfKingdoms;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import net.minecraft.client.gui.GuiButton;
@@ -11,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
@@ -18,7 +22,6 @@ import org.lwjgl.opengl.GL11;
 
 public final class GuiShopList extends GuiScreenToK
 {
-    public World worldObj = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
     public EntityPlayer entityplayer;
     public GoldKeeper gold;
     public StringTranslate st = new StringTranslate();
@@ -34,9 +37,9 @@ public final class GuiShopList extends GuiScreenToK
 
     public GuiShopList(EntityPlayer entityplayer1, World world, Item[] items)
     {
+        super(world);
         this.items = items;
         this.entityplayer = entityplayer1;
-        this.worldObj = world;
         this.setItemList();
         this.itemSelected = this.items[0];
     }
@@ -204,9 +207,9 @@ public final class GuiShopList extends GuiScreenToK
     @Override
     public void onGuiClosed()
     {
-        if(!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.shop.bye")));
+            this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.shop.bye"));
         }
     }
 
@@ -222,7 +225,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -240,7 +243,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -258,7 +261,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -276,7 +279,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -294,7 +297,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -312,7 +315,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -330,7 +333,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -348,7 +351,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -366,7 +369,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -384,7 +387,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -402,7 +405,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -420,7 +423,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -438,7 +441,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -456,7 +459,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -474,7 +477,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -492,7 +495,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -514,7 +517,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -536,7 +539,7 @@ public final class GuiShopList extends GuiScreenToK
                this.stringoutput = this.st.translateKey(this.stringGet);
             }
 
-            this.price = GoldKeeper.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
+            this.price = GoldKeeper.INSTANCE.priceItem(String.valueOf(itemstack1.getUnlocalizedName()));
             this.price = (int)((double)this.price + (double)this.price * 0.8D);
             if(itemstack1 instanceof ItemFood) {
                this.price = (int)((double)this.price + (double)this.price * 0.2D);
@@ -552,16 +555,16 @@ public final class GuiShopList extends GuiScreenToK
          var7 = new ItemStack(this.itemSelected, 1, 0);
          item20 = var7.getItem();
          s1 = item20.getUnlocalizedName();
-         j = GoldKeeper.priceItem(s1);
+         j = GoldKeeper.INSTANCE.priceItem(s1);
          j = (int)((double)j + (double)j * 0.8D);
          if(item20 instanceof ItemFood) {
             j = (int)((double)j + (double)j * 0.2D);
          }
 
-         if(j <= GoldKeeper.getGoldTotal()) {
-            EntityItem entityitem = new EntityItem(this.worldObj, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, var7);
-            this.worldObj.spawnEntityInWorld(entityitem);
-            GoldKeeper.decreaseGold(j);
+         if(j <= EconomyHandler.INSTANCE.getGoldTotal()) {
+            EntityItem entityitem = new EntityItem(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, var7);
+            this.world.spawnEntityInWorld(entityitem);
+            EconomyHandler.INSTANCE.decreaseGold(j);
          } else {
             this.goldchecker = true;
          }
@@ -571,13 +574,13 @@ public final class GuiShopList extends GuiScreenToK
          var7 = new ItemStack(this.itemSelected, 1, 0);
          item20 = var7.getItem();
          s1 = item20.getUnlocalizedName();
-         j = GoldKeeper.priceItem(s1);
+         j = GoldKeeper.INSTANCE.priceItem(s1);
          j = (int)((double)j + (double)j * 0.8D);
          if(item20 instanceof ItemFood) {
             j = (int)((double)j + (double)j * 0.2D);
          }
 
-         if(j * 16 <= GoldKeeper.getGoldTotal()) {
+         if(j * 16 <= EconomyHandler.INSTANCE.getGoldTotal()) {
             this.shopcounter = 0;
          } else {
             this.goldchecker = true;
@@ -591,7 +594,7 @@ public final class GuiShopList extends GuiScreenToK
 
       if(guibutton.id == 20) {
          this.mc.displayGuiScreen(null);
-         this.entityplayer.openGui(TaleOfKingdoms.instance, 1, this.worldObj, (int)this.entityplayer.posX, (int)this.entityplayer.posY, (int)this.entityplayer.posZ);
+         this.entityplayer.openGui(TaleOfKingdoms.instance, 1, this.world, (int)this.entityplayer.posX, (int)this.entityplayer.posY, (int)this.entityplayer.posZ);
          this.goldchecker = false;
       }
    }
@@ -605,7 +608,7 @@ public final class GuiShopList extends GuiScreenToK
         {
             final Item guibutton = this.itemSelected;
             String resource = guibutton.getUnlocalizedName();
-            j1 = GoldKeeper.priceItem(resource);
+            j1 = GoldKeeper.INSTANCE.priceItem(resource);
             j1 = (int)((double)j1 + (double)j1 * 0.8D);
 
             if(guibutton instanceof ItemFood)
@@ -613,11 +616,11 @@ public final class GuiShopList extends GuiScreenToK
                 j1 = (int)((double)j1 + (double)j1 * 0.2D);
             }
 
-            if(j1 <= GoldKeeper.getGoldTotal())
+            if(j1 <= EconomyHandler.INSTANCE.getGoldTotal())
             {
-                final EntityItem entityitem = new EntityItem(this.worldObj, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, new ItemStack(guibutton));
+                final EntityItem entityitem = new EntityItem(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, new ItemStack(guibutton));
                 this.entityplayer.joinEntityItemWithWorld(entityitem);
-                GoldKeeper.decreaseGold(j1);
+               EconomyHandler.INSTANCE.decreaseGold(j1);
             }
             ++this.shopcounter;
         }
@@ -628,7 +631,7 @@ public final class GuiShopList extends GuiScreenToK
         j1 = (this.width - 255) / 2;
         this.drawTexturedModalRect(j1, 0, 0, 0, 255, 255);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.shop.title", GoldKeeper.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.shop.title", GoldKeeper.getGoldTotal())) / 2, 5, 16763904);
+        this.drawString(this.fontRendererObj, I18n.format("gui.shop.title", EconomyHandler.INSTANCE.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.shop.title", EconomyHandler.INSTANCE.getGoldTotal())) / 2, 5, 16763904);
         this.drawString(this.fontRendererObj, "Selected Item Cost: " + this.stringoutput + " - " + this.price + " Gold coins", this.width / 2 - fontRendererObj.getStringWidth("Selected Item Cost: " + this.stringoutput + " - " + this.price + " Gold coins") / 2, 20, 16763904);
 
         if (this.goldchecker)

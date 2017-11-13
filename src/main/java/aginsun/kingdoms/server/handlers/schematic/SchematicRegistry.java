@@ -15,6 +15,7 @@ public final class SchematicRegistry
         addSchematic(4, (new Schematic("/schematics/tier1/Tier1LargeHouse1")).setPosition(i + 19, j + 1, k + 35));
         addSchematic(5, (new Schematic("/schematics/tier1/Tier1Well")).setPosition(i + 23, j + 1, k + 26));
         addSchematic(7, (new Schematic("/schematics/tier1/Tier1StockMarket")).setPosition(i + 35, j + 1, k + 16));
+
         addSchematic(8, (new Schematic("/schematics/tier2/Tier2")).setPosition(i, j, k));
         addSchematic(9, (new Schematic("/schematics/tier2/Tier2SmallHouse1")).setPosition(i + 59, j + 1, k + 42));
         addSchematic(10, (new Schematic("/schematics/tier2/Tier2SmallHouse2")).setPosition(i + 14, j + 1, k + 74));

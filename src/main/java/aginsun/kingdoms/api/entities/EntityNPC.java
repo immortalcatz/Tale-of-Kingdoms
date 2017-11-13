@@ -1,6 +1,5 @@
-package aginsun.kingdoms.api;
+package aginsun.kingdoms.api.entities;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,14 +9,11 @@ import net.minecraft.world.World;
 public class EntityNPC extends EntityCreature
 {
     private ItemStack defaultHeldItem;
-    protected World world;
-    protected EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
-    public EntityNPC(World par1World, ItemStack defaultHeldItem, float i)
+    public EntityNPC(World world, ItemStack defaultHeldItem, float i)
     {
-        super(par1World);
+        super(world);
         this.setHealth(i);
-        this.world = par1World;
         this.defaultHeldItem = defaultHeldItem;
     }
 

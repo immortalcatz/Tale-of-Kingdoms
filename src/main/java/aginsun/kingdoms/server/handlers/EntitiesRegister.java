@@ -60,7 +60,6 @@ public final class EntitiesRegister
         setRegister(EntityVillageMember.class, "VillageMember");
     }
 
-    @SideOnly(Side.CLIENT)
     public void render()
     {
         setRender(EntityGuildMaster.class, "head");
@@ -111,6 +110,7 @@ public final class EntitiesRegister
         EntityRegistry.registerModEntity(entity, name, id++, TaleOfKingdoms.instance, 64, 1, false);
     }
 
+    @SideOnly(Side.CLIENT)
     private void setRender(Class<? extends Entity> entity, String location)
     {
         RenderingRegistry.registerEntityRenderingHandler(entity, new RenderBipedToK(new ModelBiped(), 0.4F, location));

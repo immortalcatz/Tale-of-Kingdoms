@@ -1,35 +1,32 @@
 package aginsun.kingdoms.client.gui;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
-import aginsun.kingdoms.server.handlers.resources.ResourceHandler;
+import aginsun.kingdoms.api.gui.GuiPriceBar;
+import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.Buildings;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
+import aginsun.kingdoms.server.handlers.resources.GuildHandler;
+import aginsun.kingdoms.server.handlers.resources.ResourcesHandler;
 import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import aginsun.kingdoms.server.handlers.schematic.SchematicRegistry;
-import aginsun.kingdoms.server.handlers.Buildings;
-import aginsun.kingdoms.server.handlers.UtilToK;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public final class GuiBuildScreen extends GuiScreenToK
 {
-    private World worldObj;
-    private EntityPlayer player;
     private GuiPriceBar woodBar, cobblestoneBar;
-    private final ResourceLocation resource = new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png");
 
-    public GuiBuildScreen(EntityPlayer player, World world)
+    public GuiBuildScreen(World world)
     {
-        this.player = player;
-        this.worldObj = world;
+        super(world);
     }
 
     @Override
@@ -37,9 +34,9 @@ public final class GuiBuildScreen extends GuiScreenToK
     {
         this.buttonList.clear();
 
-        if(UtilToK.townX != 0 && UtilToK.townY != 0 && UtilToK.townZ != 0)
+        if(GuildHandler.INSTANCE.getTownX() != 0 && GuildHandler.INSTANCE.getTownY() != 0 && GuildHandler.INSTANCE.getTownZ() != 0)
         {
-            SchematicRegistry.registerAllBuildings(UtilToK.townX, UtilToK.townY, UtilToK.townZ);
+            SchematicRegistry.registerAllBuildings(GuildHandler.INSTANCE.getTownX(), GuildHandler.INSTANCE.getTownY(), GuildHandler.INSTANCE.getTownZ());
         }
         else
         {
@@ -47,223 +44,223 @@ public final class GuiBuildScreen extends GuiScreenToK
         }
 
         this.woodBar = new GuiPriceBar(0, this.width / 2 - 100, 40, 90, 12, 1.0F, "red");
-        this.woodBar.setBar((float)ResourceHandler.getInstance().getwoodResource() / 320.0F);
+        this.woodBar.setBar((float) ResourcesHandler.INSTANCE.getwoodResource() / 320.0F);
         this.cobblestoneBar = new GuiPriceBar(1, this.width / 2 - 100, 60, 90, 12, 1.0F, "red");
-        this.cobblestoneBar.setBar((float)ResourceHandler.getInstance().getcobbleResource() / 320.0F);
+        this.cobblestoneBar.setBar((float) ResourcesHandler.INSTANCE.getcobbleResource() / 320.0F);
 
         this.buttonList.add(new GuiButton(1, this.width / 2 - 25, 220, 50, 20, I18n.format("gui.exit")));
         this.buttonList.add(new GuiButton(2, this.width / 2 - 110, 80, 110, 20, I18n.format("gui.build.give.logs")));
         this.buttonList.add(new GuiButton(3, this.width / 2 + 5, 80, 110, 20, I18n.format("gui.build.give.cobble")));
 
-        if(!Buildings.getBuilding(1))
+        if(!Buildings.INSTANCE.getBuilding(1))
         {
             this.addButton(4, this.width / 2 - 55, 130, I18n.format("gui.build.buildings.stage_1"));
         }
-        else if(!Buildings.getBuilding(8) && Buildings.getBuilding(1))
+        else if(!Buildings.INSTANCE.getBuilding(8) && Buildings.INSTANCE.getBuilding(1))
         {
-            if(!Buildings.getBuilding(2))
+            if(!Buildings.INSTANCE.getBuilding(2))
             {
                 this.addButton(5, this.width / 2 - 120, 120,  I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(3))
+            if(!Buildings.INSTANCE.getBuilding(3))
             {
                 this.addButton(6, this.width / 2 + 5, 120, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(4))
+            if(!Buildings.INSTANCE.getBuilding(4))
             {
                 this.addButton(7, this.width / 2 - 120, 180, I18n.format("gui.build.buildings.largeHouse"));
             }
 
-            if(!Buildings.getBuilding(6))
+            if(!Buildings.INSTANCE.getBuilding(6))
             {
                 this.addButton(8, this.width / 2 - 120, 140, I18n.format("gui.build.buildings.itemsShop"));
             }
 
-            if(!Buildings.getBuilding(7))
+            if(!Buildings.INSTANCE.getBuilding(7))
             {
                 this.addButton(9, this.width / 2 - 120, 160, I18n.format("gui.build.buildings.stockMarket"));
             }
 
-            if(!Buildings.getBuilding(8) && this.buttonList.size() == 3)
+            if(!Buildings.INSTANCE.getBuilding(8) && this.buttonList.size() == 3)
             {
                 this.addButton(10, this.width / 2 - 55, 130, I18n.format("gui.build.buildings.stage_2"));
             }
         }
-        else if(Buildings.getBuilding(8) && !Buildings.getBuilding(16))
+        else if(Buildings.INSTANCE.getBuilding(8) && !Buildings.INSTANCE.getBuilding(16))
         {
-            if(!Buildings.getBuilding(9))
+            if(!Buildings.INSTANCE.getBuilding(9))
             {
                 this.addButton(11, this.width / 2 - 120, 120, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(10))
+            if(!Buildings.INSTANCE.getBuilding(10))
             {
                 this.addButton(12, this.width / 2 - 120, 180, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(11))
+            if(!Buildings.INSTANCE.getBuilding(11))
             {
                 this.addButton(13, this.width / 2 - 120, 140, I18n.format("gui.build.buildings.largeHouse"));
             }
 
-            if(!Buildings.getBuilding(12))
+            if(!Buildings.INSTANCE.getBuilding(12))
             {
                 this.addButton(14, this.width / 2 - 120, 160, I18n.format("gui.build.buildings.builderHouse"));
             }
 
-            if(!Buildings.getBuilding(13))
+            if(!Buildings.INSTANCE.getBuilding(13))
             {
                 this.addButton(15, this.width / 2 + 5, 120, I18n.format("gui.build.buildings.barracks"));
             }
 
-            if(!Buildings.getBuilding(14))
+            if(!Buildings.INSTANCE.getBuilding(14))
             {
                 this.addButton(16, this.width / 2 + 5, 140, I18n.format("gui.build.buildings.foodShop"));
             }
 
-            if(!Buildings.getBuilding(15))
+            if(!Buildings.INSTANCE.getBuilding(15))
             {
                 this.addButton(17, this.width / 2 + 5, 160, I18n.format("gui.build.buildings.blocksShop"));
             }
 
-            if(!Buildings.getBuilding(16) && this.buttonList.size() == 3)
+            if(!Buildings.INSTANCE.getBuilding(16) && this.buttonList.size() == 3)
             {
                 this.addButton(18, this.width / 2 - 55, 130, I18n.format("gui.build.buildings.stage_3"));
             }
         }
-        else if(Buildings.getBuilding(16) && !Buildings.getBuilding(25))
+        else if(Buildings.INSTANCE.getBuilding(16) && !Buildings.INSTANCE.getBuilding(25))
         {
-            if(!Buildings.getBuilding(17))
+            if(!Buildings.INSTANCE.getBuilding(17))
             {
                 this.addButton(19, this.width / 2 - 120, 140, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(18))
+            if(!Buildings.INSTANCE.getBuilding(18))
             {
                 this.addButton(20, this.width / 2 - 120, 160, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(19))
+            if(!Buildings.INSTANCE.getBuilding(19))
             {
                 this.addButton(21, this.width / 2 - 120, 180, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(20))
+            if(!Buildings.INSTANCE.getBuilding(20))
             {
                 this.addButton(22, this.width / 2 + 5, 160, I18n.format("gui.build.buildings.largeHouse"));
             }
 
-            if(!Buildings.getBuilding(21))
+            if(!Buildings.INSTANCE.getBuilding(21))
             {
                 this.addButton(23, this.width / 2 - 120, 120, I18n.format("gui.build.buildings.tavern"));
             }
 
-            if(!Buildings.getBuilding(22))
+            if(!Buildings.INSTANCE.getBuilding(22))
             {
                 this.addButton(24, this.width / 2 + 5, 140, I18n.format("gui.build.buildings.chapel"));
             }
-            if(!Buildings.getBuilding(23))
+            if(!Buildings.INSTANCE.getBuilding(23))
             {
                 this.addButton(25, this.width / 2 + 5, 180, I18n.format("gui.build.buildings.library"));
             }
 
-            if(!Buildings.getBuilding(24))
+            if(!Buildings.INSTANCE.getBuilding(24))
             {
                 this.addButton(26, this.width / 2 + 5, 120, I18n.format("gui.build.buildings.mageHall"));
             }
 
-            if(!Buildings.getBuilding(25) && this.buttonList.size() == 3)
+            if(!Buildings.INSTANCE.getBuilding(25) && this.buttonList.size() == 3)
             {
                 this.addButton(27, this.width / 2 - 55, 130, I18n.format("gui.build.buildings.stage_4"));
             }
         }
-        else if(Buildings.getBuilding(25) && !Buildings.getBuilding(26))
+        else if(Buildings.INSTANCE.getBuilding(25) && !Buildings.INSTANCE.getBuilding(26))
         {
-            if(!Buildings.getBuilding(31))
+            if(!Buildings.INSTANCE.getBuilding(31))
             {
                 this.addButton(28, this.width / 2 - 120, 120, I18n.format("gui.build.buildings.lightHouse"));
             }
 
-            if(!Buildings.getBuilding(29))
+            if(!Buildings.INSTANCE.getBuilding(29))
             {
                 this.addButton(29, this.width / 2 - 120, 140, I18n.format("gui.build.buildings.easternTower"));
             }
 
-            if(!Buildings.getBuilding(30))
+            if(!Buildings.INSTANCE.getBuilding(30))
             {
                 this.addButton(30, this.width / 2 - 120, 160, I18n.format("gui.build.buildings.fishermanHut"));
             }
 
-            if(!Buildings.getBuilding(32))
+            if(!Buildings.INSTANCE.getBuilding(32))
             {
                 this.addButton(31, this.width / 2 + 5, 140, I18n.format("gui.build.buildings.windmill"));
             }
 
-            if(!Buildings.getBuilding(33))
+            if(!Buildings.INSTANCE.getBuilding(33))
             {
                 this.addButton(32, this.width / 2 + 5, 120, I18n.format("gui.build.buildings.observerPost"));
             }
 
-            if(!Buildings.getBuilding(26) && this.buttonList.size() == 3)
+            if(!Buildings.INSTANCE.getBuilding(26) && this.buttonList.size() == 3)
             {
                 this.buttonList.add(new GuiButton(33, this.width / 2 - 65, 130, 140, 20, I18n.format("gui.build.buildings.stage_5")));
             }
         }
-        else if(Buildings.getBuilding(26) && !Buildings.getBuilding(27))
+        else if(Buildings.INSTANCE.getBuilding(26) && !Buildings.INSTANCE.getBuilding(27))
         {
-            if(!Buildings.getBuilding(34))
+            if(!Buildings.INSTANCE.getBuilding(34))
             {
                 this.addButton(34, this.width / 2 - 120, 120, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(35))
+            if(!Buildings.INSTANCE.getBuilding(35))
             {
                 this.addButton(35, this.width / 2 - 120, 140, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(36))
+            if(!Buildings.INSTANCE.getBuilding(36))
             {
                 this.addButton(36, this.width / 2 - 120, 160, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(37))
+            if(!Buildings.INSTANCE.getBuilding(37))
             {
                 this.addButton(37, this.width / 2 - 120, 180, I18n.format("gui.build.buildings.smallHouse"));
             }
 
-            if(!Buildings.getBuilding(38))
+            if(!Buildings.INSTANCE.getBuilding(38))
             {
                 this.addButton(38, this.width / 2 - 120, 200, I18n.format("gui.build.buildings.largeHouse"));
             }
 
-            if(!Buildings.getBuilding(39))
+            if(!Buildings.INSTANCE.getBuilding(39))
             {
                 this.addButton(39, this.width / 2 + 5, 120, I18n.format("gui.build.buildings.centerTower"));
             }
 
-            if(!Buildings.getBuilding(40))
+            if(!Buildings.INSTANCE.getBuilding(40))
             {
                 this.addButton(40, this.width / 2 + 5, 140, I18n.format("gui.build.buildings.northernTower"));
             }
 
-            if(!Buildings.getBuilding(28))
+            if(!Buildings.INSTANCE.getBuilding(28))
             {
                 this.addButton(41, this.width / 2 + 5, 160, I18n.format("gui.build.buildings.coliseum"));
             }
 
-            if(!Buildings.getBuilding(41))
+            if(!Buildings.INSTANCE.getBuilding(41))
             {
                 this.addButton(42, this.width / 2 + 5, 180, I18n.format("gui.build.buildings.stables"));
             }
 
-            if(!Buildings.getBuilding(42))
+            if(!Buildings.INSTANCE.getBuilding(42))
             {
                 this.addButton(43, this.width / 2 + 5, 200, I18n.format("gui.build.buildings.zeppelin"));
             }
 
-            if(!Buildings.getBuilding(27) && this.buttonList.size() == 3)
+            if(!Buildings.INSTANCE.getBuilding(27) && this.buttonList.size() == 3)
             {
                 this.addButton(44, this.width / 2 - 65, 130, I18n.format("gui.build.buildings.castle"));
             }
@@ -287,7 +284,7 @@ public final class GuiBuildScreen extends GuiScreenToK
                 if(j >= 0 && this.mc.thePlayer.inventory.getStackInSlot(j).stackSize == 64)
                 {
                     this.mc.thePlayer.inventory.setInventorySlotContents(j, null);
-                    ResourceHandler.getInstance().addwoodResource(64);
+                    ResourcesHandler.INSTANCE.addwoodResource(64);
                 }
                 break;
             case 3:
@@ -296,13 +293,13 @@ public final class GuiBuildScreen extends GuiScreenToK
                 if(j >= 0 && this.mc.thePlayer.inventory.getStackInSlot(j).stackSize == 64)
                 {
                     this.mc.thePlayer.inventory.setInventorySlotContents(j, null);
-                    ResourceHandler.getInstance().addcobbleResource(64);
+                    ResourcesHandler.INSTANCE.addcobbleResource(64);
                 }
                 break;
             case 4:
-                UtilToK.townX = (int)this.mc.thePlayer.posX;
-                UtilToK.townY = (int)this.mc.thePlayer.posY;
-                UtilToK.townZ = (int)this.mc.thePlayer.posZ;
+                GuildHandler.INSTANCE.setTownX((int) this.mc.thePlayer.posX);
+                GuildHandler.INSTANCE.setTownY((int) this.mc.thePlayer.posY);
+                GuildHandler.INSTANCE.setTownZ((int) this.mc.thePlayer.posZ);
                 this.createBuilding(1, 100, 0, 0);
                 break;
             case 5:
@@ -554,15 +551,15 @@ public final class GuiBuildScreen extends GuiScreenToK
 
     private void createBuilding(int buildingNumber, int speed, int resource1, int resource2)
     {
-        SchematicHandler.getInstance().addBuilding(SchematicRegistry.getSchematic(buildingNumber).setSpeed(speed));
-        ResourceHandler.getInstance().decreasecobbleResource(resource1);
-        ResourceHandler.getInstance().decreasewoodResource(resource2);
-        Buildings.setBuildingTrue(buildingNumber);
+        SchematicHandler.INSTANCE.addBuilding(SchematicRegistry.getSchematic(buildingNumber).setSpeed(speed));
+        ResourcesHandler.INSTANCE.decreasecobbleResource(resource1);
+        ResourcesHandler.INSTANCE.decreasewoodResource(resource2);
+        Buildings.INSTANCE.setBuildingTrue(buildingNumber);
     }
 
     private boolean x(int i, int j)
     {
-        return ResourceHandler.getInstance().getcobbleResource() >= i && ResourceHandler.getInstance().getwoodResource() >= j;
+        return ResourcesHandler.INSTANCE.getcobbleResource() >= i && ResourcesHandler.INSTANCE.getwoodResource() >= j;
     }
 
     private void addButton(int id, int posX, int posZ, String name)
@@ -582,29 +579,29 @@ public final class GuiBuildScreen extends GuiScreenToK
         return -1;
     }
 
+    @Override
     public void drawScreen(int i, int j, float f)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        if(resource != null)
-            this.mc.renderEngine.bindTexture(resource);
+        this.mc.renderEngine.bindTexture(UltimateHelper.BACKGROUND);
 
         this.drawTexturedModalRect((this.width - 255) / 2, 0, 0, 0, 255, 255);
 
         super.drawScreen(i, j, f);
 
-        if(!Buildings.isTier2)
+        if(!Buildings.INSTANCE.isTier2)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_1", GoldKeeper.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_1", GoldKeeper.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_1", EconomyHandler.INSTANCE.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_1", EconomyHandler.INSTANCE.getGoldTotal())) / 2, 15, 16763904);
         }
 
-        if(Buildings.isTier2 && !Buildings.isTier3)
+        if(Buildings.INSTANCE.isTier2 && !Buildings.INSTANCE.isTier3)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_2", GoldKeeper.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_2", GoldKeeper.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_2", EconomyHandler.INSTANCE.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_2", EconomyHandler.INSTANCE.getGoldTotal())) / 2, 15, 16763904);
         }
 
-        if(Buildings.isTier3)
+        if(Buildings.INSTANCE.isTier3)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_3", GoldKeeper.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_3", GoldKeeper.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_3", EconomyHandler.INSTANCE.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_3", EconomyHandler.INSTANCE.getGoldTotal())) / 2, 15, 16763904);
         }
 
         if(this.woodBar != null)

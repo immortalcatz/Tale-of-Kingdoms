@@ -1,16 +1,16 @@
 package aginsun.kingdoms.client.gui;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
+import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -20,12 +20,11 @@ public final class GuiMageHall extends GuiScreenToK
 {
     public EntityPlayer entityplayer;
     private boolean goldchecker = false;
-    private World worldObj = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
 
     public GuiMageHall(EntityPlayer entityplayer1, World world)
     {
+        super(world);
         this.entityplayer = entityplayer1;
-        this.worldObj = world;
     }
 
     @Override
@@ -44,7 +43,7 @@ public final class GuiMageHall extends GuiScreenToK
         {
             case 1:
                 ItemStack var9 = this.entityplayer.inventory.getCurrentItem();
-                if (500 <= GoldKeeper.getGoldTotal() && var9 != null)
+                if (500 <= EconomyHandler.INSTANCE.getGoldTotal() && var9 != null)
                 {
                     final Random random = new Random();
                     int[] ai = new int[3];
@@ -67,12 +66,12 @@ public final class GuiMageHall extends GuiScreenToK
                             var9.addEnchantment(enchantmentdata.enchantmentobj, enchantmentdata.enchantmentLevel);
                         }
 
-                        GoldKeeper.decreaseGold(500);
-                        this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.mage.enchanted", var9.getDisplayName())));
+                        EconomyHandler.INSTANCE.decreaseGold(500);
+                        this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.mage.enchanted", var9.getDisplayName()));
                     }
-                    else if (!this.worldObj.isRemote)
+                    else if (!this.world.isRemote)
                     {
-                        this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.mage.dontEnchant")));
+                        this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.mage.dontEnchant"));
                     }
                 }
                 else
@@ -81,12 +80,12 @@ public final class GuiMageHall extends GuiScreenToK
                 }
                 break;
             case 2:
-                if(2000 <= GoldKeeper.getGoldTotal())
+                if(2000 <= EconomyHandler.INSTANCE.getGoldTotal())
                 {
-                    EntityLiving itemstack = (EntityLiving)EntityList.createEntityByName("DefendMage", this.worldObj);
+                    EntityLiving itemstack = (EntityLiving) UltimateHelper.INSTANCE.getEntity("DefendMage", this.world);
                     itemstack.setLocationAndAngles(this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, 0.0F, 0.0F);
-                    this.worldObj.spawnEntityInWorld(itemstack);
-                    GoldKeeper.decreaseGold(2000);
+                    this.world.spawnEntityInWorld(itemstack);
+                    EconomyHandler.INSTANCE.decreaseGold(2000);
                 }
                 else
                 {
@@ -103,9 +102,9 @@ public final class GuiMageHall extends GuiScreenToK
     @Override
     public void onGuiClosed()
     {
-        if (!this.worldObj.isRemote)
+        if (!this.world.isRemote)
         {
-            this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.mage.bye")));
+            this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.mage.bye"));
         }
     }
 
@@ -115,13 +114,14 @@ public final class GuiMageHall extends GuiScreenToK
         this.drawDefaultBackground();
         super.drawScreen(i, j, f);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.mage.title", GoldKeeper.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", GoldKeeper.getGoldTotal())) / 2, this.height / 2 - 95, 16763904);
+        this.drawString(this.fontRendererObj, I18n.format("gui.mage.title", EconomyHandler.INSTANCE.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", EconomyHandler.INSTANCE.getGoldTotal())) / 2, this.height / 2 - 95, 16763904);
         this.drawString(this.fontRendererObj, I18n.format("gui.mage.enchant.selected"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.enchant.selected")) / 2, this.height / 2 - 80, 16763904);
 
         if (this.goldchecker)
         {
             this.drawString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.notEnough")) / 2, this.height / 2 - 50, 16763904);
         }
+
         this.drawString(this.fontRendererObj, I18n.format("gui.mage.recruit.price"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.recruit.price")) / 2, this.height / 2 - 65, 16763904);
     }
 }

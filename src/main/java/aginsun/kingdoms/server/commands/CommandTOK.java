@@ -1,7 +1,8 @@
 package aginsun.kingdoms.server.commands;
 
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
-import aginsun.kingdoms.server.handlers.resources.WorthyKeeper;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
+import aginsun.kingdoms.server.handlers.resources.GloryHandler;
+import aginsun.kingdoms.server.handlers.resources.ResourcesHandler;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -18,15 +19,20 @@ public final class CommandTOK extends CommandBase
     @Override
     public void processCommand(ICommandSender sender, String[] args)
     {
-        if(args[0].equals("worthy"))
+        if(args[0].equals("glory"))
         {
-            WorthyKeeper.getInstance().addWorthy(10000.0F);
+            GloryHandler.INSTANCE.addGlory(10000);
             sender.addChatMessage(new ChatComponentText(I18n.format("command.tok.worthy")));
         }
         else if (args[0].equals("gold"))
         {
-            GoldKeeper.addGold(10000);
+            EconomyHandler.INSTANCE.addGold(10000);
             sender.addChatMessage(new ChatComponentText("Gold added!"));
+        }
+        else if (args[0].equals("res"))
+        {
+            ResourcesHandler.INSTANCE.addcobbleResource(10000);
+            ResourcesHandler.INSTANCE.addwoodResource(10000);
         }
         else
         {

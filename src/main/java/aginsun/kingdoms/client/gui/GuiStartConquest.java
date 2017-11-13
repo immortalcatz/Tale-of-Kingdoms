@@ -1,8 +1,10 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.Buildings;
-import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import aginsun.kingdoms.server.handlers.schematic.Schematic;
+import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
@@ -11,10 +13,12 @@ import net.minecraft.entity.player.EntityPlayer;
 public final class GuiStartConquest extends GuiScreenToK
 {
     private Minecraft mc;
-    public EntityPlayer player;
+    private GuiButton start;
+    private EntityPlayer player;
 
     public GuiStartConquest(Minecraft minecraft)
     {
+        super(null);
         this.mc = minecraft;
     }
 
@@ -22,7 +26,13 @@ public final class GuiStartConquest extends GuiScreenToK
     public void initGui()
     {
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 70, this.height / 2 + 40, 140, 20, I18n.format("gui.conquest.start")));
+        start = new GuiButton(1, this.width / 2 - 70, this.height / 2 + 40, 140, 20, I18n.format("gui.conquest.start"));
+
+        if (Buildings.INSTANCE.getBuilding(0))
+            start.enabled = false;
+            start.displayString = ChatFormatting.RED + I18n.format("gui.conquest.created");
+
+        this.buttonList.add(start);
         this.buttonList.add(new GuiButton(2, this.width / 2 - 70, this.height / 2 + 70, 140, 20, I18n.format("gui.cancel")));
     }
 
@@ -32,9 +42,9 @@ public final class GuiStartConquest extends GuiScreenToK
         if(guibutton.id == 1)
         {
             this.player = this.mc.thePlayer;
-            Schematic schematic = (new Schematic("/schematics/GuildCastle")).setPosition((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ).setSpeed(75);
-            SchematicHandler.getInstance().addBuilding(schematic);
-            Buildings.setBuildingTrue(0);
+            Schematic schematic = (new Schematic("/schematics/GuildCastle")).setPosition((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ).setSpeed(300);
+            SchematicHandler.INSTANCE.addBuilding(schematic);
+            Buildings.INSTANCE.setBuildingTrue(0);
             this.mc.displayGuiScreen(null);
             this.mc.displayGuiScreen(new GuiToKLoading());
         }
@@ -45,16 +55,16 @@ public final class GuiStartConquest extends GuiScreenToK
     }
 
     @Override
-    public void drawScreen(int i, int j, float f)
+    public void drawScreen(int x, int y, float partial)
     {
         this.drawDefaultBackground();
-        this.drawString(this.fontRendererObj, "The Tale of Kingdoms", this.width / 2 - fontRendererObj.getStringWidth("The Tale of Kingdoms") / 2, this.height / 2 - 80, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_1"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_1")) / 2, this.height / 2 - 70, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_2"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_2")) / 2, this.height / 2 - 60, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_3"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_3")) / 2, this.height / 2 - 50, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_4"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_4")) / 2, this.height / 2 - 40, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_5"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_5")) / 2, this.height / 2, 16777215);
-        this.drawString(this.fontRendererObj, I18n.format("gui.startConquest.line_6"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_6")) / 2, this.height / 2 + 10, 16777215);
-        super.drawScreen(i, j, f);
+        this.drawString(this.fontRendererObj, ChatFormatting.GOLD + "The Tale of Kingdoms", this.width / 2 - fontRendererObj.getStringWidth("The Tale of Kingdoms") / 2, this.height / 2 - 80, 16777215);
+        this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_1"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_1")) / 2, this.height / 2 - 70, 16777215);
+        this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_2"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_2")) / 2, this.height / 2 - 60, 16777215);
+        this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_3"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_3")) / 2, this.height / 2 - 50, 16777215);
+        this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_4"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_4")) / 2, this.height / 2 - 40, 16777215);
+        this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_5"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_5")) / 2, this.height / 2, 16777215);
+        this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_6"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_6")) / 2, this.height / 2 + 10, 16777215);
+        super.drawScreen(x, y, partial);
     }
 }

@@ -2,9 +2,9 @@ package aginsun.kingdoms.server.entities;
 
 import java.util.List;
 
-import aginsun.kingdoms.api.EntityNPC;
-import aginsun.kingdoms.server.handlers.resources.WorthyKeeper;
-import aginsun.kingdoms.server.handlers.UtilToK;
+import aginsun.kingdoms.api.entities.EntityNPC;
+import aginsun.kingdoms.server.PlayerProvider;
+import aginsun.kingdoms.server.handlers.resources.GloryHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,7 +44,7 @@ public final class EntityLoneTraveller extends EntityNPC
                 if (this.canEntityBeSeen(entity) && entity instanceof EntityLostVillager)
                 {
                     entity.setDead();
-                    WorthyKeeper.getInstance().addWorthy(400.0F);
+                    GloryHandler.INSTANCE.addGlory(400);
                     flag1 = true;
                 }
             }
@@ -60,7 +60,7 @@ public final class EntityLoneTraveller extends EntityNPC
             entityplayer.addChatMessage(new ChatComponentText("Guild Master: Your quest has started, find the village and save them!"));
         }
 
-        UtilToK.burningVillages = 1;
+        PlayerProvider.get(entityplayer).burningVillages = 1;
         return true;
     }
 }

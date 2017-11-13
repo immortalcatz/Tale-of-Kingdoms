@@ -1,6 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
@@ -43,23 +43,23 @@ public final class EntityVillageMember extends EntityNPC
          this.hasPick = true;
       }
 
-      if(!this.hasPick && !this.hasAxe && !super.world.isRemote) {
+      if(!this.hasPick && !this.hasAxe && !worldObj.isRemote) {
          entityplayer.addChatMessage(new ChatComponentText("Villager: My king! Do you need a worker? Give me an axe and a pickaxe and I will work for you."));
       }
 
-      if(!this.hasPick && this.hasAxe && !super.world.isRemote) {
+      if(!this.hasPick && this.hasAxe && !worldObj.isRemote) {
          entityplayer.addChatMessage(new ChatComponentText("Villager: I still need a pickaxe sir."));
       }
 
-      if(this.hasPick && !this.hasAxe && !super.world.isRemote) {
+      if(this.hasPick && !this.hasAxe && !worldObj.isRemote) {
          entityplayer.addChatMessage(new ChatComponentText("Villager: I still need an axe sir."));
       }
 
-      if(this.hasPick && this.hasAxe && !super.world.isRemote) {
+      if(this.hasPick && this.hasAxe && !worldObj.isRemote) {
          entityplayer.addChatMessage(new ChatComponentText("Worker: I am now a worker sir! Lead the way!"));
          EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("WorkerMember", this.worldObj);
          entityliving.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-         this.world.spawnEntityInWorld(entityliving);
+         worldObj.spawnEntityInWorld(entityliving);
          this.setDead();
       }
 

@@ -1,5 +1,6 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.entities.EntityWorkerMember;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
@@ -7,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
 public final class GuiWorker extends GuiScreenToK
 {
@@ -15,6 +17,7 @@ public final class GuiWorker extends GuiScreenToK
 
     public GuiWorker(EntityPlayer entityplayer1, EntityWorkerMember entityworkermember)
     {
+        super(null);
         this.entityplayer = entityplayer1;
         this.member = entityworkermember;
     }
@@ -33,18 +36,19 @@ public final class GuiWorker extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.worker.woodcut.go")));
+                this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.worker.woodcut.go"));
                 member.defaultHeldItem = new ItemStack(Items.iron_axe, 1);
                 this.member.worktype = 1;
                 this.member.follow = true;
                 this.mc.displayGuiScreen(null);
                 break;
             case 2:
-                this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.worker.mine.go")));
+                this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.worker.mine.go"));
                 member.defaultHeldItem = new ItemStack(Items.iron_pickaxe, 1);
                 this.member.worktype = 2;
                 this.member.follow = true;
                 this.mc.displayGuiScreen(null);
+                entityplayer.closeScreen();
                 break;
             case 3:
                 this.mc.displayGuiScreen(null);

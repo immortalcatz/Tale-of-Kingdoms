@@ -5,16 +5,18 @@ import java.util.List;
 
 public final class Buildings
 {
-    private static List<Boolean> buildingList = new ArrayList<Boolean>();
-    public static boolean
+    private List<Boolean> buildingList = new ArrayList<Boolean>();
+    public static final Buildings INSTANCE = new Buildings();
+    public boolean
             createGuild, kingdomCreated, smallhouse1, smallhouse2, largehouse1, well, itemshop, stockmarket, isTier2,
             smallhouse3, smallhouse4, largehouse2, builderhouse, barracks, foodshop, blockshop, isTier3, smallhouse5,
             smallhouse6, smallhouse7, largehouse3, tavern, chapel, library, magehall, isTier4, bridge, castle, colloseum,
             easternTower, fishHut, lightHouse, mill, observerPost, smallhouse8, smallhouse9, smallhouse10, smallhouse11,
             largehouse4, northernTower1, northernTower2, stables, zeppelin;
 
-    public static void registerBuildings()
+    public void registerBuildings()
     {
+        buildingList.clear();
         addBuilding(createGuild);
         addBuilding(kingdomCreated);
         addBuilding(smallhouse1);
@@ -62,17 +64,17 @@ public final class Buildings
         addBuilding(stables);
     }
 
-    public static void addBuilding(final boolean x)
+    public void addBuilding(boolean x)
     {
         buildingList.add(x);
     }
 
-    public static void setBuildingTrue(final int number)
+    public void setBuildingTrue(int number)
     {
         buildingList.set(number, true);
     }
 
-    public static void setBuildingState(final boolean x, final int number)
+    public void setBuildingState(boolean x, int number)
     {
         if (buildingList.get(number))
         {
@@ -80,12 +82,12 @@ public final class Buildings
         }
     }
 
-    public static boolean getBuilding(final int number)
+    public boolean getBuilding(final int number)
     {
         return getBuildingList().get(number);
     }
 
-    public static List<Boolean> getBuildingList()
+    public List<Boolean> getBuildingList()
     {
         return buildingList;
     }

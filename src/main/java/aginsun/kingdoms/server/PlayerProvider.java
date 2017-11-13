@@ -1,7 +1,6 @@
 package aginsun.kingdoms.server;
 
 import aginsun.kingdoms.server.handlers.Buildings;
-import aginsun.kingdoms.server.handlers.UtilToK;
 import aginsun.kingdoms.server.handlers.resources.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,89 +10,94 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 
 public final class PlayerProvider implements IExtendedEntityProperties
 {
+    public int libraryInvestment, burningVillages, reficulHoles, bindLight;
+    private EconomyHandler economy = EconomyHandler.INSTANCE;
+    private GloryHandler glory = GloryHandler.INSTANCE;
+    private GuildHandler guilds = GuildHandler.INSTANCE;
+
     @Override
     public void saveNBTData(NBTTagCompound compound)
     {
         NBTTagCompound taleOfKingdoms = new NBTTagCompound();
-        taleOfKingdoms.setFloat("worthy", WorthyKeeper.getInstance().getWorthy());
-        taleOfKingdoms.setBoolean("hunter", HunterKeeper.getInstance().getHunter());
-        taleOfKingdoms.setInteger("burningVillages", UtilToK.burningVillages);
-        taleOfKingdoms.setInteger("reficulHoles", UtilToK.reficulHoles);
-        taleOfKingdoms.setInteger("libraryInvestment", UtilToK.libraryInvestment);
-        taleOfKingdoms.setInteger("bindLight", UtilToK.bindLight);
+        taleOfKingdoms.setInteger("glory", glory.getGlory());
+        taleOfKingdoms.setBoolean("hunter", HunterHandler.INSTANCE.getHunter());
+        taleOfKingdoms.setInteger("burningVillages", burningVillages);
+        taleOfKingdoms.setInteger("reficulHoles", reficulHoles);
+        taleOfKingdoms.setInteger("libraryInvestment", libraryInvestment);
+        taleOfKingdoms.setInteger("bindLight", bindLight);
 
         NBTTagCompound eco = new NBTTagCompound();
-        eco.setInteger("GoldTotal", GoldKeeper.getGoldTotal());
-        eco.setInteger("bankGold", GoldKeeper.bankGold);
+        eco.setInteger("GoldTotal", economy.getGoldTotal());
+        eco.setInteger("bankGold", economy.getBankGold());
         taleOfKingdoms.setTag("economy", eco);
 
         NBTTagCompound town = new NBTTagCompound();
-        town.setInteger("townX", UtilToK.townX);
-        town.setInteger("townY", UtilToK.townY);
-        town.setInteger("townZ", UtilToK.townZ);
+        town.setInteger("townX", guilds.getTownX());
+        town.setInteger("townY", guilds.getTownY());
+        town.setInteger("townZ", guilds.getTownZ());
         taleOfKingdoms.setTag("town", town);
 
         NBTTagCompound kingdom = new NBTTagCompound();
-        kingdom.setBoolean("kingdomCreated", Buildings.getBuilding(1));
-        kingdom.setBoolean("smallhouse1", Buildings.getBuilding(2));
-        kingdom.setBoolean("smallhouse2", Buildings.getBuilding(3));
-        kingdom.setBoolean("largehouse1", Buildings.getBuilding(4));
-        kingdom.setBoolean("well", Buildings.getBuilding(5));
-        kingdom.setBoolean("itemshop", Buildings.getBuilding(6));
-        kingdom.setBoolean("stockmarket", Buildings.getBuilding(7));
-        kingdom.setBoolean("isTier2", Buildings.getBuilding(8));
-        kingdom.setBoolean("smallhouse3", Buildings.getBuilding(9));
-        kingdom.setBoolean("largehouse2", Buildings.getBuilding(10));
-        kingdom.setBoolean("builderhouse", Buildings.getBuilding(11));
-        kingdom.setBoolean("smallhouse4", Buildings.getBuilding(12));
-        kingdom.setBoolean("barracks", Buildings.getBuilding(13));
-        kingdom.setBoolean("foodshop", Buildings.getBuilding(14));
-        kingdom.setBoolean("blockshop", Buildings.getBuilding(15));
-        kingdom.setBoolean("isTier3", Buildings.getBuilding(16));
-        kingdom.setBoolean("smallhouse5", Buildings.getBuilding(17));
-        kingdom.setBoolean("smallhouse6", Buildings.getBuilding(18));
-        kingdom.setBoolean("smallhouse7", Buildings.getBuilding(19));
-        kingdom.setBoolean("largehouse3", Buildings.getBuilding(20));
-        kingdom.setBoolean("tavern", Buildings.getBuilding(21));
-        kingdom.setBoolean("chapel", Buildings.getBuilding(22));
-        kingdom.setBoolean("library", Buildings.getBuilding(23));
-        kingdom.setBoolean("magehall", Buildings.getBuilding(24));
-        kingdom.setBoolean("isTier4", Buildings.getBuilding(25));
-        kingdom.setBoolean("bridge", Buildings.getBuilding(26));
-        kingdom.setBoolean("castle", Buildings.getBuilding(27));
-        kingdom.setBoolean("easternTower", Buildings.getBuilding(28));
-        kingdom.setBoolean("fishHut", Buildings.getBuilding(29));
-        kingdom.setBoolean("lightHouse", Buildings.getBuilding(30));
-        kingdom.setBoolean("mill", Buildings.getBuilding(31));
-        kingdom.setBoolean("observerPost", Buildings.getBuilding(32));
-        kingdom.setBoolean("smallhouse8", Buildings.getBuilding(33));
-        kingdom.setBoolean("smallhouse9", Buildings.getBuilding(34));
-        kingdom.setBoolean("smallhouse10", Buildings.getBuilding(35));
-        kingdom.setBoolean("smallhouse11", Buildings.getBuilding(36));
-        kingdom.setBoolean("largehouse4", Buildings.getBuilding(37));
-        kingdom.setBoolean("northernTower1", Buildings.getBuilding(38));
-        kingdom.setBoolean("northernTower2", Buildings.getBuilding(39));
-        kingdom.setBoolean("colloseum", Buildings.getBuilding(40));
-        kingdom.setBoolean("stables", Buildings.getBuilding(41));
-        kingdom.setBoolean("zeppelin", Buildings.getBuilding(42));
+        kingdom.setBoolean("kingdomCreated", Buildings.INSTANCE.getBuilding(1));
+        kingdom.setBoolean("smallhouse1", Buildings.INSTANCE.getBuilding(2));
+        kingdom.setBoolean("smallhouse2", Buildings.INSTANCE.getBuilding(3));
+        kingdom.setBoolean("largehouse1", Buildings.INSTANCE.getBuilding(4));
+        kingdom.setBoolean("well", Buildings.INSTANCE.getBuilding(5));
+        kingdom.setBoolean("itemshop", Buildings.INSTANCE.getBuilding(6));
+        kingdom.setBoolean("stockmarket", Buildings.INSTANCE.getBuilding(7));
+        kingdom.setBoolean("isTier2", Buildings.INSTANCE.getBuilding(8));
+        kingdom.setBoolean("smallhouse3", Buildings.INSTANCE.getBuilding(9));
+        kingdom.setBoolean("largehouse2", Buildings.INSTANCE.getBuilding(10));
+        kingdom.setBoolean("builderhouse", Buildings.INSTANCE.getBuilding(11));
+        kingdom.setBoolean("smallhouse4", Buildings.INSTANCE.getBuilding(12));
+        kingdom.setBoolean("barracks", Buildings.INSTANCE.getBuilding(13));
+        kingdom.setBoolean("foodshop", Buildings.INSTANCE.getBuilding(14));
+        kingdom.setBoolean("blockshop", Buildings.INSTANCE.getBuilding(15));
+        kingdom.setBoolean("isTier3", Buildings.INSTANCE.getBuilding(16));
+        kingdom.setBoolean("smallhouse5", Buildings.INSTANCE.getBuilding(17));
+        kingdom.setBoolean("smallhouse6", Buildings.INSTANCE.getBuilding(18));
+        kingdom.setBoolean("smallhouse7", Buildings.INSTANCE.getBuilding(19));
+        kingdom.setBoolean("largehouse3", Buildings.INSTANCE.getBuilding(20));
+        kingdom.setBoolean("tavern", Buildings.INSTANCE.getBuilding(21));
+        kingdom.setBoolean("chapel", Buildings.INSTANCE.getBuilding(22));
+        kingdom.setBoolean("library", Buildings.INSTANCE.getBuilding(23));
+        kingdom.setBoolean("magehall", Buildings.INSTANCE.getBuilding(24));
+        kingdom.setBoolean("isTier4", Buildings.INSTANCE.getBuilding(25));
+        kingdom.setBoolean("bridge", Buildings.INSTANCE.getBuilding(26));
+        kingdom.setBoolean("castle", Buildings.INSTANCE.getBuilding(27));
+        kingdom.setBoolean("easternTower", Buildings.INSTANCE.getBuilding(28));
+        kingdom.setBoolean("fishHut", Buildings.INSTANCE.getBuilding(29));
+        kingdom.setBoolean("lightHouse", Buildings.INSTANCE.getBuilding(30));
+        kingdom.setBoolean("mill", Buildings.INSTANCE.getBuilding(31));
+        kingdom.setBoolean("observerPost", Buildings.INSTANCE.getBuilding(32));
+        kingdom.setBoolean("smallhouse8", Buildings.INSTANCE.getBuilding(33));
+        kingdom.setBoolean("smallhouse9", Buildings.INSTANCE.getBuilding(34));
+        kingdom.setBoolean("smallhouse10", Buildings.INSTANCE.getBuilding(35));
+        kingdom.setBoolean("smallhouse11", Buildings.INSTANCE.getBuilding(36));
+        kingdom.setBoolean("largehouse4", Buildings.INSTANCE.getBuilding(37));
+        kingdom.setBoolean("northernTower1", Buildings.INSTANCE.getBuilding(38));
+        kingdom.setBoolean("northernTower2", Buildings.INSTANCE.getBuilding(39));
+        kingdom.setBoolean("colloseum", Buildings.INSTANCE.getBuilding(40));
+        kingdom.setBoolean("stables", Buildings.INSTANCE.getBuilding(41));
+        kingdom.setBoolean("zeppelin", Buildings.INSTANCE.getBuilding(42));
         taleOfKingdoms.setTag("kingdom", kingdom);
 
         NBTTagCompound guild = new NBTTagCompound();
-        guild.setBoolean("GuildCreated", Buildings.getBuilding(0));
-        guild.setBoolean("guildFightEnded", UtilToK.guildFightEnded);
-        guild.setBoolean("guildFightStarted", UtilToK.guildFightStarted);
+        guild.setBoolean("GuildCreated", Buildings.INSTANCE.getBuilding(0));
+        guild.setBoolean("guildFightEnded", guilds.getGuildFightEnded());
+        guild.setBoolean("guildFightStarted", guilds.getGuildFightStarted());
         taleOfKingdoms.setTag("guild", guild);
 
         NBTTagCompound resources = new NBTTagCompound();
-        resources.setInteger("woodResource", ResourceHandler.getInstance().getwoodResource());
-        resources.setInteger("cobblestoneResource", ResourceHandler.getInstance().getcobbleResource());
-        resources.setInteger("woodPool", ResourceHandler.getInstance().getWoodPool());
-        resources.setInteger("cobblePool", ResourceHandler.getInstance().getCobblePool());
+        resources.setInteger("woodResource", ResourcesHandler.INSTANCE.getwoodResource());
+        resources.setInteger("cobblestoneResource", ResourcesHandler.INSTANCE.getcobbleResource());
+        resources.setInteger("woodPool", ResourcesHandler.INSTANCE.getWoodPool());
+        resources.setInteger("cobblePool", ResourcesHandler.INSTANCE.getCobblePool());
         taleOfKingdoms.setTag("resources", resources);
 
         NBTTagCompound workers = new NBTTagCompound();
-        workers.setInteger("quarryMembers", WorkerHandler.getInstance().getQuarryMembers());
-        workers.setInteger("lumberMembers", WorkerHandler.getInstance().getLumberMembers());
+        workers.setByte("quarryMembers", WorkersHandler.INSTANCE.getQuarryMembers());
+        workers.setByte("lumberMembers", WorkersHandler.INSTANCE.getLumberMembers());
         taleOfKingdoms.setTag("workers", workers);
 
         compound.setTag("PlayerPersisted", taleOfKingdoms);
@@ -103,84 +107,89 @@ public final class PlayerProvider implements IExtendedEntityProperties
     public void loadNBTData(NBTTagCompound compound)
     {
         NBTTagCompound taleOfKingdoms = compound.getCompoundTag("PlayerPersisted");
-        WorthyKeeper.getInstance().setWorthy(taleOfKingdoms.getFloat("worthy"));
-        HunterKeeper.getInstance().setHunter(taleOfKingdoms.getBoolean("hunter"));
-        UtilToK.burningVillages = taleOfKingdoms.getInteger("burningVillages");
-        UtilToK.reficulHoles = taleOfKingdoms.getInteger("reficulHoles");
-        UtilToK.libraryInvestment = taleOfKingdoms.getInteger("libraryInvestment");
-        UtilToK.bindLight = taleOfKingdoms.getInteger("bindLight");
+        glory.setGlory(taleOfKingdoms.getInteger("glory"));
+        HunterHandler.INSTANCE.setHunter(taleOfKingdoms.getBoolean("hunter"));
+        burningVillages = taleOfKingdoms.getInteger("burningVillages");
+        reficulHoles = taleOfKingdoms.getInteger("reficulHoles");
+        libraryInvestment = taleOfKingdoms.getInteger("libraryInvestment");
+        bindLight = taleOfKingdoms.getInteger("bindLight");
 
         NBTTagCompound eco = taleOfKingdoms.getCompoundTag("economy");
-        GoldKeeper.goldTotal = eco.getInteger("GoldTotal");
-        GoldKeeper.bankGold = eco.getInteger("bankGold");
+        economy.setGoldTotal(eco.getInteger("GoldTotal"));
+        economy.setBankGold(eco.getInteger("bankGold"));
 
         NBTTagCompound town = taleOfKingdoms.getCompoundTag("town");
-        UtilToK.townX = town.getInteger("townX");
-        UtilToK.townY = town.getInteger("townY");
-        UtilToK.townZ = town.getInteger("townZ");
+        guilds.setTownX(town.getInteger("townX"));
+        guilds.setTownY(town.getInteger("townY"));
+        guilds.setTownZ(town.getInteger("townZ"));
 
         NBTTagCompound kingdom = taleOfKingdoms.getCompoundTag("kingdom");
-        Buildings.kingdomCreated = kingdom.getBoolean("kingdomCreated");
-        Buildings.smallhouse1 = kingdom.getBoolean("smallhouse1");
-        Buildings.smallhouse2 = kingdom.getBoolean("smallhouse2");
-        Buildings.largehouse1 = kingdom.getBoolean("largehouse1");
-        Buildings.well = kingdom.getBoolean("well");
-        Buildings.itemshop = kingdom.getBoolean("itemshop");
-        Buildings.stockmarket = kingdom.getBoolean("stockmarket");
-        Buildings.isTier2 = kingdom.getBoolean("isTier2");
-        Buildings.smallhouse3 = kingdom.getBoolean("smallhouse3");
-        Buildings.largehouse2 = kingdom.getBoolean("largehouse2");
-        Buildings.builderhouse = kingdom.getBoolean("builderhouse");
-        Buildings.smallhouse4 = kingdom.getBoolean("smallhouse4");
-        Buildings.barracks = kingdom.getBoolean("barracks");
-        Buildings.foodshop = kingdom.getBoolean("foodshop");
-        Buildings.blockshop = kingdom.getBoolean("blockshop");
-        Buildings.isTier3 = kingdom.getBoolean("isTier3");
-        Buildings.tavern = kingdom.getBoolean("tavern");
-        Buildings.smallhouse5 = kingdom.getBoolean("smallhouse5");
-        Buildings.smallhouse6 = kingdom.getBoolean("smallhouse6");
-        Buildings.smallhouse7 = kingdom.getBoolean("smallhouse7");
-        Buildings.chapel = kingdom.getBoolean("chapel");
-        Buildings.largehouse3 = kingdom.getBoolean("largehouse3");
-        Buildings.library = kingdom.getBoolean("library");
-        Buildings.magehall = kingdom.getBoolean("magehall");
-        Buildings.isTier4 = kingdom.getBoolean("isTier4");
-        Buildings.bridge = kingdom.getBoolean("bridge");
-        Buildings.castle = kingdom.getBoolean("castle");
-        Buildings.easternTower =kingdom.getBoolean("easternTower");
-        Buildings.fishHut = kingdom.getBoolean("fishHut");
-        Buildings.lightHouse = kingdom.getBoolean("lightHouse");
-        Buildings.mill = kingdom.getBoolean("mill");
-        Buildings.observerPost = kingdom.getBoolean("observerPost");
-        Buildings.smallhouse8 = kingdom.getBoolean("smallhouse8");
-        Buildings.smallhouse9 = kingdom.getBoolean("smallhouse9");
-        Buildings.smallhouse10 = kingdom.getBoolean("smallhouse10");
-        Buildings.smallhouse11 = kingdom.getBoolean("smallhouse11");
-        Buildings.largehouse4 = kingdom.getBoolean("largehouse4");
-        Buildings.northernTower1 = kingdom.getBoolean("northernTower1");
-        Buildings.northernTower2 = kingdom.getBoolean("northernTower2");
-        Buildings.colloseum = kingdom.getBoolean("colloseum");
-        Buildings.stables = kingdom.getBoolean("stables");
-        Buildings.zeppelin = kingdom.getBoolean("zeppelin");
+        Buildings.INSTANCE.kingdomCreated = kingdom.getBoolean("kingdomCreated");
+        Buildings.INSTANCE.smallhouse1 = kingdom.getBoolean("smallhouse1");
+        Buildings.INSTANCE.smallhouse2 = kingdom.getBoolean("smallhouse2");
+        Buildings.INSTANCE.largehouse1 = kingdom.getBoolean("largehouse1");
+        Buildings.INSTANCE.well = kingdom.getBoolean("well");
+        Buildings.INSTANCE.itemshop = kingdom.getBoolean("itemshop");
+        Buildings.INSTANCE.stockmarket = kingdom.getBoolean("stockmarket");
+        Buildings.INSTANCE.isTier2 = kingdom.getBoolean("isTier2");
+        Buildings.INSTANCE.smallhouse3 = kingdom.getBoolean("smallhouse3");
+        Buildings.INSTANCE.largehouse2 = kingdom.getBoolean("largehouse2");
+        Buildings.INSTANCE.builderhouse = kingdom.getBoolean("builderhouse");
+        Buildings.INSTANCE.smallhouse4 = kingdom.getBoolean("smallhouse4");
+        Buildings.INSTANCE.barracks = kingdom.getBoolean("barracks");
+        Buildings.INSTANCE.foodshop = kingdom.getBoolean("foodshop");
+        Buildings.INSTANCE.blockshop = kingdom.getBoolean("blockshop");
+        Buildings.INSTANCE.isTier3 = kingdom.getBoolean("isTier3");
+        Buildings.INSTANCE.tavern = kingdom.getBoolean("tavern");
+        Buildings.INSTANCE.smallhouse5 = kingdom.getBoolean("smallhouse5");
+        Buildings.INSTANCE.smallhouse6 = kingdom.getBoolean("smallhouse6");
+        Buildings.INSTANCE.smallhouse7 = kingdom.getBoolean("smallhouse7");
+        Buildings.INSTANCE.chapel = kingdom.getBoolean("chapel");
+        Buildings.INSTANCE.largehouse3 = kingdom.getBoolean("largehouse3");
+        Buildings.INSTANCE.library = kingdom.getBoolean("library");
+        Buildings.INSTANCE.magehall = kingdom.getBoolean("magehall");
+        Buildings.INSTANCE.isTier4 = kingdom.getBoolean("isTier4");
+        Buildings.INSTANCE.bridge = kingdom.getBoolean("bridge");
+        Buildings.INSTANCE.castle = kingdom.getBoolean("castle");
+        Buildings.INSTANCE.easternTower =kingdom.getBoolean("easternTower");
+        Buildings.INSTANCE.fishHut = kingdom.getBoolean("fishHut");
+        Buildings.INSTANCE.lightHouse = kingdom.getBoolean("lightHouse");
+        Buildings.INSTANCE.mill = kingdom.getBoolean("mill");
+        Buildings.INSTANCE.observerPost = kingdom.getBoolean("observerPost");
+        Buildings.INSTANCE.smallhouse8 = kingdom.getBoolean("smallhouse8");
+        Buildings.INSTANCE.smallhouse9 = kingdom.getBoolean("smallhouse9");
+        Buildings.INSTANCE.smallhouse10 = kingdom.getBoolean("smallhouse10");
+        Buildings.INSTANCE.smallhouse11 = kingdom.getBoolean("smallhouse11");
+        Buildings.INSTANCE.largehouse4 = kingdom.getBoolean("largehouse4");
+        Buildings.INSTANCE.northernTower1 = kingdom.getBoolean("northernTower1");
+        Buildings.INSTANCE.northernTower2 = kingdom.getBoolean("northernTower2");
+        Buildings.INSTANCE.colloseum = kingdom.getBoolean("colloseum");
+        Buildings.INSTANCE.stables = kingdom.getBoolean("stables");
+        Buildings.INSTANCE.zeppelin = kingdom.getBoolean("zeppelin");
 
         NBTTagCompound guild = taleOfKingdoms.getCompoundTag("guild");
-        Buildings.createGuild = guild.getBoolean("GuildCreated");
-        UtilToK.guildFightEnded = guild.getBoolean("guildFightEnded");
-        UtilToK.guildFightStarted = guild.getBoolean("guildFightStarted");
+        Buildings.INSTANCE.createGuild = guild.getBoolean("GuildCreated");
+        guilds.setGuildFightEnded(guild.getBoolean("guildFightEnded"));
+        guilds.setGuildFightEnded(guild.getBoolean("guildFightStarted"));
 
         NBTTagCompound resources = taleOfKingdoms.getCompoundTag("resources");
-        ResourceHandler.getInstance().setWoodPool(resources.getInteger("woodPool"));
-        ResourceHandler.getInstance().setCobblePool(resources.getInteger("cobblePool"));
-        ResourceHandler.getInstance().setwoodResource(resources.getInteger("woodResource"));
-        ResourceHandler.getInstance().setcobbleResource(resources.getInteger("cobblestoneResource"));
+        ResourcesHandler.INSTANCE.setWoodPool(resources.getInteger("woodPool"));
+        ResourcesHandler.INSTANCE.setCobblePool(resources.getInteger("cobblePool"));
+        ResourcesHandler.INSTANCE.setwoodResource(resources.getInteger("woodResource"));
+        ResourcesHandler.INSTANCE.setcobbleResource(resources.getInteger("cobblestoneResource"));
 
         NBTTagCompound workers = taleOfKingdoms.getCompoundTag("workers");
-        WorkerHandler.getInstance().setQuarryMembers(workers.getInteger("quarryMembers"));
-        WorkerHandler.getInstance().setLumberMembers(workers.getInteger("lumberMembers"));
+        WorkersHandler.INSTANCE.setQuarryMembers(workers.getByte("quarryMembers"));
+        WorkersHandler.INSTANCE.setLumberMembers(workers.getByte("lumberMembers"));
     }
 
     @Override
     public void init(Entity entity, World world) {}
+
+    public EconomyHandler getEconomy()
+    {
+        return economy;
+    }
 
     public static PlayerProvider get(EntityPlayer player)
     {

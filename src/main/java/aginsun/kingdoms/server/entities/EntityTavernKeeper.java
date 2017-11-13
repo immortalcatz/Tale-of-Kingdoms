@@ -1,7 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.client.gui.GuiTavernGame;
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
@@ -33,15 +33,14 @@ public final class EntityTavernKeeper extends EntityNPC
     @Override
     public boolean interact(EntityPlayer entityplayer)
     {
-        if(!this.world.isRemote)
-        {
-            entityplayer.addChatMessage(new ChatComponentText("One-Eyed Gambler: Feeling a bit lucky eh?"));
-        }
-
         if(this.canInteractWith(entityplayer))
         {
+            if(!worldObj.isRemote)
+            {
+                entityplayer.addChatMessage(new ChatComponentText("One-Eyed Gambler: Feeling a bit lucky eh?"));
+            }
             Minecraft minecraft = Minecraft.getMinecraft();
-            minecraft.displayGuiScreen(new GuiTavernGame(entityplayer, this.worldObj));
+            minecraft.displayGuiScreen(new GuiTavernGame(entityplayer, worldObj));
         }
         return true;
     }

@@ -1,4 +1,4 @@
-package aginsun.kingdoms.server.handlers.packets;
+package aginsun.kingdoms.api.network;
 
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;

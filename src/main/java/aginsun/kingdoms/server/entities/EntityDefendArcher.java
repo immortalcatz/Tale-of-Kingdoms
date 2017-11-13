@@ -1,6 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -115,13 +115,13 @@ public final class EntityDefendArcher extends EntityNPC {
       if(this.checkPlayer) {
          for(int list = 0; list < this.field_70170_p.loadedEntityList.size(); ++list) {
             entity1 = (Entity)this.field_70170_p.loadedEntityList.get(list);
-            if(entity1 instanceof EntityPlayer) {
-               super.player = (EntityPlayer)entity1;
+            if(entity1 instanceof EntityPlayer)
+            {
+               if(entity1.getDistanceSqToEntity(this) <= 64.0D)
+               {
+                  this.follow = true;
+               }
             }
-         }
-
-         if(super.player != null && super.player.getDistanceSqToEntity(this) <= 64.0D) {
-            this.follow = true;
          }
       }
 

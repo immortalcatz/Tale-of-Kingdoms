@@ -1,6 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import cpw.mods.fml.client.FMLClientHandler;
 
 import java.util.List;

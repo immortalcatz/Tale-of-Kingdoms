@@ -1,6 +1,8 @@
 package aginsun.kingdoms.client.handlers;
 
 import aginsun.kingdoms.client.gui.GuiStartConquest;
+import aginsun.kingdoms.server.PlayerProvider;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
@@ -37,7 +39,7 @@ public final class ClientEvents
 
             if (e.gui instanceof GuiInventory)
             {
-                e.gui.drawString(mc.fontRenderer, I18n.format("gui.goldTotal") + " " + GoldKeeper.getGoldTotal(), scaled.getScaledWidth() / 2 - 2, scaled.getScaledHeight() / 2 - 17, 16763904);
+                e.gui.drawString(mc.fontRenderer, I18n.format("gui.goldTotal") + " " + EconomyHandler.INSTANCE.getGoldTotal(), scaled.getScaledWidth() / 2 - 2, scaled.getScaledHeight() / 2 - 17, 16763904);
             }
         }
     }

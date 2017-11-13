@@ -1,24 +1,24 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiScreenToK;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 public final class GuiFoodKeeper extends GuiScreenToK
 {
-    private World worldObj;
-    private EntityPlayer entityplayer;
-    private boolean freebread = true;
+    private EntityPlayer player;
+    private boolean freeBread = true;
 
-    public GuiFoodKeeper(EntityPlayer entityplayer1, World world)
+    public GuiFoodKeeper(EntityPlayer player, World world)
     {
-        this.entityplayer = entityplayer1;
-        this.worldObj = world;
+        super(world);
+        this.player = player;
     }
 
     @Override
@@ -35,35 +35,26 @@ public final class GuiFoodKeeper extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                if (this.freebread)
+                if (this.freeBread)
                 {
-                    if (!this.worldObj.isRemote)
+                    if (!this.world.isRemote)
                     {
-                        this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.farmer.take")));
+                        this.player.addChatMessage(new ChatComponentTranslation("gui.farmer.take"));
                     }
 
                     ItemStack itemstack = new ItemStack(Items.bread, 1, 0);
-                    EntityItem entityitem = new EntityItem(this.worldObj, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, itemstack);
-                    this.worldObj.spawnEntityInWorld(entityitem);
-                    this.freebread = false;
+                    EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, itemstack);
+                    this.world.spawnEntityInWorld(entityitem);
+                    this.freeBread = false;
                 }
-                else if (!this.worldObj.isRemote)
+                else if (!this.world.isRemote)
                 {
-                    this.entityplayer.addChatMessage(new ChatComponentText(I18n.format("gui.farmer.have")));
+                    this.player.addChatMessage(new ChatComponentTranslation("gui.farmer.have"));
                 }
                 break;
             case 2:
                 this.mc.displayGuiScreen(null);
                 break;
-        }
-    }
-
-    @Override
-    protected void keyTyped(char character, int code)
-    {
-        if (code == 1 || code == this.mc.gameSettings.keyBindInventory.getKeyCode())
-        {
-            this.mc.thePlayer.closeScreen();
         }
     }
 }

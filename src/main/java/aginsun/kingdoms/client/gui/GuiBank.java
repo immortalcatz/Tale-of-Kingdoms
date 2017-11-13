@@ -1,28 +1,27 @@
 package aginsun.kingdoms.client.gui;
 
+import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
 public final class GuiBank extends GuiScreenToK
 {
-    private World worldObj;
     private EntityPlayer player;
     private boolean check = false;
-    private final ResourceLocation resource = new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png");
 
     public GuiBank(EntityPlayer player, World world)
     {
+        super(world);
         this.player = player;
-        this.worldObj = world;
     }
 
     @Override
@@ -71,8 +70,8 @@ public final class GuiBank extends GuiScreenToK
                 break;
             case 6:
                 this.check = false;
-                GoldKeeper.addBankGold(GoldKeeper.getGoldTotal());
-                GoldKeeper.decreaseGold(GoldKeeper.getGoldTotal());
+                EconomyHandler.INSTANCE.addBankGold(EconomyHandler.INSTANCE.getGoldTotal());
+                EconomyHandler.INSTANCE.decreaseGold(EconomyHandler.INSTANCE.getGoldTotal());
                 break;
             case 7:
                 this.check = false;
@@ -96,13 +95,13 @@ public final class GuiBank extends GuiScreenToK
                 break;
             case 12:
                 this.check = false;
-                GoldKeeper.addGold(GoldKeeper.getBankGold());
-                GoldKeeper.setBankGold(0);
+                EconomyHandler.INSTANCE.addGold(EconomyHandler.INSTANCE.getBankGold());
+                EconomyHandler.INSTANCE.setBankGold(0);
                 break;
             case 13:
-                if(!this.worldObj.isRemote)
+                if (!this.world.isRemote)
                 {
-                    this.player.addChatMessage(new ChatComponentText(I18n.format("npc.banker.dialog.bye")));
+                    this.player.addChatMessage(new ChatComponentTranslation("npc.banker.dialog.bye"));
                 }
                 this.mc.displayGuiScreen(null);
                 break;
@@ -113,13 +112,13 @@ public final class GuiBank extends GuiScreenToK
     public void drawScreen(int i, int j, float f)
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.renderEngine.bindTexture(resource);
+        this.mc.renderEngine.bindTexture(UltimateHelper.BACKGROUND);
         this.drawTexturedModalRect((this.width - 255) / 2, 0, 0, 0, 255, 255);
         this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.title"), this.width / 2, 15, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.player", GoldKeeper.getGoldTotal()), this.width / 2, 25, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.bank", GoldKeeper.getBankGold()), this.width / 2, 35, 16777215);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.player", EconomyHandler.INSTANCE.getGoldTotal()), this.width / 2, 25, 16777215);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.bank", EconomyHandler.INSTANCE.getBankGold()), this.width / 2, 35, 16777215);
 
-        if(this.check)
+        if (this.check)
         {
             this.drawCenteredString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2, 45, 16777215);
         }
@@ -127,21 +126,12 @@ public final class GuiBank extends GuiScreenToK
         super.drawScreen(i, j, f);
     }
 
-    @Override
-    protected void keyTyped(char character, int key)
-    {
-        if(key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode())
-        {
-            this.mc.thePlayer.closeScreen();
-        }
-    }
-
     private void depositGold(short gold)
     {
-        if(GoldKeeper.getGoldTotal() >= gold)
+        if (EconomyHandler.INSTANCE.getGoldTotal() >= gold)
         {
-            GoldKeeper.decreaseGold(gold);
-            GoldKeeper.addBankGold(gold);
+            EconomyHandler.INSTANCE.decreaseGold(gold);
+            EconomyHandler.INSTANCE.addBankGold(gold);
         }
         else
         {
@@ -151,10 +141,10 @@ public final class GuiBank extends GuiScreenToK
 
     private void withdrawGold(short gold)
     {
-        if(GoldKeeper.getBankGold() >= gold)
+        if (EconomyHandler.INSTANCE.getBankGold() >= gold)
         {
-            GoldKeeper.addGold(gold);
-            GoldKeeper.decreaseBankGold(gold);
+            EconomyHandler.INSTANCE.addGold(gold);
+            EconomyHandler.INSTANCE.decreaseBankGold(gold);
         }
         else
         {

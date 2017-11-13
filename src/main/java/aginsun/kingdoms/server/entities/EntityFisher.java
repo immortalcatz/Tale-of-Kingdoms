@@ -1,6 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.api.EntityNPC;
+import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.client.gui.GuiFisher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
