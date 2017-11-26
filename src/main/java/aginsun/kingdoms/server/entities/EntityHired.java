@@ -21,42 +21,48 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public final class EntityHired extends EntityNPC {
+public final class EntityHired extends EntityNPC
+{
+    private EntityPlayer player;
+    private Random random = new Random();
+    private static ItemStack defaultHeldItem = new ItemStack(Items.iron_sword, 1);
+    public boolean isSwinging;
+    public int field_110158_av;
+    protected int attackStrength;
 
-   private EntityPlayer player;
-   private Random field_70146_Z = new Random();
-   private static ItemStack defaultHeldItem = new ItemStack(Items.iron_sword, 1);
-   public boolean isSwinging;
-   public int field_110158_av;
-   protected int attackStrength;
+    public EntityHired(World world)
+    {
+        super(world, defaultHeldItem, 40.0F);
+        this.isImmuneToFire = false;
+        this.attackStrength = 10;
+    }
 
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
 
-   public EntityHired(World world) {
-      super(world, defaultHeldItem, 40.0F);
-      this.isImmuneToFire = false;
-      this.attackStrength = 10;
-   }
+    @Override
+    public boolean interact(EntityPlayer entityplayer)
+    {
+        this.player = entityplayer;
 
-   public boolean canBePushed() {
-      return false;
-   }
-
-   public boolean interact(EntityPlayer entityplayer) {
-      this.player = entityplayer;
-      if(defaultHeldItem.getItem() == Item.getItemById(267)) {
-         defaultHeldItem = new ItemStack(Items.bow, 1);
-         if(!this.worldObj.isRemote) {
-            this.player.addChatMessage(new ChatComponentText("Hunter: I shall use my bow."));
-         }
-      } else {
-         defaultHeldItem = new ItemStack(Items.iron_sword, 1);
-         if(!this.worldObj.isRemote) {
-            this.player.addChatMessage(new ChatComponentText("Hunter: I shall use my sword."));
-         }
-      }
-
-      return true;
-   }
+        if (!worldObj.isRemote)
+        {
+            if (defaultHeldItem.getItem() == Item.getItemById(267))
+            {
+                defaultHeldItem = new ItemStack(Items.bow, 1);
+                this.player.addChatMessage(new ChatComponentText("Hunter: I shall use my bow."));
+            }
+            else
+            {
+                defaultHeldItem = new ItemStack(Items.iron_sword, 1);
+                this.player.addChatMessage(new ChatComponentText("Hunter: I shall use my sword."));
+            }
+        }
+        return true;
+    }
 
    protected void updateEntityActionState() {
       super.updateEntityActionState();
@@ -148,7 +154,7 @@ public final class EntityHired extends EntityNPC {
             EntityArrow entityarrow = new EntityArrow(this.worldObj, this, 1.0F);
             double d2 = entity.posY + (double)entity.getEyeHeight() - 0.699999988079071D - entityarrow.posY;
             float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-            this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.field_70146_Z.nextFloat() * 0.4F + 0.8F));
+            this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.random.nextFloat() * 0.4F + 0.8F));
             this.worldObj.spawnEntityInWorld(entityarrow);
             entityarrow.setThrowableHeading(d, d2 + (double)f1, d1, 1.6F, 12.0F);
             this.attackTime = 30;
@@ -161,7 +167,7 @@ public final class EntityHired extends EntityNPC {
    }
 
    public boolean attackEntityFrom(DamageSource damagesource, int i) {
-      if(this.field_70146_Z.nextInt(2) == 0) {
+      if(this.random.nextInt(2) == 0) {
          boolean flag = true;
          Entity entity = damagesource.getSourceOfDamage();
          if(!this.worldObj.isRemote && entity instanceof EntityDefendBandit || entity instanceof EntityDefendKnight || entity instanceof EntityDefendPaladin || entity instanceof EntityDefendWarrior || entity instanceof EntityDefendArcher || entity instanceof EntityHired || entity instanceof EntityPlayer || entity instanceof EntityPlayerSP) {
@@ -176,12 +182,13 @@ public final class EntityHired extends EntityNPC {
       return true;
    }
 
-   public void swingItem() {
-      if(!this.isSwinging || this.field_110158_av < 0) {
-         this.field_110158_av = -1;
-         this.isSwinging = true;
-      }
-
-   }
-
+    @Override
+    public void swingItem()
+    {
+        if (!this.isSwinging || this.field_110158_av < 0)
+        {
+            this.field_110158_av = -1;
+            this.isSwinging = true;
+        }
+    }
 }

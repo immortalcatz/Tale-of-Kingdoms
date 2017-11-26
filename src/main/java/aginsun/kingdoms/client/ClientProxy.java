@@ -22,6 +22,6 @@ public final class ClientProxy extends ServerProxy
     @Override
     public EntityPlayer getPlayer(MessageContext ctx)
     {
-        return ctx.side == Side.CLIENT ? Minecraft.getMinecraft().thePlayer : super.getPlayer(ctx);
+        return ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayer(ctx);
     }
 }

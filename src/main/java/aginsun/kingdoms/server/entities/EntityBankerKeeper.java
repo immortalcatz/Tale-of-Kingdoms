@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_BANK;
+
 public final class EntityBankerKeeper extends EntityNPC
 {
     public EntityBankerKeeper(World world)
@@ -28,16 +30,16 @@ public final class EntityBankerKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if (this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
             if (!this.worldObj.isRemote)
             {
                 this.heal(100.0F);
-                entityplayer.addChatMessage(new ChatComponentTranslation("npc.banker.dialog.welcome"));
+                player.addChatMessage(new ChatComponentTranslation("npc.banker.dialog.welcome"));
             }
-            entityplayer.openGui(TaleOfKingdoms.instance, 0, worldObj, 0, 0, 0);
+            player.openGui(TaleOfKingdoms.instance, GUI_BANK, worldObj, 0, 0, 0);
         }
         return false;
     }

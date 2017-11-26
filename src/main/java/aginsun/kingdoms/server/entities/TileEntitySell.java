@@ -1,6 +1,5 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.FMLCommonHandler;

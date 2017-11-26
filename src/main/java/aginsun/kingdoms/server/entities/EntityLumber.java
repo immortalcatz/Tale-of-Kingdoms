@@ -1,12 +1,12 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiLumber;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_LUMBER;
 
 public final class EntityLumber extends EntityCreature
 {
@@ -40,16 +40,16 @@ public final class EntityLumber extends EntityCreature
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if (this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            if(!this.worldObj.isRemote)
+            if (!this.worldObj.isRemote)
             {
                 this.heal(100.0F);
-                entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.foreman.dialog")));
+                player.addChatMessage(new ChatComponentTranslation("npc.foreman.dialog"));
             }
-            Minecraft.getMinecraft().displayGuiScreen(new GuiLumber(entityplayer, this.worldObj));
+            player.openGui(TaleOfKingdoms.instance, GUI_LUMBER, worldObj, 0, 0, 0);
         }
         return true;
     }

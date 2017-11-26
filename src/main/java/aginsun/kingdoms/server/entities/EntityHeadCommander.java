@@ -1,6 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.client.gui.GuiReinforcementPool;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import cpw.mods.fml.client.FMLClientHandler;
 import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 import java.util.Random;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_HEADCOMMANDER;
 
 public final class EntityHeadCommander extends EntityNPC {
 
@@ -88,12 +91,10 @@ public final class EntityHeadCommander extends EntityNPC {
    }
 
    public boolean interact(EntityPlayer entityplayer) {
-      Minecraft minecraft = Minecraft.getMinecraft();
       if(!this.worldObj.isRemote) {
          entityplayer.addChatMessage(new ChatComponentText("Knight Commander: I will lead your troops to battle!"));
       }
-
-      minecraft.displayGuiScreen(new GuiReinforcementPool(entityplayer, this.worldObj, this));
+      player.openGui(TaleOfKingdoms.instance, GUI_HEADCOMMANDER, worldObj, 0, 0, 0);
       return true;
    }
 

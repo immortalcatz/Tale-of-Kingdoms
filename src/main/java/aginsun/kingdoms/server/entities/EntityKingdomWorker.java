@@ -15,7 +15,6 @@ public final class EntityKingdomWorker extends EntityNPC {
 
    public static ItemStack defaultHeldItem = new ItemStack(Items.iron_axe, 1);
    public Entity marker2 = null;
-   private World field_70170_p;
    private int counter = 0;
    public boolean move = false;
    public boolean isSwinging;
@@ -24,7 +23,6 @@ public final class EntityKingdomWorker extends EntityNPC {
 
    public EntityKingdomWorker(World world) {
       super(world, defaultHeldItem, 30.0F);
-      this.field_70170_p = world;
       this.isImmuneToFire = false;
    }
 
@@ -58,14 +56,14 @@ public final class EntityKingdomWorker extends EntityNPC {
       }
 
       this.swingProgress = (float)this.field_110158_av / (float)i;
-      if(this.field_70170_p.rand.nextInt(5) == 0) {
+      if(this.worldObj.rand.nextInt(5) == 0) {
          this.swingItem();
       }
 
       if(this.counter > 200) {
-         List list = this.field_70170_p.getEntitiesWithinAABB(EntityMarker2Keeper.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 16.0D, 16.0D));
+         List list = this.worldObj.getEntitiesWithinAABB(EntityMarker2Keeper.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 16.0D, 16.0D));
          if(!list.isEmpty()) {
-            this.marker2 = (Entity)list.get(this.field_70170_p.rand.nextInt(list.size()));
+            this.marker2 = (Entity)list.get(this.worldObj.rand.nextInt(list.size()));
             this.entityToAttack = this.marker2;
          }
 
@@ -77,11 +75,10 @@ public final class EntityKingdomWorker extends EntityNPC {
    }
 
    public void createMarker() {
-      this.marker2 = EntityList.createEntityByName("Marker2", this.field_70170_p);
+      this.marker2 = EntityList.createEntityByName("Marker2", this.worldObj);
       this.marker2.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
-      this.field_70170_p.spawnEntityInWorld(this.marker2);
+      this.worldObj.spawnEntityInWorld(this.marker2);
       defaultHeldItem = new ItemStack(Items.iron_pickaxe, 1);
-      System.out.println("marker");
    }
 
 }

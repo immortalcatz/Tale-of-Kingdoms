@@ -1,10 +1,12 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.client.gui.GuiShopList;
+import aginsun.kingdoms.server.TaleOfKingdoms;
+import aginsun.kingdoms.server.handlers.NetworkHandler;
+import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -12,17 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_SHOPLIST;
+
 public final class EntityFoodKeeper extends EntityNPC {
 
-   private World field_70170_p;
-   private Item[] items = new Item[200];
+   private ItemStack[] stacks = new ItemStack[200];
    private GoldKeeper gold;
    private StringTranslate st = new StringTranslate();
 
 
    public EntityFoodKeeper(World world) {
       super(world, null, 100.0F);
-      this.field_70170_p = world;
       this.isImmuneToFire = false;
    }
 
@@ -30,10 +32,9 @@ public final class EntityFoodKeeper extends EntityNPC {
       return false;
    }
 
-   public boolean interact(EntityPlayer entityplayer) {
-      if(this.canInteractWith(entityplayer)) {
+   public boolean interact(EntityPlayer player) {
+      if(this.canInteractWith(player)) {
          this.heal(100.0F);
-         Minecraft minecraft = Minecraft.getMinecraft();
          int i = 0;
          int j = 0;
          String s = "";
@@ -79,15 +80,17 @@ public final class EntityFoodKeeper extends EntityNPC {
                }
 
                if(j > 0 && !s1.equals("null.name") && !s1.equals(s2)) {
-                  this.items[i] = itemstack.getItem();
+                  stacks[i] = itemstack;
                   ++i;
                }
             }
          }
 
-         minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.field_70170_p, this.items));
+         if (!worldObj.isRemote)
+         {
+            NetworkHandler.INSTANCE.sendTo(new CPacketSyncShopItems(stacks), (EntityPlayerMP) player);
+         }
       }
-
       return true;
    }
 }

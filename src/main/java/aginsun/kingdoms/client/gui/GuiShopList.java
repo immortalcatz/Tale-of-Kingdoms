@@ -3,6 +3,8 @@ package aginsun.kingdoms.client.gui;
 import aginsun.kingdoms.api.gui.GuiButtonShop;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.TaleOfKingdoms;
+import aginsun.kingdoms.server.handlers.NetworkHandler;
+import aginsun.kingdoms.server.handlers.packets.SPacketBuy;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
@@ -10,6 +12,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -27,7 +30,7 @@ public final class GuiShopList extends GuiScreenToK
     public StringTranslate st = new StringTranslate();
     private int checkBounty = 0, currentGui = 0, price, shopcounter = 20;
     private Item[] item = new Item[200];
-    private Item[] items = new Item[200];
+    private ItemStack[] items = new ItemStack[200];
     private boolean reachedend = false;
     public Item itemSelected;
     private boolean goldchecker = false;
@@ -35,13 +38,13 @@ public final class GuiShopList extends GuiScreenToK
     public static TaleOfKingdoms taleofkingdoms;
     private final ResourceLocation texture = new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png");
 
-    public GuiShopList(EntityPlayer entityplayer1, World world, Item[] items)
+    public GuiShopList(EntityPlayer entityplayer1, World world, ItemStack[] items)
     {
         super(world);
         this.items = items;
         this.entityplayer = entityplayer1;
         this.setItemList();
-        this.itemSelected = this.items[0];
+        this.itemSelected = this.items[0].getItem();
     }
 
     public void setItemList()
@@ -51,23 +54,29 @@ public final class GuiShopList extends GuiScreenToK
 
         for (int j = 0; j <= 16; ++j)
         {
-            if(this.items[var3 + j] != null)
-            {
-                this.item[j + 1] = this.items[var3 + j];
-            }
-            else
-            {
-                this.item[j + 1] = null;
-            }
+           if (this.items[var3 + j] != null)
+           {
+              if (this.items[var3 + j].getItem() != null)
+              {
+                 this.item[j + 1] = this.items[var3 + j].getItem();
+              }
+              else
+              {
+                 this.item[j + 1] = null;
+              }
+           }
         }
 
-        if(this.items[var3 + 17] == null)
+        if (this.items[var3 + 17] != null)
         {
-            this.reachedend = true;
-        }
-        else
-        {
-            this.reachedend = false;
+           if (this.items[var3 + 17].getItem() == null)
+           {
+              this.reachedend = true;
+           }
+           else
+           {
+              this.reachedend = false;
+           }
         }
         this.initGui();
     }
@@ -562,8 +571,7 @@ public final class GuiShopList extends GuiScreenToK
          }
 
          if(j <= EconomyHandler.INSTANCE.getGoldTotal()) {
-            EntityItem entityitem = new EntityItem(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, var7);
-            this.world.spawnEntityInWorld(entityitem);
+             NetworkHandler.INSTANCE.sendToServer(new SPacketBuy(var7));
             EconomyHandler.INSTANCE.decreaseGold(j);
          } else {
             this.goldchecker = true;

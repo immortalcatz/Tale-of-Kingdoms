@@ -47,23 +47,23 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getColorFromItemStack(ItemStack stack, int parColorType)
+    public int getColorFromItemStack(ItemStack stack, int color)
     {
-        return (parColorType == 0) ? EntitiesType.getByID(stack.getItemDamage()).getBase() : EntitiesType.getByID(stack.getItemDamage()).getSpots();
+        return (color == 0) ? EntitiesType.getByID(stack.getItemDamage()).getBase() : EntitiesType.getByID(stack.getItemDamage()).getSpots();
     }
 
     @Override
-    public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer,
-                             World par3World, int par4, int par5, int par6, int par7, float par8,
+    public boolean onItemUse(ItemStack stack, EntityPlayer player,
+                             World world, int par4, int par5, int par6, int par7, float par8,
                              float par9, float par10)
     {
-        if (par3World.isRemote)
+        if (world.isRemote)
         {
             return true;
         }
         else
         {
-            Block block = par3World.getBlock(par4, par5, par6);
+            Block block = world.getBlock(par4, par5, par6);
             par4 += Facing.offsetsXForSide[par7];
             par5 += Facing.offsetsYForSide[par7];
             par6 += Facing.offsetsZForSide[par7];
@@ -74,18 +74,18 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
                 d0 = 0.5D;
             }
 
-            Entity entity = spawnEntity(par1ItemStack, par3World, par4 + 0.5D, par5 + d0, par6 + 0.5D);
+            Entity entity = spawnEntity(stack, world, par4 + 0.5D, par5 + d0, par6 + 0.5D);
 
             if (entity != null)
             {
-                if (entity instanceof EntityLivingBase && par1ItemStack.hasDisplayName())
+                if (entity instanceof EntityLivingBase && stack.hasDisplayName())
                 {
-                    ((EntityLiving)entity).setCustomNameTag(par1ItemStack.getDisplayName());
+                    ((EntityLiving)entity).setCustomNameTag(stack.getDisplayName());
                 }
 
-                if (!par2EntityPlayer.capabilities.isCreativeMode)
+                if (!player.capabilities.isCreativeMode)
                 {
-                    --par1ItemStack.stackSize;
+                    --stack.stackSize;
                 }
             }
 
@@ -94,20 +94,20 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
     {
-        if (par2World.isRemote)
+        if (world.isRemote)
         {
-            return par1ItemStack;
+            return stack;
         }
         else
         {
             MovingObjectPosition movingobjectposition =
-                    getMovingObjectPositionFromPlayer(par2World, par3EntityPlayer, true);
+                    getMovingObjectPositionFromPlayer(world, player, true);
 
             if (movingobjectposition == null)
             {
-                return par1ItemStack;
+                return stack;
             }
             else
             {
@@ -118,56 +118,56 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
                     int j = movingobjectposition.blockY;
                     int k = movingobjectposition.blockZ;
 
-                    if (!par2World.canMineBlock(par3EntityPlayer, i, j, k))
+                    if (!world.canMineBlock(player, i, j, k))
                     {
-                        return par1ItemStack;
+                        return stack;
                     }
 
-                    if (!par3EntityPlayer.canPlayerEdit(i, j, k, movingobjectposition
-                            .sideHit, par1ItemStack))
+                    if (!player.canPlayerEdit(i, j, k, movingobjectposition
+                            .sideHit, stack))
                     {
-                        return par1ItemStack;
+                        return stack;
                     }
 
-                    if (par2World.getBlock(i, j, k) instanceof BlockLiquid)
+                    if (world.getBlock(i, j, k) instanceof BlockLiquid)
                     {
-                        Entity entity = spawnEntity(par1ItemStack, par2World, i, j, k);
+                        Entity entity = spawnEntity(stack, world, i, j, k);
 
                         if (entity != null)
                         {
-                            if (entity instanceof EntityLivingBase && par1ItemStack
+                            if (entity instanceof EntityLivingBase && stack
                                     .hasDisplayName())
                             {
-                                ((EntityLiving)entity).setCustomNameTag(par1ItemStack
+                                ((EntityLiving)entity).setCustomNameTag(stack
                                         .getDisplayName());
                             }
 
-                            if (!par3EntityPlayer.capabilities.isCreativeMode)
+                            if (!player.capabilities.isCreativeMode)
                             {
-                                --par1ItemStack.stackSize;
+                                --stack.stackSize;
                             }
                         }
                     }
                 }
 
-                return par1ItemStack;
+                return stack;
             }
         }
     }
 
-    public Entity spawnEntity(ItemStack stack, World parWorld, double parX, double parY, double parZ)
+    public Entity spawnEntity(ItemStack stack, World world, double parX, double parY, double parZ)
     {
-        if (!parWorld.isRemote)
+        if (!world.isRemote)
         {
             String nameFull = "taleofkingdoms." + EntitiesType.getByID(stack.getItemDamage()).getName();
 
             if (EntityList.stringToClassMapping.containsKey(nameFull))
             {
-                EntityLiving entity = (EntityLiving) EntityList.createEntityByName(nameFull, parWorld);
+                EntityLiving entity = (EntityLiving) EntityList.createEntityByName(nameFull, world);
                 entity.setLocationAndAngles(parX, parY, parZ,
-                        MathHelper.wrapAngleTo180_float(parWorld.rand.nextFloat()
+                        MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
                                 * 360.0F), 0.0F);
-                parWorld.spawnEntityInWorld(entity);
+                world.spawnEntityInWorld(entity);
                 entity.onSpawnWithEgg(null);
                 entity.playLivingSound();
                 return entity;

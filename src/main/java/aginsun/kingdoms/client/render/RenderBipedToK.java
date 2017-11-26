@@ -12,15 +12,15 @@ public final class RenderBipedToK extends RenderBiped
 {
     private final String location;
 
-    public RenderBipedToK(ModelBiped par1ModelBiped, float par2, String location)
+    public RenderBipedToK(ModelBiped model, float par2, String location)
     {
-        super(par1ModelBiped, par2);
-        this.location = "textures/entities/" + location + ".png";
+        super(model, par2);
+        this.location = location;
     }
 
     @Override
     protected ResourceLocation getEntityTexture(final Entity entity)
     {
-        return new ResourceLocation("taleofkingdoms", location);
+        return new ResourceLocation("taleofkingdoms", "textures/entities/" + location + ".png");
     }
 }

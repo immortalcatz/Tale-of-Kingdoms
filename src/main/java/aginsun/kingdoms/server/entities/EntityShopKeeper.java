@@ -1,29 +1,24 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiShopList;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
+import aginsun.kingdoms.server.handlers.NetworkHandler;
+import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
+import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
+import net.minecraft.item.*;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
 public final class EntityShopKeeper extends EntityNPC
 {
-    private World world;
-    private Item[] items = new Item[200];
+    private ItemStack[] stacks = new ItemStack[200];
     private StringTranslate st = new StringTranslate();
 
     public EntityShopKeeper(World world)
     {
         super(world, null, 100.0F);
-        this.world = world;
         this.isImmuneToFire = false;
     }
 
@@ -52,12 +47,11 @@ public final class EntityShopKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if (this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
             this.heal(100.0F);
-            final Minecraft minecraft = Minecraft.getMinecraft();
             int i = 0, j = 0;
             String s = "";
 
@@ -65,35 +59,36 @@ public final class EntityShopKeeper extends EntityNPC
             {
                 boolean flag2 = false;
                 boolean flag3 = false;
-                if(Item.getItemById(k) != null)
+                if (Item.getItemById(k) != null)
                 {
-                    Item item = Item.getItemById(k);
-                    if(item instanceof ItemFood)
+                    ItemStack itemstack = new ItemStack(Item.getItemById(k), 1, 0);
+                    Item item = itemstack.getItem();
+                    if (item instanceof ItemFood)
                     {
                         flag2 = true;
                     }
 
-                    if(item instanceof ItemArmor)
+                    if (item instanceof ItemArmor)
                     {
                         flag3 = true;
                     }
 
-                    if(item instanceof ItemSword)
+                    if (item instanceof ItemSword)
                     {
                         flag3 = true;
                     }
 
-                    if(item instanceof ItemTool)
+                    if (item instanceof ItemTool)
                     {
                         flag3 = true;
                     }
 
-                    if(item != null)
+                    if (item != null)
                     {
                         s = item.getUnlocalizedName();
                     }
 
-                    if(s != null)
+                    if (s != null)
                     {
                         j = GoldKeeper.INSTANCE.priceItem(s);
                     }
@@ -101,7 +96,7 @@ public final class EntityShopKeeper extends EntityNPC
                     String s1 = item.getUnlocalizedName() + ".name";
                     String s2 = this.st.translateKey(s1);
                     Item l = Item.getItemById(k);
-                    if(l == Items.flint_and_steel || l == Items.coal || l == Items.stick ||
+                    if (l == Items.flint_and_steel || l == Items.coal || l == Items.stick ||
                             l == Items.gunpowder || l == Items.wheat || l == Items.painting ||
                             l == Items.sign || l == Items.wooden_door || l == Items.bucket ||
                             l == Items.water_bucket || l == Items.lava_bucket || l == Items.minecart ||
@@ -117,14 +112,18 @@ public final class EntityShopKeeper extends EntityNPC
                         j = 0;
                     }
 
-                    if(j > 0 && !s1.equals("null.name") && !s1.equals(s2))
+                    if (j > 0 && !s1.equals("null.name") && !s1.equals(s2))
                     {
-                        this.items[i] = Item.getItemById(k);
+                        this.stacks[i] = itemstack;
                         ++i;
                     }
                 }
             }
-            minecraft.displayGuiScreen(new GuiShopList(entityplayer, this.world, this.items));
+
+            if (!worldObj.isRemote)
+            {
+                NetworkHandler.INSTANCE.sendTo(new CPacketSyncShopItems(stacks), (EntityPlayerMP) player);
+            }
         }
         return true;
     }

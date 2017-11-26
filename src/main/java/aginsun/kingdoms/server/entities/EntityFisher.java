@@ -2,11 +2,14 @@ package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.client.gui.GuiFisher;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_FISHER;
 
 public final class EntityFisher extends EntityNPC
 {
@@ -28,11 +31,11 @@ public final class EntityFisher extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiFisher(entityplayer));
+            player.openGui(TaleOfKingdoms.instance, GUI_FISHER, worldObj, 0, 0, 0);
         }
         return true;
     }

@@ -11,19 +11,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public final class EntityMarkerKeeper extends Entity {
+public final class EntityMarkerKeeper extends Entity
+{
+    private int treelife = 8;
+    public EntityPlayer player;
 
-   public int treelife = 8;
-   public EntityPlayer player;
-   private World world;
-
-
-   public EntityMarkerKeeper(World world1) {
-      super(world1);
-      this.world = world1;
-      this.setSize(5.0E-6F, 5.0E-6F);
-      Minecraft minecraft = Minecraft.getMinecraft();
-      this.player = minecraft.thePlayer;
+    public EntityMarkerKeeper(World world1)
+    {
+        super(world1);
+        this.setSize(5.0E-6F, 5.0E-6F);
+        Minecraft minecraft = Minecraft.getMinecraft();
+        this.player = minecraft.thePlayer;
    }
 
    public boolean canBePushed() {
@@ -44,10 +42,10 @@ public final class EntityMarkerKeeper extends Entity {
             this.worldObj.setBlock((int)this.posX, i, (int)this.posZ, Blocks.air);
             ItemStack k = new ItemStack(Item.getItemById(17), 1, 0);
             EntityItem itemstack1 = new EntityItem(this.worldObj, this.player.posX, this.player.posY, this.player.posZ, k);
-            this.world.spawnEntityInWorld(itemstack1);
+            this.worldObj.spawnEntityInWorld(itemstack1);
             k = new ItemStack(Item.getItemById(17), 1, 0);
             itemstack1 = new EntityItem(this.worldObj, this.player.posX, this.player.posY, this.player.posZ, k);
-            this.world.spawnEntityInWorld(itemstack1);
+            this.worldObj.spawnEntityInWorld(itemstack1);
             ++i;
          }
 
@@ -55,10 +53,10 @@ public final class EntityMarkerKeeper extends Entity {
             this.worldObj.setBlock((int)this.posX, var6, (int)this.posZ, Blocks.air);
             ItemStack var7 = new ItemStack(Item.getItemById(17), 1, 0);
             EntityItem entityitem1 = new EntityItem(this.worldObj, this.player.posX, this.player.posY, this.player.posZ, var7);
-            this.world.spawnEntityInWorld(entityitem1);
+            this.worldObj.spawnEntityInWorld(entityitem1);
             var7 = new ItemStack(Item.getItemById(17), 1, 0);
             entityitem1 = new EntityItem(this.worldObj, this.player.posX, this.player.posY, this.player.posZ, var7);
-            this.world.spawnEntityInWorld(entityitem1);
+            this.worldObj.spawnEntityInWorld(entityitem1);
          }
 
          this.setDead();

@@ -9,51 +9,51 @@ import net.minecraft.item.ItemStack;
 
 public final class ContainerSell extends Container
 {
-    private TileEntitySell tile_entity;
+    private TileEntitySell entitySell;
 
-    public ContainerSell(TileEntitySell tile_entity, InventoryPlayer player_inventory)
+    public ContainerSell(TileEntitySell entitySell, InventoryPlayer inventoryPlayer)
     {
-        this.tile_entity = tile_entity;
-        this.addSlotToContainer(new Slot(tile_entity, 0, 116, 35));
-        this.bindPlayerInventory(player_inventory);
+        this.entitySell = entitySell;
+        this.addSlotToContainer(new Slot(entitySell, 0, 116, 35));
+        this.bindPlayerInventory(inventoryPlayer);
     }
 
     @Override
     public boolean canInteractWith(EntityPlayer player)
     {
-        return this.tile_entity.isUseableByPlayer(player);
+        return this.entitySell.isUseableByPlayer(player);
     }
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int i)
     {
         ItemStack stack = null;
-        Slot slot_object = (Slot) this.inventorySlots.get(i);
+        Slot slot = (Slot) this.inventorySlots.get(i);
 
-        if(slot_object != null && slot_object.getHasStack())
+        if (slot != null && slot.getHasStack())
         {
-            ItemStack stack_in_slot = slot_object.getStack();
-            stack = stack_in_slot.copy();
+            ItemStack stackInslot = slot.getStack();
+            stack = stackInslot.copy();
 
-            if(i == 0)
+            if (i == 0)
             {
-                if(!this.mergeItemStack(stack_in_slot, 1, this.inventorySlots.size(), true))
+                if (!this.mergeItemStack(stackInslot, 1, this.inventorySlots.size(), true))
                 {
                     return null;
                 }
             }
-            else if(!this.mergeItemStack(stack_in_slot, 0, 1, false))
+            else if (!this.mergeItemStack(stackInslot, 0, 1, false))
             {
                 return null;
             }
 
-            if(stack_in_slot.stackSize == 0)
+            if(stackInslot.stackSize == 0)
             {
-                slot_object.putStack(null);
+                slot.putStack(null);
             }
             else
             {
-                slot_object.onSlotChanged();
+                slot.onSlotChanged();
             }
         }
         return stack;
@@ -62,15 +62,15 @@ public final class ContainerSell extends Container
     private void bindPlayerInventory(InventoryPlayer inventoryPlayer)
     {
         int i;
-        for(i = 0; i < 3; ++i)
+        for (i = 0; i < 3; ++i)
         {
-            for(int j = 0; j < 9; ++j)
+            for (int j = 0; j < 9; ++j)
             {
                 this.addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
             }
         }
 
-        for(i = 0; i < 9; ++i)
+        for (i = 0; i < 9; ++i)
         {
             this.addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
         }

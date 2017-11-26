@@ -5,7 +5,7 @@ import java.util.List;
 
 public final class Buildings
 {
-    private List<Boolean> buildingList = new ArrayList<Boolean>();
+    private List<Boolean> buildingList = new ArrayList<>();
     public static final Buildings INSTANCE = new Buildings();
     public boolean
             createGuild, kingdomCreated, smallhouse1, smallhouse2, largehouse1, well, itemshop, stockmarket, isTier2,
@@ -16,7 +16,7 @@ public final class Buildings
 
     public void registerBuildings()
     {
-        buildingList.clear();
+        clear();
         addBuilding(createGuild);
         addBuilding(kingdomCreated);
         addBuilding(smallhouse1);
@@ -90,6 +90,11 @@ public final class Buildings
     public List<Boolean> getBuildingList()
     {
         return buildingList;
+    }
+
+    public void clear()
+    {
+        buildingList.clear();
     }
 
     public void setBuildingList(final List<Boolean> buildingList)

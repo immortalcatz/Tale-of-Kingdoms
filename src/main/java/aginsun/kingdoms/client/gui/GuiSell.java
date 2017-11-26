@@ -35,7 +35,7 @@ public final class GuiSell extends GuiContainer
     @Override
     protected void keyTyped(char character, int code)
     {
-        if(character == 1 || code == this.mc.gameSettings.keyBindInventory.getKeyCode())
+        if (character == 1 || code == this.mc.gameSettings.keyBindInventory.getKeyCode())
         {
             this.mc.thePlayer.closeScreen();
         }

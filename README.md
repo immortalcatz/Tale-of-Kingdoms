@@ -8,7 +8,7 @@ Not official port for Minecraft 1.7.10.
 * A lot of bugs.
 
 ### TODO:
-* Add server side support.
+* Add server side support. Ready 78%
 * Recycle castle.
 * Add full localization.
 * ~~Add IEEP instead worthy and gold(storage in player for MP).~~

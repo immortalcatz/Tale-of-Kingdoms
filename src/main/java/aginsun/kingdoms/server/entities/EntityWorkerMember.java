@@ -57,10 +57,6 @@ public final class EntityWorkerMember extends EntityNPC {
 
    public boolean interact(EntityPlayer entityplayer) {
       boolean flag = false;
-      if(this.worktype == 0) {
-         Minecraft j = Minecraft.getMinecraft();
-         j.displayGuiScreen(new GuiWorker(entityplayer, this));
-      }
 
       int var10;
       if(!this.world.loadedEntityList.isEmpty()) {
@@ -175,8 +171,7 @@ public final class EntityWorkerMember extends EntityNPC {
       if(this.worktype == 1) {
          List f = this.world.getEntitiesWithinAABB(EntityMarkerKeeper.class, AxisAlignedBB.getBoundingBox(this.posX, this.posY, this.posZ, this.posX + 1.0D, this.posY + 1.0D, this.posZ + 1.0D).expand(16.0D, 16.0D, 16.0D));
          if(!f.isEmpty()) {
-            Entity j = (Entity)f.get(this.world.rand.nextInt(f.size()));
-            this.entityToAttack = j;
+            this.entityToAttack = (Entity)f.get(this.world.rand.nextInt(f.size()));
          } else {
             this.follow = true;
          }
@@ -193,8 +188,7 @@ public final class EntityWorkerMember extends EntityNPC {
       }
 
       if(this.follow && this.worktype == 2 && this.marker2 != null) {
-         Entity var6 = this.marker2;
-         this.entityToAttack = var6;
+         this.entityToAttack = this.marker2;
       }
 
       if(this.entityToAttack != null) {
@@ -211,7 +205,7 @@ public final class EntityWorkerMember extends EntityNPC {
    protected void attackEntity(Entity entity, float f) {
       Object obj;
       if(entity instanceof EntityMarkerKeeper) {
-         obj = (EntityMarkerKeeper)entity;
+         obj = entity;
       } else {
          obj = entity;
       }

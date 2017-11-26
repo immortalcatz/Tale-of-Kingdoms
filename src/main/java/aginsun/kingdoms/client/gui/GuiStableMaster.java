@@ -36,7 +36,7 @@ public final class GuiStableMaster extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                if(EconomyHandler.INSTANCE.getGoldTotal() >= 1500)
+                if (EconomyHandler.INSTANCE.getGoldTotal() >= 1500)
                 {
                     this.player.dropItem(Items.saddle, 1);
                     this.player.dropItem(Items.lead, 1);
@@ -50,7 +50,7 @@ public final class GuiStableMaster extends GuiScreenToK
                 }
                 break;
             case 2:
-                if(EconomyHandler.INSTANCE.getGoldTotal() >= 7500)
+                if (EconomyHandler.INSTANCE.getGoldTotal() >= 7500)
                 {
                     this.player.dropItem(Items.diamond_horse_armor, 1);
                     this.player.dropItem(Items.wheat, 64);

@@ -1,10 +1,7 @@
 package aginsun.kingdoms.client.handlers;
 
-import aginsun.kingdoms.client.gui.GuiStartConquest;
-import aginsun.kingdoms.server.PlayerProvider;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
-import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -14,9 +11,12 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_CONQUEST;
 
 public final class ClientEvents
 {
@@ -51,9 +51,10 @@ public final class ClientEvents
         {
             if (Keyboard.isKeyDown(key.getKeyCode()))
             {
-                if (FMLClientHandler.instance().getClient().currentScreen == null)
+                EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+                if (Minecraft.getMinecraft().currentScreen == null)
                 {
-                    FMLCommonHandler.instance().showGuiScreen(new GuiStartConquest(Minecraft.getMinecraft()));
+                    player.openGui(TaleOfKingdoms.instance, GUI_CONQUEST, player.worldObj, 0, 0, 0);
                 }
             }
         }

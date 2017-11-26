@@ -1,10 +1,7 @@
 package aginsun.kingdoms.server;
 
 import aginsun.kingdoms.server.commands.CommandTOK;
-import aginsun.kingdoms.server.handlers.EntitiesRegister;
-import aginsun.kingdoms.server.handlers.GuiHandler;
-import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.ServerEvents;
+import aginsun.kingdoms.server.handlers.*;
 import aginsun.kingdoms.server.items.ItemCoin;
 import aginsun.kingdoms.server.items.ItemSpawnEgg;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -22,6 +19,7 @@ public class ServerProxy
 
     public void pre(FMLPreInitializationEvent e)
     {
+        ConfigurationHandler.INSTANCE.register();
         EntitiesRegister.INSTANCE.register();
         GameRegistry.registerItem(coins, "Coints");
         GameRegistry.registerItem(new ItemSpawnEgg(), "MonsterPlacer");

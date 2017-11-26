@@ -1,10 +1,9 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.client.gui.GuiBuildScreen;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.handlers.Buildings;
 import aginsun.kingdoms.server.handlers.resources.GloryHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -12,6 +11,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_BUILD;
 
 public final class EntityBuilderKeeper extends EntityNPC
 {
@@ -38,24 +39,33 @@ public final class EntityBuilderKeeper extends EntityNPC
     @Override
     public boolean interact(EntityPlayer player)
     {
-        if (!worldObj.isRemote)
+        if (this.canInteractWith(player))
         {
-            if (this.canInteractWith(player) && GloryHandler.INSTANCE.getGlory() < 10000.0F && !Buildings.INSTANCE.kingdomCreated)
+            if (GloryHandler.INSTANCE.getGlory() < 10000 && !Buildings.INSTANCE.kingdomCreated)
             {
-                player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_1"));
+                if (!worldObj.isRemote)
+                {
+                    player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_1"));
+                }
             }
 
             if (!this.follow || setted || GloryHandler.INSTANCE.getGlory() >= 10000.0F && Buildings.INSTANCE.kingdomCreated)
             {
-                player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_2"));
-                FMLCommonHandler.instance().showGuiScreen(new GuiBuildScreen(worldObj));
-                this.follow = true;
-                this.setted = true;
+                if (!worldObj.isRemote)
+                {
+                    player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_2"));
+                    this.follow = true;
+                    this.setted = true;
+                }
+                player.openGui(TaleOfKingdoms.instance, GUI_BUILD, worldObj, 0, 0, 0);
             }
             else if (this.canInteractWith(player) && GloryHandler.INSTANCE.getGlory() >= 10000.0F && this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
             {
-                player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_3"));
-                this.follow = false;
+                if (!worldObj.isRemote)
+                {
+                    player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_3"));
+                    this.follow = false;
+                }
             }
         }
         return true;
@@ -67,7 +77,7 @@ public final class EntityBuilderKeeper extends EntityNPC
         super.onLivingUpdate();
         if (!this.follow && !Buildings.INSTANCE.kingdomCreated)
         {
-            EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            /*EntityPlayer player = Minecraft.getMinecraft().thePlayer;
 
             if (player != null)
             {
@@ -82,7 +92,7 @@ public final class EntityBuilderKeeper extends EntityNPC
                     pathentity = null;
                 }
                 this.setPathToEntity(pathentity);
-            }
+            }*/
         }
     }
 }

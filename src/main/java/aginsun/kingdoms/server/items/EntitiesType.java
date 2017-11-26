@@ -44,6 +44,12 @@ public enum EntitiesType
     private String name;
     private int base, spots;
 
+    /**
+     * EntitiesType
+     * @param name - entity name for spawn
+     * @param base - base colour for spawn egg
+     * @param spots - spots colour for spawn egg
+     */
     EntitiesType(String name, int base, int spots)
     {
         this.name = name;

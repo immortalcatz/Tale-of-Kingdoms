@@ -36,12 +36,12 @@ public final class GuiLibrary extends GuiScreenToK
     @Override
     protected void actionPerformed(GuiButton guibutton)
     {
-        if(guibutton.id == 1)
+        if (guibutton.id == 1)
         {
             if (this.get.studied)
             {
                 this.world.spawnEntityInWorld(new EntityXPOrb(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, 150));
-                if(!this.world.isRemote)
+                if (!this.world.isRemote)
                 {
                     this.entityplayer.addChatMessage(new ChatComponentText("You have gained experience."));
                 }
@@ -55,12 +55,12 @@ public final class GuiLibrary extends GuiScreenToK
             this.goldchecker = false;
         }
 
-        if(guibutton.id == 2)
+        if (guibutton.id == 2)
         {
-            if(500 + PlayerProvider.get(entityplayer).libraryInvestment * 2 <= EconomyHandler.INSTANCE.getGoldTotal())
+            if (500 + PlayerProvider.get(entityplayer).libraryInvestment * 2 <= EconomyHandler.INSTANCE.getGoldTotal())
             {
                 PlayerProvider.get(entityplayer).libraryInvestment += 5;
-                if(!this.world.isRemote)
+                if (!this.world.isRemote)
                 {
                     this.entityplayer.addChatMessage(new ChatComponentText("Tax is now increased by " + PlayerProvider.get(entityplayer).libraryInvestment + " gold per house."));
                 }
@@ -73,13 +73,13 @@ public final class GuiLibrary extends GuiScreenToK
             }
         }
 
-        if(guibutton.id == 3)
+        if (guibutton.id == 3)
         {
             this.mc.displayGuiScreen(null);
             this.goldchecker = false;
         }
 
-        if(guibutton.id == 4)
+        if (guibutton.id == 4)
         {
             ;
         }

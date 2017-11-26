@@ -2,6 +2,8 @@ package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.Buildings;
+import aginsun.kingdoms.server.handlers.NetworkHandler;
+import aginsun.kingdoms.server.handlers.packets.SPacketBuild;
 import aginsun.kingdoms.server.handlers.schematic.Schematic;
 import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -12,14 +14,14 @@ import net.minecraft.entity.player.EntityPlayer;
 
 public final class GuiStartConquest extends GuiScreenToK
 {
-    private Minecraft mc;
+    private Minecraft mc = Minecraft.getMinecraft();
     private GuiButton start;
     private EntityPlayer player;
 
-    public GuiStartConquest(Minecraft minecraft)
+    public GuiStartConquest(EntityPlayer player)
     {
         super(null);
-        this.mc = minecraft;
+        this.player = player;
     }
 
     @Override
@@ -28,9 +30,11 @@ public final class GuiStartConquest extends GuiScreenToK
         this.buttonList.clear();
         start = new GuiButton(1, this.width / 2 - 70, this.height / 2 + 40, 140, 20, I18n.format("gui.conquest.start"));
 
-        if (Buildings.INSTANCE.getBuilding(0))
-            start.enabled = false;
+        //if (Buildings.INSTANCE.getBuilding(0))
+        {
+            //start.enabled = false;
             start.displayString = ChatFormatting.RED + I18n.format("gui.conquest.created");
+        }
 
         this.buttonList.add(start);
         this.buttonList.add(new GuiButton(2, this.width / 2 - 70, this.height / 2 + 70, 140, 20, I18n.format("gui.cancel")));
@@ -39,16 +43,16 @@ public final class GuiStartConquest extends GuiScreenToK
     @Override
     protected void actionPerformed(GuiButton guibutton)
     {
-        if(guibutton.id == 1)
+        if (guibutton.id == 1)
         {
-            this.player = this.mc.thePlayer;
-            Schematic schematic = (new Schematic("/schematics/GuildCastle")).setPosition((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ).setSpeed(300);
-            SchematicHandler.INSTANCE.addBuilding(schematic);
-            Buildings.INSTANCE.setBuildingTrue(0);
+            // START
+            //TODO: sendToPlayer for individual of the Kingdom
+            NetworkHandler.INSTANCE.sendToServer(new SPacketBuild((short) 0));
+            // END
             this.mc.displayGuiScreen(null);
             this.mc.displayGuiScreen(new GuiToKLoading());
         }
-        else if(guibutton.id == 2)
+        else if (guibutton.id == 2)
         {
             this.mc.displayGuiScreen(null);
         }

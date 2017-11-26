@@ -75,14 +75,14 @@ public final class EntityLightningBoltAttack extends EntityLightningBolt {
          double var7 = 3.0D;
          List var8 = this.worldObj.getEntitiesWithinAABBExcludingEntity(this, AxisAlignedBB.getBoundingBox(this.posX - var7, this.posY - var7, this.posZ - var7, this.posX + var7, this.posY + 6.0D + var7, this.posZ + var7));
 
-         for(int l = 0; l < var8.size(); ++l) {
+         for (Object aVar8 : var8) {
             boolean flag = true;
-            Entity entity = (Entity)var8.get(l);
-            if(entity instanceof EntityDefendBandit || entity instanceof EntityDefendMage || entity instanceof EntityDefendKnight || entity instanceof EntityDefendPaladin || entity instanceof EntityDefendWarrior || entity instanceof EntityDefendArcher || entity instanceof EntityHired || entity instanceof EntityPlayer || entity instanceof EntityPlayerSP) {
+            Entity entity = (Entity) aVar8;
+            if (entity instanceof EntityDefendBandit || entity instanceof EntityDefendMage || entity instanceof EntityDefendKnight || entity instanceof EntityDefendPaladin || entity instanceof EntityDefendWarrior || entity instanceof EntityDefendArcher || entity instanceof EntityHired || entity instanceof EntityPlayer || entity instanceof EntityPlayerSP) {
                flag = false;
             }
 
-            if(flag) {
+            if (flag) {
                entity.setFire(8);
             }
          }

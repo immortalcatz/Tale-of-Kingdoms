@@ -22,7 +22,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class EntityDefendBandit extends EntityNPC {
+public final class EntityDefendBandit extends EntityNPC {
 
    private EntityPlayer player;
    private boolean follow, checkPlayer, createdMarker;

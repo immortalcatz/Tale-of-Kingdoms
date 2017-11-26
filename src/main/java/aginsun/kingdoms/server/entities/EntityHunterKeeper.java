@@ -1,11 +1,12 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiHunter;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_HUNTER;
 
 public final class EntityHunterKeeper extends EntityNPC
 {
@@ -28,18 +29,16 @@ public final class EntityHunterKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            this.heal(100.0F);
-            final Minecraft minecraft = Minecraft.getMinecraft();
-
-            if(!this.worldObj.isRemote)
+            if (!this.worldObj.isRemote)
             {
-                entityplayer.addChatMessage(new ChatComponentText("Guild Master: Welcome to the order, hero."));
+                this.heal(100.0F);
+                player.addChatMessage(new ChatComponentText("Guild Master: Welcome to the order, hero."));
             }
-            minecraft.displayGuiScreen(new GuiHunter(entityplayer, this.worldObj));
+            player.openGui(TaleOfKingdoms.instance, GUI_HUNTER, worldObj, 0, 0, 0);
         }
         return true;
     }

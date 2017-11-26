@@ -44,18 +44,19 @@ public final class EntityLibraryKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if(this.canInteractWith(player))
         {
-            this.heal(100.0F);
-            final Minecraft minecraft = Minecraft.getMinecraft();
-
-            if(!this.worldObj.isRemote)
+            if (!this.worldObj.isRemote)
             {
-                entityplayer.addChatMessage(new ChatComponentText("Librarian: You picked a good day to visit the library, young one"));
+                this.heal(100.0F);
+                player.addChatMessage(new ChatComponentText("Librarian: You picked a good day to visit the library, young one"));
             }
-            minecraft.displayGuiScreen(new GuiLibrary(entityplayer, this.worldObj, this));
+            else
+            {
+                Minecraft.getMinecraft().displayGuiScreen(new GuiLibrary(player, this.worldObj, this));
+            }
         }
         return true;
     }

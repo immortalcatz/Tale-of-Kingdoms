@@ -1,12 +1,13 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiStableMaster;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_STABLE;
 
 public final class EntityStableMaster extends EntityNPC
 {
@@ -28,11 +29,11 @@ public final class EntityStableMaster extends EntityNPC
     }
 
     @Override
-    public boolean interact(final EntityPlayer entityplayer)
+    public boolean interact(final EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            Minecraft.getMinecraft().displayGuiScreen(new GuiStableMaster(entityplayer, entityplayer.worldObj));
+            player.openGui(TaleOfKingdoms.instance, GUI_STABLE, worldObj, 0, 0, 0);
         }
         return true;
     }

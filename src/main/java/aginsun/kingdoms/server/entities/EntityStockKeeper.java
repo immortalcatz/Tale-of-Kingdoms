@@ -1,20 +1,18 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiStockList;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_STOCK;
 
 public final class EntityStockKeeper extends EntityNPC
 {
-    private World world;
-
     public EntityStockKeeper(World world)
     {
         super(world, null, 100.0F);
-        this.world = world;
         this.isImmuneToFire = false;
     }
 
@@ -31,17 +29,16 @@ public final class EntityStockKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            this.heal(100.0F);
-            Minecraft minecraft = Minecraft.getMinecraft();
-            if(!this.world.isRemote)
+            if (!this.worldObj.isRemote)
             {
-                entityplayer.addChatMessage(new ChatComponentText("Stock Keeper: Here is my stock for today!"));
+                this.heal(100.0F);
+                player.addChatMessage(new ChatComponentTranslation("npc.stockKeeper.dialog"));
             }
-            minecraft.displayGuiScreen(new GuiStockList(entityplayer, this.world));
+            player.openGui(TaleOfKingdoms.instance, GUI_STOCK, worldObj, 0, 0, 0);
         }
         return true;
     }

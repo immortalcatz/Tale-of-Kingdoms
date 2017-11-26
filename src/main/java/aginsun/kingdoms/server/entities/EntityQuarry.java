@@ -1,12 +1,15 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.client.gui.GuiQuarry;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_QUARRY;
 
 public final class EntityQuarry extends EntityCreature
 {
@@ -40,18 +43,16 @@ public final class EntityQuarry extends EntityCreature
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            this.heal(100.0F);
-            final Minecraft minecraft = Minecraft.getMinecraft();
-
-            if(!this.worldObj.isRemote)
+            if (!this.worldObj.isRemote)
             {
-                entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.foreman.dialog")));
+                this.heal(100.0F);
+                player.addChatMessage(new ChatComponentText(I18n.format("npc.foreman.dialog")));
             }
-            minecraft.displayGuiScreen(new GuiQuarry(entityplayer, this.worldObj));
+            player.openGui(TaleOfKingdoms.instance, GUI_QUARRY, worldObj, 0, 0, 0);
         }
         return true;
     }

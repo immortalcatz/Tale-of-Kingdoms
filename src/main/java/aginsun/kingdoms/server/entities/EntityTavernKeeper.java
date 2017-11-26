@@ -1,20 +1,19 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiTavernGame;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_TAVERN;
 
 public final class EntityTavernKeeper extends EntityNPC
 {
-    private World worldObj;
-
     public EntityTavernKeeper(World world)
     {
         super(world, null, 100.0F);
-        this.worldObj = world;
         this.isImmuneToFire = false;
     }
 
@@ -31,16 +30,15 @@ public final class EntityTavernKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            if(!worldObj.isRemote)
+            if (!worldObj.isRemote)
             {
-                entityplayer.addChatMessage(new ChatComponentText("One-Eyed Gambler: Feeling a bit lucky eh?"));
+                player.addChatMessage(new ChatComponentTranslation("npc.tavernKeeper.dialog"));
             }
-            Minecraft minecraft = Minecraft.getMinecraft();
-            minecraft.displayGuiScreen(new GuiTavernGame(entityplayer, worldObj));
+            player.openGui(TaleOfKingdoms.instance, GUI_TAVERN, worldObj, 0, 0, 0);
         }
         return true;
     }

@@ -1,14 +1,14 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiMageHall;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_MAGEHALL;
 
 public final class EntityMageKeeper extends EntityNPC
 {
@@ -37,16 +37,16 @@ public final class EntityMageKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(entityplayer))
+        if (this.canInteractWith(player))
         {
-            if(!worldObj.isRemote)
+            if (!worldObj.isRemote)
             {
                 this.heal(100.0F);
-                entityplayer.addChatMessage(new ChatComponentText(I18n.format("npc.headMage.dialog")));
+                player.addChatMessage(new ChatComponentTranslation("npc.headMage.dialog"));
             }
-            Minecraft.getMinecraft().displayGuiScreen(new GuiMageHall(entityplayer, worldObj));
+            player.openGui(TaleOfKingdoms.instance, GUI_MAGEHALL, worldObj, 0, 0, 0);
         }
         return true;
     }

@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 public final class UltimateHelper
 {
     public static final UltimateHelper INSTANCE = new UltimateHelper();
-    @SideOnly(Side.CLIENT)
     public static final ResourceLocation BACKGROUND = new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png");
 
     public Entity getEntity(String name, World world)
@@ -24,7 +23,6 @@ public final class UltimateHelper
     {
         return createText(text, ChatFormatting.WHITE);
     }
-
     public String createText(String text, ChatFormatting formatting)
     {
         return formatting + I18n.format(text);

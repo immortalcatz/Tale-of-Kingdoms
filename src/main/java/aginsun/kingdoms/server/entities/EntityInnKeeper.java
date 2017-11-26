@@ -1,11 +1,12 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiInnMenu;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
+import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
+
+import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_INN;
 
 public class EntityInnKeeper extends EntityNPC
 {
@@ -22,17 +23,15 @@ public class EntityInnKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer entityplayer)
+    public boolean interact(EntityPlayer player)
     {
-        if(!this.worldObj.isRemote)
+        if (this.canInteractWith(player))
         {
-            entityplayer.addChatMessage(new ChatComponentText("House Keeper: Would you like to take a rest sir?"));
-        }
-
-        if(this.canInteractWith(entityplayer))
-        {
-            Minecraft minecraft = Minecraft.getMinecraft();
-            minecraft.displayGuiScreen(new GuiInnMenu(entityplayer, this.worldObj));
+            if (!this.worldObj.isRemote)
+            {
+                player.addChatMessage(new ChatComponentText("House Keeper: Would you like to take a rest sir?"));
+            }
+            player.openGui(TaleOfKingdoms.instance, GUI_INN, worldObj, 0, 0, 0);
         }
         return true;
     }

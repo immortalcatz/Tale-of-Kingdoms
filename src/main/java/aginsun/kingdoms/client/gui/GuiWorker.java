@@ -57,10 +57,10 @@ public final class GuiWorker extends GuiScreenToK
     }
 
     @Override
-    public void drawScreen(int i, int j, float f)
+    public void drawScreen(int x, int y, float partial)
     {
         this.drawDefaultBackground();
-        super.drawScreen(i, j, f);
+        super.drawScreen(x, y, partial);
         this.drawString(this.fontRendererObj, I18n.format("gui.worker.title"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.worker.title")) / 2, 60, 16777215);
     }
 }

@@ -4,6 +4,7 @@ import aginsun.kingdoms.server.handlers.Buildings;
 import aginsun.kingdoms.server.handlers.resources.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -11,6 +12,7 @@ import net.minecraftforge.common.IExtendedEntityProperties;
 public final class PlayerProvider implements IExtendedEntityProperties
 {
     public int libraryInvestment, burningVillages, reficulHoles, bindLight;
+    public ItemStack[] stacks;
     private EconomyHandler economy = EconomyHandler.INSTANCE;
     private GloryHandler glory = GloryHandler.INSTANCE;
     private GuildHandler guilds = GuildHandler.INSTANCE;

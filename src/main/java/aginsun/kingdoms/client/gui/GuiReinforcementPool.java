@@ -16,7 +16,7 @@ public final class GuiReinforcementPool extends GuiScreenToK
     private float soldierNumber;
     private GuiPriceBar knightPool;
 
-    public GuiReinforcementPool(EntityPlayer entityplayer1, World world, EntityCreature entitycreature)
+    public GuiReinforcementPool(World world)
     {
         super(world);
     }
@@ -32,15 +32,15 @@ public final class GuiReinforcementPool extends GuiScreenToK
     @Override
     protected void actionPerformed(GuiButton guibutton)
     {
-      if(guibutton.id == 0) {
+      if (guibutton.id == 0) {
          ;
       }
 
-      if(guibutton.id == 1) {
+      if (guibutton.id == 1) {
          ;
       }
 
-      if(guibutton.id == 2) {
+      if (guibutton.id == 2) {
          this.mc.displayGuiScreen(null);
       }
     }
