@@ -1,5 +1,6 @@
 package aginsun.kingdoms.server.items;
 
+import aginsun.kingdoms.server.handlers.UltimateHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -159,11 +160,11 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
     {
         if (!world.isRemote)
         {
-            String nameFull = "taleofkingdoms." + EntitiesType.getByID(stack.getItemDamage()).getName();
+            String nameFull = EntitiesType.getByID(stack.getItemDamage()).getName();
 
-            if (EntityList.stringToClassMapping.containsKey(nameFull))
+            if (EntityList.stringToClassMapping.containsKey("taleofkingdoms." + nameFull))
             {
-                EntityLiving entity = (EntityLiving) EntityList.createEntityByName(nameFull, world);
+                EntityLiving entity = (EntityLiving) UltimateHelper.INSTANCE.getEntity(nameFull, world);
                 entity.setLocationAndAngles(parX, parY, parZ,
                         MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
                                 * 360.0F), 0.0F);

@@ -1,12 +1,9 @@
 package aginsun.kingdoms.server.entities;
 
-import aginsun.kingdoms.client.gui.GuiPriest;
 import aginsun.kingdoms.server.TaleOfKingdoms;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_PRIEST;
@@ -50,7 +47,7 @@ public final class EntityPriestKeeper extends EntityCreature
             if (!this.worldObj.isRemote)
             {
                 this.heal(100.0F);
-                player.addChatMessage(new ChatComponentText(I18n.format("npc.headPriest.dialog")));
+                player.addChatMessage(new ChatComponentTranslation("npc.headPriest.dialog"));
             }
             player.openGui(TaleOfKingdoms.instance, GUI_PRIEST, worldObj, 0, 0, 0);
         }

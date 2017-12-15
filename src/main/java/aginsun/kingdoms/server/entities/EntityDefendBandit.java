@@ -1,15 +1,10 @@
 package aginsun.kingdoms.server.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import java.util.List;
-
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
@@ -22,42 +17,51 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public final class EntityDefendBandit extends EntityNPC {
+import java.util.List;
 
-   private EntityPlayer player;
+public final class EntityDefendBandit extends EntityNPC
+{
    private boolean follow, checkPlayer, createdMarker;
    private EntityDefendMarker defend;
 
 
    public EntityDefendBandit(World world) {
       super(world, new ItemStack(Items.bow), 40.0F);
-      this.player = FMLClientHandler.instance().getClient().thePlayer;
       this.follow = false;
       this.checkPlayer = true;
       this.createdMarker = false;
    }
 
-   public void onLivingUpdate() {
+   public void onLivingUpdate()
+   {
       super.onLivingUpdate();
-      Minecraft minecraft = Minecraft.getMinecraft();
-      EntityClientPlayerMP entityplayersp = minecraft.thePlayer;
       float f1;
       PathEntity pathentity1;
-      if(this.follow) {
-         if(entityplayersp != null) {
-            f1 = entityplayersp.getDistanceToEntity(this);
-            if(f1 > 5.0F && f1 < 18.0F) {
-               pathentity1 = this.worldObj.getPathEntityToEntity(this, entityplayersp, 16.0F, true, false, false, true);
-            } else {
-               pathentity1 = null;
-            }
+      if(this.follow)
+      {
+          List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-            this.setPathToEntity(pathentity1);
-         }
+          for (Entity entity : list)
+          {
+              if (entity instanceof EntityPlayer)
+              {
+                  EntityPlayer player = (EntityPlayer) entity;
+
+                  if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
+                  {
+                      pathentity1 = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+                  }
+                  else
+                  {
+                      pathentity1 = null;
+                  }
+
+                  this.setPathToEntity(pathentity1);
+              }
+          }
       } else {
          if(!this.createdMarker) {
-            System.out.println("Defend Location");
-            this.defend = (EntityDefendMarker)EntityList.createEntityByName("taleofkingdoms.DefendMark", this.worldObj);
+            this.defend = (EntityDefendMarker) UltimateHelper.INSTANCE.getEntity("DefendMark", this.worldObj);
             this.defend.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.worldObj.spawnEntityInWorld(this.defend);
             this.createdMarker = true;
@@ -78,7 +82,6 @@ public final class EntityDefendBandit extends EntityNPC {
    }
 
    public boolean interact(EntityPlayer entityplayer) {
-      this.player = entityplayer;
       if(!this.follow) {
          this.follow = true;
          if(!worldObj.isRemote) {
@@ -101,16 +104,20 @@ public final class EntityDefendBandit extends EntityNPC {
       super.updateEntityActionState();
       Entity entity1;
       if(this.checkPlayer) {
-         for(int list = 0; list < this.worldObj.loadedEntityList.size(); ++list) {
-            entity1 = (Entity)this.worldObj.loadedEntityList.get(list);
-            if(entity1 instanceof EntityPlayer) {
-               this.player = (EntityPlayer)entity1;
-            }
-         }
+          List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-         if(this.player != null && this.player.getDistanceSqToEntity(this) <= 64.0D) {
-            this.follow = true;
-         }
+          for (Entity entity : list)
+          {
+              if (entity instanceof EntityPlayer)
+              {
+                  EntityPlayer player = (EntityPlayer) entity;
+
+                  if (player != null && player.getDistanceSqToEntity(this) <= 64.0D)
+                  {
+                      this.follow = true;
+                  }
+              }
+          }
       }
 
       this.checkPlayer = false;
@@ -143,7 +150,6 @@ public final class EntityDefendBandit extends EntityNPC {
          this.rotationYaw = (float)(Math.atan2(d1, d) * 180.0D / 3.1415927410125732D) - 90.0F;
          this.hasAttacked = true;
       }
-
    }
 
    public boolean attackEntityFrom(DamageSource damagesource, int i) {

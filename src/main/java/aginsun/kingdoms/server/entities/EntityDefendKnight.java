@@ -1,15 +1,9 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
-import cpw.mods.fml.client.FMLClientHandler;
-
-import java.util.List;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,9 +16,10 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
-public final class EntityDefendKnight extends EntityNPC {
+import java.util.List;
 
-   private EntityPlayer player;
+public final class EntityDefendKnight extends EntityNPC
+{
    private static ItemStack defaultHeldItem = new ItemStack(Items.iron_sword, 1);
    private int level;
    private boolean follow;
@@ -38,7 +33,6 @@ public final class EntityDefendKnight extends EntityNPC {
 
    public EntityDefendKnight(World world) {
       super(world, defaultHeldItem, 40.0F);
-      this.player = FMLClientHandler.instance().getClient().thePlayer;
       this.level = 0;
       this.follow = false;
       this.checkPlayer = true;
@@ -48,36 +42,43 @@ public final class EntityDefendKnight extends EntityNPC {
    }
 
    public void upgrade() {
-      EntityLiving entityliving = (EntityLiving)EntityList.createEntityByName("taleofkingdoms.DefendPaladin", this.worldObj);
+      EntityLiving entityliving = (EntityLiving) UltimateHelper.INSTANCE.getEntity("DefendPaladin", this.worldObj);
       entityliving.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
       if(!this.worldObj.isRemote) {
          this.worldObj.spawnEntityInWorld(entityliving);
       }
-
       this.setDead();
    }
 
    public void onLivingUpdate() {
       super.onLivingUpdate();
-      Minecraft minecraft = Minecraft.getMinecraft();
-      EntityClientPlayerMP entityplayersp = minecraft.thePlayer;
       float f1;
       PathEntity pathentity1;
-      if(this.follow) {
-         if(entityplayersp != null) {
-            f1 = entityplayersp.getDistanceToEntity(this);
-            if(f1 > 5.0F && f1 < 18.0F) {
-               pathentity1 = this.worldObj.getPathEntityToEntity(this, entityplayersp, 16.0F, true, false, false, true);
-            } else {
-               pathentity1 = null;
-            }
+      if (this.follow)
+      {
+         List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-            this.setPathToEntity(pathentity1);
+         for (Entity entity : list)
+         {
+            if (entity instanceof EntityPlayer)
+            {
+               EntityPlayer player = (EntityPlayer) entity;
+
+               if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
+               {
+                  pathentity1 = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+               }
+               else
+               {
+                  pathentity1 = null;
+               }
+
+               this.setPathToEntity(pathentity1);
+            }
          }
       } else {
          if(!this.createdMarker) {
-            System.out.println("Defend Location");
-            this.defend = (EntityDefendMarker)EntityList.createEntityByName("taleofkingdoms.DefendMark", this.worldObj);
+            this.defend = (EntityDefendMarker) UltimateHelper.INSTANCE.getEntity("DefendMark", this.worldObj);
             this.defend.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
             this.worldObj.spawnEntityInWorld(this.defend);
             this.createdMarker = true;
@@ -98,7 +99,6 @@ public final class EntityDefendKnight extends EntityNPC {
    }
 
    public boolean interact(EntityPlayer entityplayer) {
-      this.player = entityplayer;
       if(!this.follow) {
          this.follow = true;
          if(!this.worldObj.isRemote) {
@@ -133,15 +133,19 @@ public final class EntityDefendKnight extends EntityNPC {
       this.swingProgress = (float)this.field_110158_av / (float)i;
       Entity entity1;
       if(this.checkPlayer) {
-         for(int list = 0; list < this.worldObj.loadedEntityList.size(); ++list) {
-            entity1 = (Entity)this.worldObj.loadedEntityList.get(list);
-            if(entity1 instanceof EntityPlayer) {
-               this.player = (EntityPlayer)entity1;
-            }
-         }
+         List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-         if(this.player != null && this.player.getDistanceSqToEntity(this) <= 64.0D) {
-            this.follow = true;
+         for (Entity entity : list)
+         {
+            if (entity instanceof EntityPlayer)
+            {
+               EntityPlayer player = (EntityPlayer) entity;
+
+               if (player != null && player.getDistanceSqToEntity(this) <= 64.0D)
+               {
+                  this.follow = true;
+               }
+            }
          }
       }
 

@@ -1,7 +1,5 @@
 package aginsun.kingdoms.server.entities;
 
-import java.util.List;
-
 import aginsun.kingdoms.api.entities.EntityNPC;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -10,6 +8,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public final class EntityKingdomWorker extends EntityNPC {
 

@@ -1,16 +1,15 @@
 package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.NetworkHandler;
 import aginsun.kingdoms.server.handlers.UltimateHelper;
-import aginsun.kingdoms.server.handlers.UtilToK;
+import aginsun.kingdoms.server.handlers.packets.SPacketSpawnEntity;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 
 public final class GuiWardenMenu extends GuiScreenToK
@@ -43,12 +42,7 @@ public final class GuiWardenMenu extends GuiScreenToK
             case 1:
                 if (1000 <= EconomyHandler.INSTANCE.getGoldTotal())
                 {
-                    if (!world.isRemote)
-                    {
-                        EntityLivingBase entityliving = (EntityLivingBase) UltimateHelper.INSTANCE.getEntity("DefendWarrior", world);
-                        entityliving.setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
-                        world.spawnEntityInWorld(entityliving);
-                    }
+                    NetworkHandler.INSTANCE.sendToServer(new SPacketSpawnEntity("DefendWarrior"));
                     EconomyHandler.INSTANCE.decreaseGold(1000);
                 }
                 else

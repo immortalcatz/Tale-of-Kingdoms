@@ -27,49 +27,9 @@ public final class TileEntitySell implements IInventory {
       if(this.inventory[i] != null) {
          for(int k = 0; k < this.inventory[i].stackSize; ++k) {
             Item item = this.inventory[i].getItem();
-            String s = item.getUnlocalizedName();
             GoldKeeper var10000 = this.gold;
-            j = GoldKeeper.INSTANCE.priceItem(s);
+            j = GoldKeeper.INSTANCE.priceItem(item);
             float f = 0.0F;
-            if(item == Items.flint) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.flint;
-            }
-
-            if(item == Items.clay_ball) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.clay;
-            }
-
-            if(item == Items.iron_ingot) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.iron;
-            }
-
-            if(item == Items.diamond) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.diamond;
-            }
-
-            if(item == Items.cooked_fished) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.fish;
-            }
-
-            if(item == Items.apple) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.apple;
-            }
-
-            if(item == Items.string) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.string;
-            }
-
-            if(item == Items.feather) {
-               var10000 = this.gold;
-               f = GoldKeeper.INSTANCE.feather;
-            }
 
             f /= 100.0F;
             j = (int)((float)j + (float)j * f);

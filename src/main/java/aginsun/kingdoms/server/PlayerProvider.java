@@ -1,32 +1,39 @@
 package aginsun.kingdoms.server;
 
 import aginsun.kingdoms.server.handlers.Buildings;
+import aginsun.kingdoms.server.handlers.NetworkHandler;
+import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
 import aginsun.kingdoms.server.handlers.resources.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
+import java.util.List;
+
 public final class PlayerProvider implements IExtendedEntityProperties
 {
     public int libraryInvestment, burningVillages, reficulHoles, bindLight;
-    public ItemStack[] stacks;
+    public boolean badKid;
+    private int glory;
+    public List<ItemStack> stacks;
     private EconomyHandler economy = EconomyHandler.INSTANCE;
-    private GloryHandler glory = GloryHandler.INSTANCE;
     private GuildHandler guilds = GuildHandler.INSTANCE;
 
     @Override
     public void saveNBTData(NBTTagCompound compound)
     {
         NBTTagCompound taleOfKingdoms = new NBTTagCompound();
-        taleOfKingdoms.setInteger("glory", glory.getGlory());
+        taleOfKingdoms.setInteger("glory", glory);
         taleOfKingdoms.setBoolean("hunter", HunterHandler.INSTANCE.getHunter());
         taleOfKingdoms.setInteger("burningVillages", burningVillages);
         taleOfKingdoms.setInteger("reficulHoles", reficulHoles);
         taleOfKingdoms.setInteger("libraryInvestment", libraryInvestment);
         taleOfKingdoms.setInteger("bindLight", bindLight);
+        taleOfKingdoms.setBoolean("badKid", badKid);
 
         NBTTagCompound eco = new NBTTagCompound();
         eco.setInteger("GoldTotal", economy.getGoldTotal());
@@ -109,12 +116,13 @@ public final class PlayerProvider implements IExtendedEntityProperties
     public void loadNBTData(NBTTagCompound compound)
     {
         NBTTagCompound taleOfKingdoms = compound.getCompoundTag("PlayerPersisted");
-        glory.setGlory(taleOfKingdoms.getInteger("glory"));
+        setGlory(taleOfKingdoms.getInteger("glory"));
         HunterHandler.INSTANCE.setHunter(taleOfKingdoms.getBoolean("hunter"));
         burningVillages = taleOfKingdoms.getInteger("burningVillages");
         reficulHoles = taleOfKingdoms.getInteger("reficulHoles");
         libraryInvestment = taleOfKingdoms.getInteger("libraryInvestment");
         bindLight = taleOfKingdoms.getInteger("bindLight");
+        badKid = taleOfKingdoms.getBoolean("badKid");
 
         NBTTagCompound eco = taleOfKingdoms.getCompoundTag("economy");
         economy.setGoldTotal(eco.getInteger("GoldTotal"));
@@ -191,6 +199,36 @@ public final class PlayerProvider implements IExtendedEntityProperties
     public EconomyHandler getEconomy()
     {
         return economy;
+    }
+
+    public int getGlory()
+    {
+        return glory;
+    }
+
+    public void setGlory(int glory)
+    {
+        this.glory = glory;
+    }
+
+    public void addGlory(int glory, EntityPlayer player)
+    {
+        this.glory += glory;
+        sync(player);
+    }
+
+    public void decreaseGlory(int glory, EntityPlayer player)
+    {
+        this.glory -= glory;
+        sync(player);
+    }
+
+    public void sync(EntityPlayer player)
+    {
+        if (!player.worldObj.isRemote)
+        {
+            NetworkHandler.INSTANCE.sendTo(new CPacketSyncDataPlayer(this), (EntityPlayerMP) player);
+        }
     }
 
     public static PlayerProvider get(EntityPlayer player)

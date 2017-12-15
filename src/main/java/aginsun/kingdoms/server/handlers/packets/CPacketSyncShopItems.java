@@ -9,12 +9,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
+
 public final class CPacketSyncShopItems extends AbstractPacket<CPacketSyncShopItems>
 {
-    private static ItemStack[] stacks;
+    private static List<ItemStack> stacks;
 
     public CPacketSyncShopItems(){}
-    public CPacketSyncShopItems(ItemStack... stacks)
+    public CPacketSyncShopItems(List<ItemStack> stacks)
     {
         this.stacks = stacks;
     }
@@ -32,20 +36,17 @@ public final class CPacketSyncShopItems extends AbstractPacket<CPacketSyncShopIt
     @Override
     public void fromBytes(ByteBuf buf)
     {
-        stacks = new ItemStack[200];
+        stacks = new ArrayList<>();
+        int size = buf.readInt();
 
-        for (int i = 0; i < stacks.length; i++)
-        {
-            stacks[i] = ByteBufUtils.readItemStack(buf);
-        }
+        IntStream.range(0, size).forEach(i -> stacks.add(ByteBufUtils.readItemStack(buf)));
     }
 
     @Override
     public void toBytes(ByteBuf buf)
     {
-        for (ItemStack stack : stacks)
-        {
-            ByteBufUtils.writeItemStack(buf, stack);
-        }
+        buf.writeInt(stacks.size());
+
+        stacks.forEach(stack -> ByteBufUtils.writeItemStack(buf, stack));
     }
 }

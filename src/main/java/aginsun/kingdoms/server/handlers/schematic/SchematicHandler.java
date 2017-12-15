@@ -1,8 +1,8 @@
 package aginsun.kingdoms.server.handlers.schematic;
 
+import aginsun.kingdoms.api.blocks.FakeBlock;
 import aginsun.kingdoms.api.entities.FakeEntity;
 import aginsun.kingdoms.server.handlers.Buildings;
-import aginsun.kingdoms.api.blocks.FakeBlock;
 import aginsun.kingdoms.server.handlers.UltimateHelper;
 import aginsun.kingdoms.server.handlers.resources.GuildHandler;
 import net.minecraft.entity.EntityLiving;

@@ -4,19 +4,11 @@ import aginsun.kingdoms.client.gui.*;
 import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.container.ContainerSell;
-import aginsun.kingdoms.server.entities.EntityWorkerMember;
 import aginsun.kingdoms.server.entities.TileEntitySell;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-
-import java.util.Iterator;
-import java.util.List;
 
 public final class GuiHandler implements IGuiHandler
 {
@@ -43,14 +35,14 @@ public final class GuiHandler implements IGuiHandler
     @Override
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
     {
-        for (Object o : world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x, y, z, x, y, z)))
+        /*for (Object o : world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(x, y, z, x, y, z)))
         {
             EntityCreature creature = (EntityCreature) o;
             if (creature instanceof EntityWorkerMember)
             {
                 return new GuiWorker(player, (EntityWorkerMember) creature);
             }
-        }
+        }*/
 
         switch (ID)
         {

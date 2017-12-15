@@ -2,7 +2,9 @@ package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiPriceBar;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
-import aginsun.kingdoms.server.handlers.resources.*;
+import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
+import aginsun.kingdoms.server.handlers.resources.ResourcesHandler;
+import aginsun.kingdoms.server.handlers.resources.WorkersHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.item.EntityItem;

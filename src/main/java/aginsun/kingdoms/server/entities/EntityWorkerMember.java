@@ -1,13 +1,9 @@
 package aginsun.kingdoms.server.entities;
 
-import java.util.List;
-
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.client.gui.GuiWorker;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -19,10 +15,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public final class EntityWorkerMember extends EntityNPC {
+import java.util.List;
 
+public final class EntityWorkerMember extends EntityNPC
+{
    private World world;
-   private EntityPlayer player;
    public static ItemStack defaultHeldItem;
    private boolean markerExist;
    public boolean follow;
@@ -35,7 +32,8 @@ public final class EntityWorkerMember extends EntityNPC {
    public int field_110158_av;
 
 
-   public EntityWorkerMember(World world) {
+   public EntityWorkerMember(World world)
+   {
       super(world, defaultHeldItem, 30.0F);
       defaultHeldItem = null;
       this.markerExist = false;
@@ -47,15 +45,13 @@ public final class EntityWorkerMember extends EntityNPC {
       this.marker2 = null;
       this.world = world;
       this.isImmuneToFire = false;
-      Minecraft minecraft = Minecraft.getMinecraft();
-      this.player = minecraft.thePlayer;
    }
 
    protected boolean isMovementCeased() {
       return this.freeze;
    }
 
-   public boolean interact(EntityPlayer entityplayer) {
+   public boolean interact(EntityPlayer player) {
       boolean flag = false;
 
       int var10;
@@ -90,10 +86,11 @@ public final class EntityWorkerMember extends EntityNPC {
                            }
                         }
 
-                        Entity var12 = EntityList.createEntityByName("Marker", this.world);
-                        var12.setLocationAndAngles((double)var11, (double)var10, (double)i1, 0.0F, 0.0F);
-                        if(!this.world.isRemote) {
-                           this.world.spawnEntityInWorld(var12);
+                        Entity entity = UltimateHelper.INSTANCE.getEntity("Marker", this.world);
+                        entity.setLocationAndAngles((double)var11, (double)var10, (double)i1, 0.0F, 0.0F);
+                        if(!this.world.isRemote)
+                        {
+                           this.world.spawnEntityInWorld(entity);
                         }
 
                         System.out.println("newMarker");
@@ -108,27 +105,23 @@ public final class EntityWorkerMember extends EntityNPC {
          }
 
          if(this.follow && flag && this.worktype == 1 && !this.world.isRemote) {
-            this.player.addChatMessage(new ChatComponentText("Worker: Chopping it down sir!"));
+            player.addChatMessage(new ChatComponentText("Worker: Chopping it down sir!"));
          }
 
          if(this.follow && !flag && this.worktype == 1 && !this.world.isRemote) {
-            this.player.addChatMessage(new ChatComponentText("Worker: Direct me to a tree and I will start cutting!"));
+            player.addChatMessage(new ChatComponentText("Worker: Direct me to a tree and I will start cutting!"));
          }
-
-         this.player = entityplayer;
       }
 
       if(this.worktype == 2 && !this.isMining) {
          if(this.posY < 50.0D && !this.world.isRemote) {
-            this.player.addChatMessage(new ChatComponentText("Worker: Mining the stone sir!"));
+            player.addChatMessage(new ChatComponentText("Worker: Mining the stone sir!"));
             this.createMine();
             this.isMining = true;
          } else if(!this.world.isRemote) {
-            this.player.addChatMessage(new ChatComponentText("Worker: We must go further underground sir!"));
+            player.addChatMessage(new ChatComponentText("Worker: We must go further underground sir!"));
          }
       }
-
-      this.player = entityplayer;
       return true;
    }
 
@@ -220,11 +213,15 @@ public final class EntityWorkerMember extends EntityNPC {
          this.attackTime = 20;
          this.swingItem();
          this.freeze = true;
-         if(this.player != null && this.player.getDistanceSqToEntity(this) <= 3000.0D && this.hit3 > 8) {
-            ItemStack itemstack = new ItemStack(Item.getItemById(4), 1, 0);
-            EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, itemstack);
-            this.player.joinEntityItemWithWorld(entityitem);
-            this.hit3 = 0;
+         if (entity instanceof EntityPlayer)
+         {
+             EntityPlayer player = (EntityPlayer) entity;
+             if(player != null && player.getDistanceSqToEntity(this) <= 3000.0D && this.hit3 > 8) {
+                 ItemStack itemstack = new ItemStack(Item.getItemById(4), 1, 0);
+                 EntityItem entityitem = new EntityItem(this.world, player.posX, player.posY, player.posZ, itemstack);
+                 player.joinEntityItemWithWorld(entityitem);
+                 this.hit3 = 0;
+             }
          }
 
          ++this.hit3;
@@ -232,20 +229,31 @@ public final class EntityWorkerMember extends EntityNPC {
 
    }
 
-   public void onLivingUpdate() {
+   public void onLivingUpdate()
+   {
       super.onLivingUpdate();
-      if(this.follow && !this.markerExist && this.player != null) {
-         float f = this.player.getDistanceToEntity(this);
-         PathEntity pathentity;
-         if(f > 5.0F && f < 18.0F) {
-            pathentity = this.world.getPathEntityToEntity(this, this.player, 16.0F, true, false, false, true);
-         } else {
-            pathentity = null;
+
+      List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
+
+      for (Entity entity : list)
+      {
+         if (entity instanceof EntityPlayer)
+         {
+            EntityPlayer player = (EntityPlayer) entity;
+
+            PathEntity pathentity;
+
+            if (player.getDistanceToEntity(this) > 3.5F && player.getDistanceToEntity(this) < 25.0F)
+            {
+               pathentity = worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+            }
+            else
+            {
+               pathentity = null;
+            }
+            this.setPathToEntity(pathentity);
          }
-
-         this.setPathToEntity(pathentity);
       }
-
    }
 
    private void createMine() {
@@ -322,7 +330,7 @@ public final class EntityWorkerMember extends EntityNPC {
       this.world.setBlock(i + 4, j + 3, k + 4, Blocks.cobblestone);
       this.world.setBlock(i + 4, j + 3, k + 5, Blocks.stone);
       this.world.setBlockMetadataWithNotify(i + 3, j + 2, k + 2, 50, 3);
-      this.marker2 = EntityList.createEntityByName("Marker2", this.world);
+      this.marker2 = UltimateHelper.INSTANCE.getEntity("Marker2", this.world);
       this.marker2.setLocationAndAngles((double)(i + 4), (double)(j + 1), (double)(k + 3), 0.0F, 0.0F);
       if(!this.world.isRemote) {
          this.world.spawnEntityInWorld(this.marker2);

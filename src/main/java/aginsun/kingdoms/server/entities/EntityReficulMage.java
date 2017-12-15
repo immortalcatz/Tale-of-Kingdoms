@@ -1,8 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
-import java.util.Random;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.server.handlers.resources.GloryHandler;
+import aginsun.kingdoms.server.PlayerProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +13,14 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class EntityReficulMage extends EntityNPC {
 
    private static ItemStack defaultHeldItem = new ItemStack(Items.stick, 1);
    private EntityPlayer player;
    private boolean playerPresence = true;
    private Random field_70146_Z = new Random();
-   private World field_70170_p;
    protected int attackStrength;
    public boolean isSwinging;
    public int field_110158_av;
@@ -28,7 +28,6 @@ public class EntityReficulMage extends EntityNPC {
 
    public EntityReficulMage(World world) {
       super(world, defaultHeldItem, 20.0F);
-      this.field_70170_p = world;
       this.attackStrength = 7;
       this.isImmuneToFire = true;
    }
@@ -37,7 +36,7 @@ public class EntityReficulMage extends EntityNPC {
       super.onLivingUpdate();
 
       for(int i = 0; i < 2; ++i) {
-         this.field_70170_p.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+         this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
       }
 
    }
@@ -65,11 +64,11 @@ public class EntityReficulMage extends EntityNPC {
          int j = MathHelper.floor_double(this.posY);
          int k = MathHelper.floor_double(this.posZ);
          Block j1;
-         if(this.field_70170_p.blockExists(i, j, k)) {
+         if(this.worldObj.blockExists(i, j, k)) {
             boolean l = false;
 
             while(!l && j > 0) {
-               j1 = this.field_70170_p.getBlock(i, j - 1, k);
+               j1 = this.worldObj.getBlock(i, j - 1, k);
                if(j1 != null && j1.getMaterial().isSolid()) {
                   l = true;
                } else {
@@ -80,7 +79,7 @@ public class EntityReficulMage extends EntityNPC {
 
             if(l) {
                this.setPosition(this.posX, this.posY, this.posZ);
-               if(this.field_70170_p.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.field_70170_p.isAnyLiquid(this.boundingBox)) {
+               if(this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.isAnyLiquid(this.boundingBox)) {
                   flag = true;
                }
             }
@@ -117,27 +116,27 @@ public class EntityReficulMage extends EntityNPC {
    }
 
    public void onDeath(DamageSource damagesource) {
-      GloryHandler.INSTANCE.addGlory(70);
+      PlayerProvider.get(player).addGlory(80, player);
    }
 
    protected void attackEntity(Entity entity, float f) {
       if(f < 6.0F) {
          if(this.attackTime == 0) {
             this.func_71038_i();
-            this.field_70170_p.setBlock((int)entity.posX, (int)entity.posY - 1, (int)entity.posZ, Block.getBlockById(51));
+            this.worldObj.setBlock((int)entity.posX, (int)entity.posY - 1, (int)entity.posZ, Block.getBlockById(51));
             this.attackTime = 40;
 
             for(int i = 0; i < 8; ++i) {
-               this.field_70170_p.spawnParticle("portal", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+               this.worldObj.spawnParticle("portal", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
             }
 
-            this.field_70170_p.spawnParticle("portal", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-            this.field_70170_p.spawnParticle("portal", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-            this.field_70170_p.spawnParticle("portal", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-            this.field_70170_p.spawnParticle("largesmoke", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-            this.field_70170_p.spawnParticle("largesmoke", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-            this.field_70170_p.spawnParticle("largesmoke", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-            this.field_70170_p.spawnParticle("largesmoke", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+            this.worldObj.spawnParticle("portal", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+            this.worldObj.spawnParticle("portal", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+            this.worldObj.spawnParticle("portal", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+            this.worldObj.spawnParticle("largesmoke", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+            this.worldObj.spawnParticle("largesmoke", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+            this.worldObj.spawnParticle("largesmoke", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+            this.worldObj.spawnParticle("largesmoke", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
          } else {
             --this.attackTime;
          }
@@ -183,21 +182,21 @@ public class EntityReficulMage extends EntityNPC {
       this.swingProgress = (float)this.field_110158_av / (float)i;
 
       int k;
-      for(k = 0; k < this.field_70170_p.loadedEntityList.size(); ++k) {
-         Entity entity = (Entity)this.field_70170_p.loadedEntityList.get(k);
+      for(k = 0; k < this.worldObj.loadedEntityList.size(); ++k) {
+         Entity entity = (Entity)this.worldObj.loadedEntityList.get(k);
          if(entity instanceof EntityPlayer) {
             this.player = (EntityPlayer)entity;
          }
       }
 
       if(this.player != null) {
-         if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.field_70170_p.difficultySetting != EnumDifficulty.PEACEFUL && this.field_70170_p.difficultySetting != EnumDifficulty.PEACEFUL) {
+         if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
             this.playerPresence = false;
             if(this.field_70146_Z.nextInt(6) == 0) {
                this.teleportToEntity(this.player);
                if(this.field_70146_Z.nextInt(10) == 0) {
                   for(k = 0; k < 8; ++k) {
-                     this.field_70170_p.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+                     this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
                   }
                }
             }
@@ -209,12 +208,12 @@ public class EntityReficulMage extends EntityNPC {
    }
 
    protected Entity findPlayerToAttack() {
-      EntityPlayer entityplayer = this.field_70170_p.getClosestPlayerToEntity(this, 16.0D);
+      EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
       return entityplayer != null && this.canEntityBeSeen(entityplayer)?entityplayer:null;
    }
 
    public boolean attackEntityFrom(DamageSource damagesource, int i) {
-      if(!this.playerPresence && this.field_70170_p.difficultySetting != EnumDifficulty.PEACEFUL) {
+      if(!this.playerPresence && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
          if(super.attackEntityFrom(damagesource, (float)i)) {
             Entity entity = damagesource.getSourceOfDamage();
             if(this.riddenByEntity != entity && this.ridingEntity != entity) {

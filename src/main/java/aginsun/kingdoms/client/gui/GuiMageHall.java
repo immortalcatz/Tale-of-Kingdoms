@@ -1,13 +1,13 @@
 package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiScreenToK;
-import aginsun.kingdoms.server.handlers.UltimateHelper;
+import aginsun.kingdoms.server.handlers.NetworkHandler;
+import aginsun.kingdoms.server.handlers.packets.SPacketSpawnEntity;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
@@ -82,9 +82,7 @@ public final class GuiMageHall extends GuiScreenToK
             case 2:
                 if(2000 <= EconomyHandler.INSTANCE.getGoldTotal())
                 {
-                    EntityLiving itemstack = (EntityLiving) UltimateHelper.INSTANCE.getEntity("DefendMage", this.world);
-                    itemstack.setLocationAndAngles(this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, 0.0F, 0.0F);
-                    this.world.spawnEntityInWorld(itemstack);
+                    NetworkHandler.INSTANCE.sendToServer(new SPacketSpawnEntity("DefendMage"));
                     EconomyHandler.INSTANCE.decreaseGold(2000);
                 }
                 else

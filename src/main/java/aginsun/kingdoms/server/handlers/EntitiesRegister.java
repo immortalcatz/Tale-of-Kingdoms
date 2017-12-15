@@ -10,10 +10,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public final class EntitiesRegister
 {
     private byte id = 0;
+    private Calendar calendar;
     public static final EntitiesRegister INSTANCE = new EntitiesRegister();
+
+    private EntitiesRegister()
+    {
+        calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+    }
 
     public void register()
     {
@@ -58,6 +68,9 @@ public final class EntitiesRegister
         setRegister(EntityStockKeeper.class, "StockKeeper");
         setRegister(EntityTavernKeeper.class, "TavernKeeper");
         setRegister(EntityVillageMember.class, "VillageMember");
+
+        if ((calendar.get(2) + 1 == 12 || calendar.get(2) + 1 == 1) && (calendar.get(5) >= 1 && calendar.get(5) <= 31))
+            setRegister(EntitySantaClaus.class, "SantaClaus");
     }
 
     public void render()
@@ -103,6 +116,9 @@ public final class EntitiesRegister
         setRender(EntityQuarry.class, "foremanquarry");
         setRender(EntityStableMaster.class, "stable");
         setRender(EntityFisher.class, "fisher");
+
+        if ((calendar.get(2) + 1 == 12 || calendar.get(2) + 1 == 1) && (calendar.get(5) >= 1 && calendar.get(5) <= 31))
+            setRender(EntitySantaClaus.class, "santaClaus");
     }
 
     private void setRegister(Class<? extends Entity> entity, String name)

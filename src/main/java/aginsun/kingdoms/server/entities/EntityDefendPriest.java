@@ -1,9 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
@@ -19,9 +16,8 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public final class EntityDefendPriest extends EntityNPC {
-
-   private EntityPlayer player;
+public final class EntityDefendPriest extends EntityNPC
+{
    private static ItemStack defaultHeldItem = new ItemStack(Items.stick, 1);
    private boolean follow;
    private boolean checkPlayer;
@@ -34,7 +30,6 @@ public final class EntityDefendPriest extends EntityNPC {
 
    public EntityDefendPriest(World world) {
       super(world, defaultHeldItem, 40.0F);
-      this.player = FMLClientHandler.instance().getClient().thePlayer;
       this.follow = false;
       this.checkPlayer = true;
       this.healCounter = 0;
@@ -56,26 +51,33 @@ public final class EntityDefendPriest extends EntityNPC {
          this.whenHealing = 100;
       }
 
-      if(this.follow) {
-         Minecraft var5 = Minecraft.getMinecraft();
-         EntityClientPlayerMP entityplayersp = var5.thePlayer;
-         if(entityplayersp != null) {
-            float f = entityplayersp.getDistanceToEntity(this);
-            PathEntity pathentity;
-            if(f > 5.0F && f < 18.0F) {
-               pathentity = this.worldObj.getPathEntityToEntity(this, entityplayersp, 16.0F, true, false, false, true);
-            } else {
-               pathentity = null;
-            }
+      if(this.follow)
+      {
+          List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-            this.setPathToEntity(pathentity);
-         }
+          for (Entity entity : list)
+          {
+              if (entity instanceof EntityPlayer)
+              {
+                  EntityPlayer player = (EntityPlayer) entity;
+
+                  PathEntity pathentity;
+                  if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
+                  {
+                      pathentity = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+                  }
+                  else
+                  {
+                      pathentity = null;
+                  }
+
+                  this.setPathToEntity(pathentity);
+              }
+          }
       }
-
    }
 
    public boolean interact(EntityPlayer entityplayer) {
-      this.player = entityplayer;
       if(!this.follow) {
          this.follow = true;
          if(!this.worldObj.isRemote) {
@@ -105,17 +107,23 @@ public final class EntityDefendPriest extends EntityNPC {
       }
 
       this.swingProgress = (float)this.field_110158_av / (float)i;
-      if(this.checkPlayer) {
-         for(int flag = 0; flag < this.worldObj.loadedEntityList.size(); ++flag) {
-            Entity list = (Entity)this.worldObj.loadedEntityList.get(flag);
-            if(list instanceof EntityPlayer) {
-               this.player = (EntityPlayer)list;
-            }
-         }
 
-         if(this.player != null && this.player.getDistanceSqToEntity(this) <= 64.0D) {
-            this.follow = true;
-         }
+      if (this.checkPlayer)
+      {
+          List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
+
+          for (Entity entity : list)
+          {
+              if (entity instanceof EntityPlayer)
+              {
+                  EntityPlayer player = (EntityPlayer) entity;
+
+                  if (player != null && player.getDistanceSqToEntity(this) <= 64.0D)
+                  {
+                      this.follow = true;
+                  }
+              }
+          }
       }
 
       this.checkPlayer = false;
@@ -125,7 +133,6 @@ public final class EntityDefendPriest extends EntityNPC {
          EntityLivingBase entityliving = (EntityLivingBase)var6.get(this.worldObj.rand.nextInt(var6.size()));
          if(this.healCounter > 20 && (entityliving instanceof EntityDefendBandit || entityliving instanceof EntityDefendKnight || entityliving instanceof EntityDefendMage || entityliving instanceof EntityDefendPaladin || entityliving instanceof EntityDefendWarrior || entityliving instanceof EntityDefendArcher || entityliving instanceof EntityHired || entityliving instanceof EntityPlayer || entityliving instanceof EntityPlayerSP) && entityliving.getHealth() < 15.0F) {
             entityliving.heal(2.0F);
-            System.out.println("heal");
             var5 = true;
             this.whenHealing = 0;
          }
@@ -145,7 +152,7 @@ public final class EntityDefendPriest extends EntityNPC {
    public boolean attackEntityFrom(DamageSource damagesource, int i) {
       boolean flag = true;
       Entity entity = damagesource.getSourceOfDamage();
-      if(entity instanceof EntityDefendBandit || entity instanceof EntityDefendKnight || entity instanceof EntityDefendPaladin || entity instanceof EntityDefendWarrior || entity instanceof EntityDefendArcher || entity instanceof EntityHired || entity instanceof EntityDefendMage || entity instanceof EntityPlayer || entity instanceof EntityPlayerSP) {
+      if(entity instanceof EntityDefendBandit || entity instanceof EntityDefendKnight || entity instanceof EntityDefendPaladin || entity instanceof EntityDefendWarrior || entity instanceof EntityDefendArcher || entity instanceof EntityHired || entity instanceof EntityDefendMage || entity instanceof EntityPlayer) {
          flag = false;
       }
 

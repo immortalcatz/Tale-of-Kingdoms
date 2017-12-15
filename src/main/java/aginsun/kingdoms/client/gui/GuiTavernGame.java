@@ -3,7 +3,6 @@ package aginsun.kingdoms.client.gui;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ResourceLocation;
@@ -196,11 +195,11 @@ public final class GuiTavernGame extends GuiScreenToK {
       }
 
       if(guibutton.id == 5) {
-         this.mc.displayGuiScreen((GuiScreen)null);
+         this.mc.displayGuiScreen(null);
       }
 
       if(guibutton.id == 6) {
-         this.mc.displayGuiScreen((GuiScreen)null);
+         this.mc.displayGuiScreen(null);
       }
 
    }

@@ -1,16 +1,19 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
+import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.handlers.Buildings;
-import aginsun.kingdoms.server.handlers.resources.GloryHandler;
-import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_BUILD;
 
@@ -37,11 +40,28 @@ public final class EntityBuilderKeeper extends EntityNPC
     }
 
     @Override
+    public void writeToNBT(NBTTagCompound nbtTagCompound)
+    {
+        NBTTagCompound compound = new NBTTagCompound();
+        compound.setBoolean("follow", follow);
+        compound.setBoolean("setted", setted);
+        nbtTagCompound.setTag("builderData", compound);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbtTagCompound)
+    {
+        NBTTagCompound compound = nbtTagCompound.getCompoundTag("builderData");
+        compound.getBoolean("follow");
+        compound.getBoolean("setted");
+    }
+
+    @Override
     public boolean interact(EntityPlayer player)
     {
         if (this.canInteractWith(player))
         {
-            if (GloryHandler.INSTANCE.getGlory() < 10000 && !Buildings.INSTANCE.kingdomCreated)
+            if (PlayerProvider.get(player).getGlory() < 10000 && !Buildings.INSTANCE.kingdomCreated)
             {
                 if (!worldObj.isRemote)
                 {
@@ -49,7 +69,7 @@ public final class EntityBuilderKeeper extends EntityNPC
                 }
             }
 
-            if (!this.follow || setted || GloryHandler.INSTANCE.getGlory() >= 10000.0F && Buildings.INSTANCE.kingdomCreated)
+            if (!this.follow || setted || PlayerProvider.get(player).getGlory() >= 10000.0F)
             {
                 if (!worldObj.isRemote)
                 {
@@ -57,9 +77,9 @@ public final class EntityBuilderKeeper extends EntityNPC
                     this.follow = true;
                     this.setted = true;
                 }
-                player.openGui(TaleOfKingdoms.instance, GUI_BUILD, worldObj, 0, 0, 0);
+                player.openGui(TaleOfKingdoms.instance, GUI_BUILD, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
             }
-            else if (this.canInteractWith(player) && GloryHandler.INSTANCE.getGlory() >= 10000.0F && this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
+            else if (this.canInteractWith(player) && PlayerProvider.get(player).getGlory() >= 10000.0F && this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
             {
                 if (!worldObj.isRemote)
                 {
@@ -75,24 +95,29 @@ public final class EntityBuilderKeeper extends EntityNPC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
-        if (!this.follow && !Buildings.INSTANCE.kingdomCreated)
+        if (!worldObj.isRemote && !this.follow && !Buildings.INSTANCE.kingdomCreated)
         {
-            /*EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+            List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-            if (player != null)
+            for (Entity entity : list)
             {
-                PathEntity pathentity;
+                if (entity instanceof EntityPlayer)
+                {
+                    EntityPlayer player = (EntityPlayer) entity;
 
-                if (player.getDistanceToEntity(this) > 3.5F && player.getDistanceToEntity(this) < 25.0F)
-                {
-                    pathentity = worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+                    PathEntity pathentity;
+
+                    if (player.getDistanceToEntity(this) > 3.5F && player.getDistanceToEntity(this) < 25.0F)
+                    {
+                        pathentity = worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+                    }
+                    else
+                    {
+                        pathentity = null;
+                    }
+                    this.setPathToEntity(pathentity);
                 }
-                else
-                {
-                    pathentity = null;
-                }
-                this.setPathToEntity(pathentity);
-            }*/
+            }
         }
     }
 }

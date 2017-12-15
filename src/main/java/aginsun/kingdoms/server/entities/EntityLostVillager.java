@@ -1,13 +1,14 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
 
 public final class EntityLostVillager extends EntityNPC
 {
@@ -60,24 +61,30 @@ public final class EntityLostVillager extends EntityNPC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+
         if (!this.follow)
         {
-            final EntityClientPlayerMP entityplayersp = Minecraft.getMinecraft().thePlayer;
+            List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-            if (entityplayersp != null)
+            for (Entity entity : list)
             {
-                final float f = entityplayersp.getDistanceToEntity(this);
-                PathEntity pathentity;
+                if (entity instanceof EntityPlayer)
+                {
+                    EntityPlayer player = (EntityPlayer) entity;
 
-                if(f > 5.0F && f < 18.0F)
-                {
-                    pathentity = this.worldObj.getPathEntityToEntity(this, entityplayersp, 16.0F, true, false, false, true);
+                    PathEntity pathentity;
+
+                    if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
+                    {
+                        pathentity = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+                    }
+                    else
+                    {
+                        pathentity = null;
+                    }
+
+                    this.setPathToEntity(pathentity);
                 }
-                else
-                {
-                    pathentity = null;
-                }
-                this.setPathToEntity(pathentity);
             }
         }
     }

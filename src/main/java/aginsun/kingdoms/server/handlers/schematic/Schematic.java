@@ -39,11 +39,11 @@ public final class Schematic
 
         this.writeSchematic(nbtSchematic);
 
-        if(s.contains("Tier4"))
+        if (s.contains("Tier4"))
         {
             this.writeEntitiesTier4(nbtEntities);
         }
-        else if(s.contains("Tier3"))
+        else if (s.contains("Tier3"))
         {
             this.writeEntitiesTier3(nbtEntities);
         }

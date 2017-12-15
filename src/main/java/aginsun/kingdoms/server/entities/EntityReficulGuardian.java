@@ -1,9 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
-import java.util.Random;
-
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.server.handlers.resources.GloryHandler;
+import aginsun.kingdoms.server.PlayerProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,19 +14,18 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
-public class EntityReficulGuardian extends EntityNPC {
+import java.util.Random;
 
-   private static ItemStack defaultHeldItem = new ItemStack(Items.bow, 1);
+public class EntityReficulGuardian extends EntityNPC
+{
    private EntityPlayer player;
    private boolean playerPresence = true;
    private Random field_70146_Z = new Random();
-   private World field_70170_p;
    protected int attackStrength;
 
 
    public EntityReficulGuardian(World world) {
-      super(world, defaultHeldItem, 30.0F);
-      this.field_70170_p = world;
+      super(world, new ItemStack(Items.bow, 1), 30.0F);
       this.attackStrength = 7;
       this.isImmuneToFire = true;
    }
@@ -37,7 +34,7 @@ public class EntityReficulGuardian extends EntityNPC {
       super.onLivingUpdate();
 
       for(int i = 0; i < 2; ++i) {
-         this.field_70170_p.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+         this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
       }
 
    }
@@ -65,11 +62,11 @@ public class EntityReficulGuardian extends EntityNPC {
          int j = MathHelper.floor_double(this.posY);
          int k = MathHelper.floor_double(this.posZ);
          Block j1;
-         if(this.field_70170_p.blockExists(i, j, k)) {
+         if(this.worldObj.blockExists(i, j, k)) {
             boolean l = false;
 
             while(!l && j > 0) {
-               j1 = this.field_70170_p.getBlock(i, j - 1, k);
+               j1 = this.worldObj.getBlock(i, j - 1, k);
                if(j1 != null && j1.getMaterial().isSolid()) {
                   l = true;
                } else {
@@ -80,7 +77,7 @@ public class EntityReficulGuardian extends EntityNPC {
 
             if(l) {
                this.setPosition(this.posX, this.posY, this.posY);
-               if(this.field_70170_p.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.field_70170_p.isAnyLiquid(this.boundingBox)) {
+               if(this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.isAnyLiquid(this.boundingBox)) {
                   flag = true;
                }
             }
@@ -108,8 +105,9 @@ public class EntityReficulGuardian extends EntityNPC {
       return true;
    }
 
-   public void onDeath(DamageSource damagesource) {
-      GloryHandler.INSTANCE.addGlory(70);
+   public void onDeath(DamageSource damagesource)
+   {
+      PlayerProvider.get(player).addGlory(70, player);
    }
 
    protected void attackEntity(Entity entity, float f) {
@@ -117,12 +115,12 @@ public class EntityReficulGuardian extends EntityNPC {
          double d = entity.posX - this.posX;
          double d1 = entity.posZ - this.posZ;
          if(this.attackTime == 0) {
-            EntityArrow entityarrow = new EntityArrow(this.field_70170_p, this, 1.0F);
+            EntityArrow entityarrow = new EntityArrow(this.worldObj, this, 1.0F);
             double d2 = entity.posY + (double)entity.getEyeHeight() - 0.699999988079071D - entityarrow.posY;
             float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-            this.field_70170_p.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.field_70146_Z.nextFloat() * 0.4F + 0.8F));
+            this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.field_70146_Z.nextFloat() * 0.4F + 0.8F));
             if(this.field_70146_Z.nextInt(8) != 0) {
-               this.field_70170_p.spawnEntityInWorld(entityarrow);
+               this.worldObj.spawnEntityInWorld(entityarrow);
                entityarrow.setThrowableHeading(d, d2 + (double)f1, d1, 1.6F, 12.0F);
             }
 
@@ -161,21 +159,21 @@ public class EntityReficulGuardian extends EntityNPC {
       super.updateEntityActionState();
 
       int j;
-      for(j = 0; j < this.field_70170_p.loadedEntityList.size(); ++j) {
-         Entity entity = (Entity)this.field_70170_p.loadedEntityList.get(j);
+      for(j = 0; j < this.worldObj.loadedEntityList.size(); ++j) {
+         Entity entity = (Entity)this.worldObj.loadedEntityList.get(j);
          if(entity instanceof EntityPlayer) {
             this.player = (EntityPlayer)entity;
          }
       }
 
       if(this.player != null) {
-         if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.field_70170_p.difficultySetting != EnumDifficulty.PEACEFUL) {
+         if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
             this.playerPresence = false;
             if(this.field_70146_Z.nextInt(6) == 0) {
                this.teleportToEntity(this.player);
                if(this.field_70146_Z.nextInt(10) == 0) {
                   for(j = 0; j < 2; ++j) {
-                     this.field_70170_p.spawnParticle("largesmoke", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+                     this.worldObj.spawnParticle("largesmoke", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
                   }
                }
             }
@@ -187,12 +185,12 @@ public class EntityReficulGuardian extends EntityNPC {
    }
 
    protected Entity findPlayerToAttack() {
-      EntityPlayer entityplayer = this.field_70170_p.getClosestPlayerToEntity(this, 16.0D);
-      return entityplayer != null && this.canEntityBeSeen(entityplayer) && this.field_70170_p.difficultySetting != EnumDifficulty.PEACEFUL?entityplayer:null;
+      EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
+      return entityplayer != null && this.canEntityBeSeen(entityplayer) && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL?entityplayer:null;
    }
 
    public boolean attackEntityFrom(DamageSource damagesource, int i) {
-      if(!this.playerPresence && this.field_70170_p.difficultySetting != EnumDifficulty.PEACEFUL) {
+      if(!this.playerPresence && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
          if(super.attackEntityFrom(damagesource, (float)i)) {
             Entity entity = damagesource.getSourceOfDamage();
             if(this.riddenByEntity != entity && this.ridingEntity != entity) {

@@ -1,9 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.client.gui.GuiFisher;
 import aginsun.kingdoms.server.TaleOfKingdoms;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -13,9 +11,9 @@ import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_FISHER;
 
 public final class EntityFisher extends EntityNPC
 {
-    public EntityFisher(World par1World)
+    public EntityFisher(World world)
     {
-        super(par1World, new ItemStack(Items.fishing_rod), 40.0F);
+        super(world, new ItemStack(Items.fishing_rod), 40.0F);
     }
 
     @Override

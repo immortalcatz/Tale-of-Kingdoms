@@ -1,87 +1,65 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
+import aginsun.kingdoms.server.TaleOfKingdoms;
+import aginsun.kingdoms.server.handlers.Config;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
 import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StringTranslate;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public final class EntityForgeKeeper extends EntityNPC {
+import java.util.ArrayList;
+import java.util.List;
 
-   ItemStack[] stacks = new ItemStack[200];
-   private GoldKeeper gold;
-   private StringTranslate st = new StringTranslate();
+public final class EntityForgeKeeper extends EntityNPC
+{
+    private List<ItemStack> stacks = new ArrayList<>();
 
+    public EntityForgeKeeper(World world)
+    {
+        super(world, null, 100.0F);
+        this.isImmuneToFire = false;
+    }
 
-   public EntityForgeKeeper(World world) {
-      super(world, null, 100.0F);
-      this.isImmuneToFire = false;
-   }
+    @Override
+    public boolean canBePushed()
+    {
+        return false;
+    }
 
-   public boolean canBePushed() {
-      return false;
-   }
+    @Override
+    public boolean interact(EntityPlayer player)
+    {
+        if (this.canInteractWith(player))
+        {
+            if (!worldObj.isRemote)
+            {
+                Config cfg = TaleOfKingdoms.proxy.getConfig();
 
-   public boolean interact(EntityPlayer player) {
-      if(this.canInteractWith(player)) {
-         this.heal(100.0F);
-         int i = 0;
+                this.heal(100.0F);
+                stacks.clear();
 
-         for(int j = 0; j < 256; ++j) {
-            if(Block.getBlockById(j) != null) {
-               ItemStack itemstack = new ItemStack(Block.getBlockById(j), 1, 0);
-               if(itemstack != null) {
-                  Item item = itemstack.getItem();
-                  if(item != null) {
-                     String s1 = item.getUnlocalizedName();
-                     if(s1 != null) {
-                        GoldKeeper var10000 = this.gold;
-                        int k = GoldKeeper.INSTANCE.priceItem(s1);
-                        if(itemstack != null) {
-                           String s2 = item.getUnlocalizedName() + ".name";
-                           if(s2 != null) {
-                              String s3 = this.st.translateKey(s2);
-                              Item l = itemstack.getItem();
+                for (String itemName : cfg.getNames())
+                {
+                    ItemStack stack = new ItemStack((Item) Item.itemRegistry.getObject(itemName));
 
-                               if(l == Item.getItemById(26) || l == Item.getItemById(34) || l == Item.getItemById(36) ||
-                                       l == Item.getItemById(43) || l == Item.getItemById(51) || l == Item.getItemById(52) ||
-                                       l == Item.getItemById(55) || l == Item.getItemById(59) || l == Item.getItemById(60) ||
-                                       l == Item.getItemById(62) || l == Item.getItemById(63) || l == Item.getItemById(64) ||
-                                       l == Item.getItemById(68) || l == Item.getItemById(71) || l == Item.getItemById(74) ||
-                                       l == Item.getItemById(75) || l == Item.getItemById(78) || l == Item.getItemById(90) ||
-                                       l == Item.getItemById(93) || l == Item.getItemById(94) || l == Item.getItemById(97) ||
-                                       l == Item.getItemById(99) || l == Item.getItemById(100) || l == Item.getItemById(104) ||
-                                       l == Item.getItemById(105) || l == Item.getItemById(110) || l == Item.getItemById(92) || l == Items.clay_ball ||
-                                       l == Items.iron_ingot || l == Items.diamond || l == Items.fish || l == Items.apple || l == Items.string ||
-                                       l == Items.feather) {
-                                   j = 0;
-                               }
+                    if (stack.getTagCompound() == null)
+                    {
+                        stack.setTagCompound(new NBTTagCompound());
+                    }
 
-                              if(k > 0 && !s2.equals("null.name") && !s2.equals(s3)) {
-                                 stacks[i] = itemstack;
-                                 ++i;
-                              }
-                           }
-                        }
-                     }
-                  }
-               }
+                    stack.getTagCompound().setInteger("price", cfg.getPrice(itemName));
+
+                    stacks.add(stack);
+                }
+
+                NetworkHandler.INSTANCE.sendTo(new CPacketSyncShopItems(stacks), (EntityPlayerMP) player);
             }
-         }
-
-         if (!worldObj.isRemote)
-         {
-            NetworkHandler.INSTANCE.sendTo(new CPacketSyncShopItems(stacks), (EntityPlayerMP) player);
-         }
-      }
-
-      return true;
-   }
+        }
+        return true;
+    }
 }

@@ -1,9 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.client.gui.GuiFoodKeeper;
 import aginsun.kingdoms.server.TaleOfKingdoms;
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

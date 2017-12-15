@@ -77,9 +77,7 @@ public final class Buildings
     public void setBuildingState(boolean x, int number)
     {
         if (buildingList.get(number))
-        {
             buildingList.set(number, x);
-        }
     }
 
     public boolean getBuilding(final int number)

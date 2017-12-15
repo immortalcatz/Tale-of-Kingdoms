@@ -1,12 +1,9 @@
 package aginsun.kingdoms.server.handlers;
 
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
-import aginsun.kingdoms.server.handlers.packets.SPacketBuild;
-import aginsun.kingdoms.server.handlers.packets.SPacketBuy;
+import aginsun.kingdoms.server.handlers.packets.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
 
 public final class NetworkHandler
 {
@@ -19,6 +16,8 @@ public final class NetworkHandler
         register(CPacketSyncShopItems.class, Side.CLIENT);
         register(SPacketBuild.class, Side.SERVER);
         register(SPacketBuy.class, Side.SERVER);
+        register(SPacketFilter.class, Side.SERVER);
+        register(SPacketOpenGui.class, Side.SERVER);
     }
 
     private void register(Class clazz, Side side)

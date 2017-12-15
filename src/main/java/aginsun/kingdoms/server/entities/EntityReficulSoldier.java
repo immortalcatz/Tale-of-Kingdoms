@@ -1,8 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
-import java.util.Random;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.server.handlers.resources.GloryHandler;
+import aginsun.kingdoms.server.PlayerProvider;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +13,14 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import java.util.Random;
+
 public class EntityReficulSoldier extends EntityNPC {
 
    private static ItemStack defaultHeldItem = new ItemStack(Items.iron_sword, 1);
    private EntityPlayer player;
    private boolean playerPresence = true;
    private Random field_70146_Z = new Random();
-   private World field_70170_p;
    protected int attackStrength;
    public boolean isSwinging;
    public int field_110158_av;
@@ -28,7 +28,6 @@ public class EntityReficulSoldier extends EntityNPC {
 
    public EntityReficulSoldier(World world) {
       super(world, defaultHeldItem, 40.0F);
-      this.field_70170_p = world;
       this.attackStrength = 4;
       this.isImmuneToFire = true;
    }
@@ -37,7 +36,7 @@ public class EntityReficulSoldier extends EntityNPC {
       super.onLivingUpdate();
 
       for(int i = 0; i < 2; ++i) {
-         this.field_70170_p.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+         this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
       }
 
    }
@@ -65,11 +64,11 @@ public class EntityReficulSoldier extends EntityNPC {
          int j = MathHelper.floor_double(this.posY);
          int k = MathHelper.floor_double(this.posZ);
          Block j1;
-         if(this.field_70170_p.blockExists(i, j, k)) {
+         if(this.worldObj.blockExists(i, j, k)) {
             boolean l = false;
 
             while(!l && j > 0) {
-               j1 = this.field_70170_p.getBlock(i, j - 1, k);
+               j1 = this.worldObj.getBlock(i, j - 1, k);
                if(j1 != null && j1.getMaterial().isSolid()) {
                   l = true;
                } else {
@@ -80,7 +79,7 @@ public class EntityReficulSoldier extends EntityNPC {
 
             if(l) {
                this.setPosition(this.posX, this.posY, this.posZ);
-               if(this.field_70170_p.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.field_70170_p.isAnyLiquid(this.boundingBox)) {
+               if(this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() == 0 && !this.worldObj.isAnyLiquid(this.boundingBox)) {
                   flag = true;
                }
             }
@@ -128,7 +127,7 @@ public class EntityReficulSoldier extends EntityNPC {
    }
 
    public void onDeath(DamageSource damagesource) {
-      GloryHandler.INSTANCE.addGlory(70);
+      PlayerProvider.get(player).addGlory(80, player);
    }
 
    protected boolean isMovementCeased() {
@@ -182,21 +181,21 @@ public class EntityReficulSoldier extends EntityNPC {
       this.swingProgress = (float)this.field_110158_av / (float)i;
 
       int k;
-      for(k = 0; k < this.field_70170_p.loadedEntityList.size(); ++k) {
-         Entity entity = (Entity)this.field_70170_p.loadedEntityList.get(k);
+      for(k = 0; k < this.worldObj.loadedEntityList.size(); ++k) {
+         Entity entity = (Entity)this.worldObj.loadedEntityList.get(k);
          if(entity instanceof EntityPlayer) {
             this.player = (EntityPlayer)entity;
          }
       }
 
       if(this.player != null) {
-         if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.field_70170_p.difficultySetting != null) {
+         if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.worldObj.difficultySetting != null) {
             this.playerPresence = false;
             if(this.field_70146_Z.nextInt(6) == 0) {
                this.teleportToEntity(this.player);
                if(this.field_70146_Z.nextInt(10) == 0) {
                   for(k = 0; k < 2; ++k) {
-                     this.field_70170_p.spawnParticle("largesmoke", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+                     this.worldObj.spawnParticle("largesmoke", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
                   }
                }
             }
@@ -208,12 +207,12 @@ public class EntityReficulSoldier extends EntityNPC {
    }
 
    protected Entity findPlayerToAttack() {
-      EntityPlayer entityplayer = this.field_70170_p.getClosestPlayerToEntity(this, 16.0D);
-      return entityplayer != null && this.canEntityBeSeen(entityplayer) && this.field_70170_p.difficultySetting != null?entityplayer:null;
+      EntityPlayer entityplayer = this.worldObj.getClosestPlayerToEntity(this, 16.0D);
+      return entityplayer != null && this.canEntityBeSeen(entityplayer) && this.worldObj.difficultySetting != null?entityplayer:null;
    }
 
    public boolean attackEntityFrom(DamageSource damagesource, int i) {
-      if(!this.playerPresence && this.field_70170_p.difficultySetting != null) {
+      if(!this.playerPresence && this.worldObj.difficultySetting != null) {
          if(super.attackEntityFrom(damagesource, (float)i)) {
             Entity entity = damagesource.getSourceOfDamage();
             if(this.riddenByEntity != entity && this.ridingEntity != entity) {

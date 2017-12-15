@@ -3,11 +3,7 @@ package aginsun.kingdoms.client.gui;
 import aginsun.kingdoms.api.gui.GuiPriceBar;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.UltimateHelper;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 

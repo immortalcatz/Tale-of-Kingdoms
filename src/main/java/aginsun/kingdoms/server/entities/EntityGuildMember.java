@@ -1,10 +1,7 @@
 package aginsun.kingdoms.server.entities;
 
-import java.util.List;
-import java.util.Random;
-
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.server.handlers.resources.GloryHandler;
+import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.handlers.resources.GuildHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -19,6 +16,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
+import java.util.Random;
 
 public final class EntityGuildMember extends EntityNPC
 {
@@ -82,9 +82,9 @@ public final class EntityGuildMember extends EntityNPC
     @Override
     public void onDeath(DamageSource damagesource)
     {
-        if(this.fight)
+        if (this.fight)
         {
-            GloryHandler.INSTANCE.addGlory(50);
+            PlayerProvider.get(player).addGlory(50, player);
 
             if(this.player != null && !worldObj.isRemote)
             {

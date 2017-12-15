@@ -3,7 +3,6 @@ package aginsun.kingdoms.server.entities;
 import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 

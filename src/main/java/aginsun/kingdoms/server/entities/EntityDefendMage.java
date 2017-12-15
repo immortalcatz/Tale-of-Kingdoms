@@ -1,9 +1,6 @@
 package aginsun.kingdoms.server.entities;
 
-import cpw.mods.fml.client.FMLClientHandler;
 import aginsun.kingdoms.api.entities.EntityNPC;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
@@ -20,48 +17,48 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public final class EntityDefendMage extends EntityNPC {
-
-   private EntityPlayer player;
+public final class EntityDefendMage extends EntityNPC
+{
    private boolean follow;
    private boolean checkPlayer;
    protected int attackStrength;
    public boolean isSwinging;
    public int field_110158_av;
 
-
    public EntityDefendMage(World world) {
       super(world, new ItemStack(Items.stick), 40.0F);
-      this.player = FMLClientHandler.instance().getClient().thePlayer;
       this.follow = false;
       this.checkPlayer = true;
-      this.worldObj = world;
       this.isImmuneToFire = false;
       this.attackStrength = 10;
    }
 
    public void onLivingUpdate() {
       super.onLivingUpdate();
-      if(this.follow) {
-         Minecraft minecraft = Minecraft.getMinecraft();
-         EntityClientPlayerMP entityplayersp = minecraft.thePlayer;
-         if(entityplayersp != null) {
-            float f = entityplayersp.getDistanceToEntity(this);
-            PathEntity pathentity;
-            if(f > 5.0F && f < 18.0F) {
-               pathentity = this.worldObj.getPathEntityToEntity(this, entityplayersp, 16.0F, true, false, false, true);
-            } else {
-               pathentity = null;
-            }
+      if(this.follow)
+      {
+          List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-            this.setPathToEntity(pathentity);
-         }
+          for (Entity entity : list)
+          {
+              if (entity instanceof EntityPlayer)
+              {
+                  EntityPlayer player = (EntityPlayer) entity;
+
+                  PathEntity pathentity;
+                  if(player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F) {
+                      pathentity = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
+                  } else {
+                      pathentity = null;
+                  }
+
+                  this.setPathToEntity(pathentity);
+              }
+          }
       }
-
    }
 
    public boolean interact(EntityPlayer entityplayer) {
-      this.player = entityplayer;
       if(!this.follow) {
          this.follow = true;
          if(!worldObj.isRemote) {
@@ -92,17 +89,22 @@ public final class EntityDefendMage extends EntityNPC {
 
       this.swingProgress = (float)this.field_110158_av / (float)i;
       Entity entity1;
-      if(this.checkPlayer) {
-         for(int list = 0; list < this.worldObj.loadedEntityList.size(); ++list) {
-            entity1 = (Entity)this.worldObj.loadedEntityList.get(list);
-            if(entity1 instanceof EntityPlayer) {
-               this.player = (EntityPlayer)entity1;
-            }
-         }
+      if(this.checkPlayer)
+      {
+          List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 
-         if(this.player != null && this.player.getDistanceSqToEntity(this) <= 64.0D) {
-            this.follow = true;
-         }
+          for (Entity entity : list)
+          {
+              if (entity instanceof EntityPlayer)
+              {
+                  EntityPlayer player = (EntityPlayer) entity;
+
+                  if (player != null && player.getDistanceSqToEntity(this) <= 64.0D)
+                  {
+                      this.follow = true;
+                  }
+              }
+          }
       }
 
       this.checkPlayer = false;

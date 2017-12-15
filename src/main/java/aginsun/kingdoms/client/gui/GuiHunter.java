@@ -2,10 +2,10 @@ package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiPriceBar;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.entities.EntityHired;
 import aginsun.kingdoms.server.handlers.UltimateHelper;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
-import aginsun.kingdoms.server.handlers.resources.GloryHandler;
 import aginsun.kingdoms.server.handlers.resources.HunterHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
@@ -30,7 +30,7 @@ public final class GuiHunter extends GuiScreenToK
     {
         super(world);
         this.player = player;
-        this.glory = GloryHandler.INSTANCE.getGlory();
+        this.glory = PlayerProvider.get(player).getGlory();
     }
 
     @Override
@@ -62,18 +62,15 @@ public final class GuiHunter extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                if (!this.world.isRemote)
+                if (!HunterHandler.INSTANCE.getHunter())
                 {
-                    if (!HunterHandler.INSTANCE.getHunter())
-                    {
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.killMobs"));
-                    }
-                    else
-                    {
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.discarded"));
-                    }
-                    this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.await"));
+                    this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.killMobs"));
                 }
+                else
+                {
+                    this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.discarded"));
+                }
+                this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.await"));
                 this.initGui();
                 break;
             case 2:
@@ -156,6 +153,7 @@ public final class GuiHunter extends GuiScreenToK
     {
         super.drawScreen(x, y, partial);
 
+        this.drawString(fontRendererObj, "Your glory: " + this.glory, this.width / 2, height / 2, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.kingship"), this.width / 2 + 100, 110, 11158783);
         this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.title", EconomyHandler.INSTANCE.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.guildMaster.title", EconomyHandler.INSTANCE.getGoldTotal())) / 2, 15, 16777215);
 

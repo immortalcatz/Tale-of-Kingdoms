@@ -1,11 +1,8 @@
 package aginsun.kingdoms.server.entities;
 
 import aginsun.kingdoms.api.entities.EntityNPC;
-import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
 import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.util.StringTranslate;
@@ -57,8 +54,8 @@ public final class EntityShopKeeper extends EntityNPC
 
             for (int k = 256; k < 32000; ++k)
             {
-                boolean flag2 = false;
-                boolean flag3 = false;
+                boolean flag2 = false, flag3 = false;
+
                 if (Item.getItemById(k) != null)
                 {
                     ItemStack itemstack = new ItemStack(Item.getItemById(k), 1, 0);
@@ -90,7 +87,7 @@ public final class EntityShopKeeper extends EntityNPC
 
                     if (s != null)
                     {
-                        j = GoldKeeper.INSTANCE.priceItem(s);
+                        j = GoldKeeper.INSTANCE.priceItem(item);
                     }
 
                     String s1 = item.getUnlocalizedName() + ".name";
@@ -122,7 +119,7 @@ public final class EntityShopKeeper extends EntityNPC
 
             if (!worldObj.isRemote)
             {
-                NetworkHandler.INSTANCE.sendTo(new CPacketSyncShopItems(stacks), (EntityPlayerMP) player);
+                //NetworkHandler.INSTANCE.sendTo(new CPacketSyncShopItems(stacks), (EntityPlayerMP) player);
             }
         }
         return true;

@@ -1,11 +1,8 @@
 package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiScreenToK;
-import aginsun.kingdoms.server.handlers.Buildings;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
 import aginsun.kingdoms.server.handlers.packets.SPacketBuild;
-import aginsun.kingdoms.server.handlers.schematic.Schematic;
-import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;

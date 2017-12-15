@@ -1,13 +1,25 @@
 package aginsun.kingdoms.server.handlers.resources;
 
+import aginsun.kingdoms.server.TaleOfKingdoms;
+import net.minecraft.item.Item;
+
 @Deprecated
 public final class GoldKeeper
 {
     public static final GoldKeeper INSTANCE = new GoldKeeper();
-    public float flint, clay, iron, diamond, fish, apple, string, feather;
 
-    public int priceItem(String s)
+    public int priceItem(Item item)
     {
-        return 1;
+        String name = Item.itemRegistry.getNameForObject(item);
+
+        name = name.substring(10);
+
+        int price = TaleOfKingdoms.proxy.getConfig().getPrice(name);
+
+        if (price == 0)
+        {
+            return 0;
+        }
+        return price;
     }
 }

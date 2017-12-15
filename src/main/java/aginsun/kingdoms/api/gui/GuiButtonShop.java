@@ -5,27 +5,25 @@ import aginsun.kingdoms.client.gui.GuiStockList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 public final class GuiButtonShop extends GuiButton
 {
     private GuiShopList gui;
     private GuiStockList gui2;
-    private Item item;
+    private ItemStack stack;
     private int field_73747_a, field_73745_b, x, y;
     private String text;
     public int id;
     private boolean field_73742_g, enabled2;
     private final ResourceLocation resource = new ResourceLocation("taleofkingdoms", "textures/gui/gui.png");
 
-    public GuiButtonShop(Item item, GuiShopList guishoplist, int id, int x, int y, int l, int i1, String text)
+    public GuiButtonShop(ItemStack stack, GuiShopList guishoplist, int id, int x, int y, int l, int i1, String text)
     {
         super(id, x, y, 200, 20, text);
         this.gui = guishoplist;
-        this.item = item;
-        this.field_73747_a = 200;
-        this.field_73745_b = 20;
+        this.stack = stack;
         this.field_73742_g = true;
         this.enabled2 = true;
         this.id = id;
@@ -36,11 +34,11 @@ public final class GuiButtonShop extends GuiButton
         this.text = text;
     }
 
-    public GuiButtonShop(Item item1, GuiStockList guistocklist, int id, int x, int y, int l, int i1, String text)
+    public GuiButtonShop(ItemStack stack, GuiStockList guistocklist, int id, int x, int y, int l, int i1, String text)
     {
         super(id, x, y, 200, 20, text);
         this.gui2 = guistocklist;
-        this.item = item1;
+        this.stack = stack;
         this.field_73747_a = 200;
         this.field_73745_b = 20;
         this.field_73742_g = true;
@@ -81,19 +79,12 @@ public final class GuiButtonShop extends GuiButton
 
             if (this.gui != null)
             {
-                if(this.gui.itemSelected == item)
-                {
-                    k = 2;
-                }
-                else
-                {
-                    k = 1;
-                }
+                k = this.gui.stackSelected == stack ? 2 : 1;
             }
 
-            if (this.gui2 != null)
+            /*if (this.gui2 != null)
             {
-                if (this.gui2.itemSelected == this.item)
+                if (this.gui2.stackSelected == stack)
                 {
                     k = 2;
                 }
@@ -101,9 +92,9 @@ public final class GuiButtonShop extends GuiButton
                 {
                     k = 1;
                 }
-            }
+            }*/
 
-            this.drawTexturedModalRect(this.x + this.field_73747_a / 2, this.y, 200 - this.field_73747_a / 2, 46 + k * 20, this.field_73747_a / 2, this.field_73745_b);
+            this.drawTexturedModalRect(this.x + this.field_73747_a / 2 + 55, this.y, 200 - this.field_73747_a / 2, 46 + k * 20, this.field_73747_a / 2, this.field_73745_b);
             this.mouseDragged(minecraft, i, j);
 
             if (!flag)

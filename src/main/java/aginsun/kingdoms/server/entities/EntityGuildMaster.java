@@ -1,8 +1,5 @@
 package aginsun.kingdoms.server.entities;
 
-import java.util.List;
-import java.util.Random;
-
 import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.server.handlers.resources.GuildHandler;
 import net.minecraft.entity.Entity;
@@ -21,6 +18,9 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+
+import java.util.List;
+import java.util.Random;
 
 public final class EntityGuildMaster extends EntityNPC {
 

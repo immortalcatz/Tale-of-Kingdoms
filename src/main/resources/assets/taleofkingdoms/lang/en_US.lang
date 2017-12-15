@@ -35,6 +35,7 @@ entity.Quarry.name=Quarry
 entity.ReficulGuardian.name=Reficul guardian
 entity.ReficulMage.name=Reficul mage
 entity.ReficulSoldier.name=Reficul soldier
+entity.SantaClaus.name=Santa Claus
 entity.ShopKeeper.name=Shop keeper
 entity.StableMaster.name=Stable master
 entity.StockKeeper.name=Stock keeper
@@ -133,7 +134,7 @@ gui.shop.next=Next
 gui.shop.back=Back
 gui.shop.buy=Buy item
 gui.shop.sell=Sell item
-gui.shop.sell.sixteen=Buy 16 items
+gui.shop.buy.sixteen=Buy 16 items
 
 gui.stable.title=Stable - Total money: %s Gold coins
 gui.stable.starter=Buy starter kit!
@@ -177,3 +178,8 @@ npc.headPriest.dialog=Head Priest: The light order gives blessing to you.
 npc.stockKeeper.dialog=Stock Keeper: Here is my stock for today!
 npc.tavernKeeper.dialog=One-Eyed Gambler: Feeling a bit lucky eh?
 npc.warden.dialog=Warden: The guild's warden at your service.
+
+npc.santa.dialog=Santa Claus: HOU HOU HOU, Happy New Year!
+npc.santa.new.year=Santa Claus: Happy New Year!
+npc.santa.badKid.dialog=Santa Claus: Oh, you naughty child!
+npc.santa.badKid=Santa Claus: You behaved badly this year, I don't want to talk to you!

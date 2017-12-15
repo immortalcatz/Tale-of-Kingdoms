@@ -15,11 +15,12 @@ import net.minecraft.item.Item;
 
 public class ServerProxy
 {
+    private Config config;
     public static final Item coins = new ItemCoin().setUnlocalizedName("Coins");
 
     public void pre(FMLPreInitializationEvent e)
     {
-        ConfigurationHandler.INSTANCE.register();
+        config = new Config(e);
         EntitiesRegister.INSTANCE.register();
         GameRegistry.registerItem(coins, "Coints");
         GameRegistry.registerItem(new ItemSpawnEgg(), "MonsterPlacer");
@@ -35,6 +36,11 @@ public class ServerProxy
     public void starting(FMLServerStartingEvent e)
     {
         ((CommandHandler) e.getServer().getCommandManager()).registerCommand(new CommandTOK());
+    }
+
+    public Config getConfig()
+    {
+        return config;
     }
 
     public EntityPlayer getPlayer(MessageContext ctx)

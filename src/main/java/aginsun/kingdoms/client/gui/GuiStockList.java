@@ -1,6 +1,5 @@
 package aginsun.kingdoms.client.gui;
 
-import aginsun.kingdoms.api.gui.GuiButtonShop;
 import aginsun.kingdoms.api.gui.GuiPriceBar;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.UltimateHelper;
@@ -14,7 +13,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
@@ -62,16 +60,16 @@ public final class GuiStockList extends GuiScreenToK
       this.loadbar[5] = new GuiPriceBar(0, this.width / 2 - 100, 143, 90, 12, 1.0F, "red");
       this.loadbar[6] = new GuiPriceBar(0, this.width / 2 - 100, 163, 90, 12, 1.0F, "red");
       this.loadbar[7] = new GuiPriceBar(0, this.width / 2 - 100, 183, 90, 12, 1.0F, "red");
-      this.loadbar[0].setBar(GoldKeeper.INSTANCE.flint / 200.0F);
+      /*this.loadbar[0].setBar(GoldKeeper.INSTANCE.flint / 200.0F);
       this.loadbar[1].setBar(GoldKeeper.INSTANCE.clay / 200.0F);
       this.loadbar[2].setBar(GoldKeeper.INSTANCE.iron / 200.0F);
       this.loadbar[3].setBar(GoldKeeper.INSTANCE.diamond / 200.0F);
       this.loadbar[4].setBar(GoldKeeper.INSTANCE.fish / 200.0F);
       this.loadbar[5].setBar(GoldKeeper.INSTANCE.apple / 200.0F);
       this.loadbar[6].setBar(GoldKeeper.INSTANCE.string / 200.0F);
-      this.loadbar[7].setBar(GoldKeeper.INSTANCE.feather / 200.0F);
+      this.loadbar[7].setBar(GoldKeeper.INSTANCE.feather / 200.0F);*/
       String s7;
-      if(this.item[1] != null) {
+      /*if(this.item[1] != null) {
          s7 = this.item[1].getUnlocalizedName() + ".name";
          s7 = this.st.translateKey(s7);
          this.buttonList.add(new GuiButtonShop(this.item[1], this, 8, this.width / 2 + 20, 40, 90, 20, s7));
@@ -117,7 +115,7 @@ public final class GuiStockList extends GuiScreenToK
          s7 = this.item[8].getUnlocalizedName() + ".name";
          s7 = this.st.translateKey(s7);
          this.buttonList.add(new GuiButtonShop(this.item[8], this, 15, this.width / 2 + 20, 180, 90, 20, s7));
-      }
+      }*/
 
       this.buttonList.add(new GuiButton(18, this.width / 2 + 130, 160, 80, 20, "Buy Item"));
       this.buttonList.add(new GuiButton(19, this.width / 2 + 130, 220, 80, 20, "Exit"));
@@ -184,10 +182,9 @@ public final class GuiStockList extends GuiScreenToK
       if(guibutton.id == 18) {
          itemstack1 = new ItemStack(this.itemSelected, 1, 0);
          item2 = itemstack1.getItem();
-         s1 = item2.getUnlocalizedName();
-         j = GoldKeeper.INSTANCE.priceItem(s1);
+         j = GoldKeeper.INSTANCE.priceItem(item2);
          f1 = 0.0F;
-         if(this.itemSelected == Items.flint) {
+         /*if(this.itemSelected == Items.flint) {
             f1 = GoldKeeper.INSTANCE.flint;
          }
 
@@ -217,7 +214,7 @@ public final class GuiStockList extends GuiScreenToK
 
          if(this.itemSelected == Items.feather) {
             f1 = GoldKeeper.INSTANCE.feather;
-         }
+         }*/
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
@@ -235,10 +232,9 @@ public final class GuiStockList extends GuiScreenToK
       if(guibutton.id == 21 && this.shopcounter >= 16) {
          itemstack1 = new ItemStack(this.itemSelected, 1, 0);
          item2 = itemstack1.getItem();
-         s1 = item2.getUnlocalizedName();
-         j = GoldKeeper.INSTANCE.priceItem(s1);
+         j = GoldKeeper.INSTANCE.priceItem(item2);
          f1 = 0.0F;
-         if(this.itemSelected == Items.flint) {
+         /*if(this.itemSelected == Items.flint) {
             f1 = GoldKeeper.INSTANCE.flint;
          }
 
@@ -268,7 +264,7 @@ public final class GuiStockList extends GuiScreenToK
 
          if(this.itemSelected == Items.feather) {
             f1 = GoldKeeper.INSTANCE.feather;
-         }
+         }*/
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
@@ -295,10 +291,9 @@ public final class GuiStockList extends GuiScreenToK
       if(this.shopcounter < 16) {
          ItemStack s = new ItemStack(this.itemSelected, 1, 0);
          Item s1 = s.getItem();
-         String i1 = s1.getUnlocalizedName();
-         f1 = GoldKeeper.INSTANCE.priceItem(i1);
+         f1 = GoldKeeper.INSTANCE.priceItem(s1);
          float l1 = 0.0F;
-         if(this.itemSelected == Items.flint) {
+         /*if(this.itemSelected == Items.flint) {
             l1 = GoldKeeper.INSTANCE.flint;
          }
 
@@ -328,7 +323,7 @@ public final class GuiStockList extends GuiScreenToK
 
          if(this.itemSelected == Items.feather) {
             l1 = GoldKeeper.INSTANCE.feather;
-         }
+         }*/
 
          l1 /= 100.0F;
          f1 = (int)((float)f1 + (float)f1 * l1);
@@ -354,9 +349,9 @@ public final class GuiStockList extends GuiScreenToK
       this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
       String var13 = this.itemSelected.getUnlocalizedName() + ".name";
       String var17 = this.st.translateKey(var13);
-      int var18 = GoldKeeper.INSTANCE.priceItem(String.valueOf(this.itemSelected.getUnlocalizedName()));
+      int var18 = GoldKeeper.INSTANCE.priceItem(this.itemSelected);
       float var19 = 0.0F;
-      if(this.itemSelected == Items.flint) {
+      /*if(this.itemSelected == Items.flint) {
          var19 = GoldKeeper.INSTANCE.flint;
       }
 
@@ -386,7 +381,7 @@ public final class GuiStockList extends GuiScreenToK
 
       if(this.itemSelected == Items.feather) {
          var19 = GoldKeeper.INSTANCE.feather;
-      }
+      }*/
 
       var19 /= 100.0F;
       var18 = (int)((float)var18 + (float)var18 * var19);

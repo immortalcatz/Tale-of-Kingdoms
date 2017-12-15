@@ -1,14 +1,13 @@
 package aginsun.kingdoms.server.handlers;
 
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
+import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.TaleOfKingdoms;
+import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
-import aginsun.kingdoms.server.handlers.resources.GloryHandler;
+import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
-import aginsun.kingdoms.server.PlayerProvider;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -60,10 +59,7 @@ public final class ServerEvents
                         EntityTracker tracker = ((WorldServer) e.world).getEntityTracker();
                         CPacketSyncDataPlayer packet = new CPacketSyncDataPlayer(provider);
 
-                        for (EntityPlayer entityPlayer : tracker.getTrackingPlayers(player))
-                        {
-                            NetworkHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) entityPlayer);
-                        }
+                        tracker.getTrackingPlayers(player).forEach(entityPlayer -> NetworkHandler.INSTANCE.sendTo(packet, (EntityPlayerMP) entityPlayer));
                     }
                 }
             }
@@ -97,9 +93,7 @@ public final class ServerEvents
         public void onDeath(LivingDeathEvent e)
         {
             if (e.source.getDamageType().equals("player"))
-            {
                 ItemDropHelper.dropCoins(e.entityLiving);
-            }
         }
     }
 
@@ -115,9 +109,7 @@ public final class ServerEvents
                     WorldServer world = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(0);
 
                     if (world != null)
-                    {
                         SchematicHandler.INSTANCE.update(world);
-                    }
                 }
             }
         }
@@ -132,7 +124,7 @@ public final class ServerEvents
             {
                 e.player.inventory.consumeInventoryItem(item);
                 EconomyHandler.INSTANCE.addGold(2);
-                GloryHandler.INSTANCE.addGlory(random.nextInt(15));
+                PlayerProvider.get(e.player).addGlory(random.nextInt(15), e.player);
             }
         }
 
