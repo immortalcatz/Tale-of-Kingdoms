@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagList;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.stream.IntStream;
 
 public final class Schematic
 {
@@ -78,45 +79,39 @@ public final class Schematic
     {
         NBTTagList list = nbt.getTagList("Entities", 10);
 
-        for (int i = 0; i < list.tagCount(); ++i)
-        {
-            NBTTagCompound nbt1 = list.getCompoundTagAt(i);
+        IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt).forEachOrdered(nbt1 -> {
             String s = nbt1.getString("EntityName");
             double posX = nbt1.getDouble("posX");
             double posY = nbt1.getDouble("posY");
             double posZ = nbt1.getDouble("posZ");
             this.entityList.add(new FakeEntity(s, posX, posY, posZ));
-        }
+        });
     }
 
     private void writeEntitiesTier4(NBTTagCompound nbt)
     {
         NBTTagList list = nbt.getTagList("Entities", 10);
 
-        for (int i = 0; i < list.tagCount(); ++i)
-        {
-            NBTTagCompound nbt1 = list.getCompoundTagAt(i);
+        IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt).forEachOrdered(nbt1 -> {
             String s = nbt1.getString("EntityName");
             double posX = nbt1.getDouble("posX");
             double posY = nbt1.getDouble("posY");
             double posZ = nbt1.getDouble("posZ");
             this.entityList.add(new FakeEntity(s, posX + 10.0D, posY, posZ + 5.0D));
-        }
+        });
     }
 
     private void writeEntitiesTier3(NBTTagCompound nbt)
     {
         NBTTagList list = nbt.getTagList("Entities", 10);
 
-        for (int i = 0; i < list.tagCount(); ++i)
-        {
-            NBTTagCompound nbt1 = list.getCompoundTagAt(i);
+        IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt).forEachOrdered(nbt1 -> {
             String s = nbt1.getString("EntityName");
             double posX = nbt1.getDouble("posX");
             double posY = nbt1.getDouble("posY");
             double posZ = nbt1.getDouble("posZ");
             this.entityList.add(new FakeEntity(s, posX - 10.0D, posY, posZ - 5.0D));
-        }
+        });
     }
 
     public ArrayList getBlockList()

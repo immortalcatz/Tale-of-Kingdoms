@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public final class EntitySantaClaus extends EntityNPC
 {
@@ -65,23 +66,7 @@ public final class EntitySantaClaus extends EntityNPC
         if (!worldObj.isRemote)
         {
             if (this.canInteractWith(player))
-            {
-                if (!PlayerProvider.get(player).badKid)
-                {
-                    if (calendar.get(2) + 1 == 1 && calendar.get(5) == 1)
-                    {
-                        player.addChatMessage(new ChatComponentTranslation("npc.santa.new.year"));
-                    }
-                    else
-                    {
-                        player.addChatMessage(new ChatComponentTranslation("npc.santa.dialog"));
-                    }
-                }
-                else
-                {
-                    player.addChatMessage(new ChatComponentTranslation("npc.santa.badKid"));
-                }
-            }
+                player.addChatMessage(!PlayerProvider.get(player).badKid ? calendar.get(2) + 1 == 1 && calendar.get(5) == 1 ? new ChatComponentTranslation("npc.santa.new.year") : new ChatComponentTranslation("npc.santa.dialog") : new ChatComponentTranslation("npc.santa.badKid"));
         }
         return true;
     }
@@ -99,14 +84,11 @@ public final class EntitySantaClaus extends EntityNPC
 
                 PlayerProvider.get(player).badKid = true;
 
-                for (int i = 1; i < rand.nextInt(5); i++)
-                {
-                    EntitySnowman golem = new EntitySnowman(worldObj);
+                IntStream.range(1, rand.nextInt(5)).mapToObj(i -> new EntitySnowman(worldObj)).forEach(golem -> {
                     golem.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
                     golem.setAttackTarget(player);
-
                     worldObj.spawnEntityInWorld(golem);
-                }
+                });
             }
         }
     }
@@ -129,9 +111,7 @@ public final class EntitySantaClaus extends EntityNPC
                 posZ = MathHelper.floor_double(this.posZ + (double)((float)(l / 2 % 2 * 2 - 1) * 0.25F));
 
                 if (this.worldObj.getBlock(posX, posY, posZ).getMaterial() == Material.air && Blocks.snow_layer.canPlaceBlockAt(this.worldObj, posX, posY, posZ))
-                {
                     this.worldObj.setBlock(posX, posY, posZ, Blocks.snow_layer);
-                }
             }
 
             List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
@@ -159,11 +139,10 @@ public final class EntitySantaClaus extends EntityNPC
 
                                     if (te instanceof TileEntityChest)
                                     {
-                                        for (int i = worldObj.rand.nextInt(25); i < worldObj.rand.nextInt(27); i++)
-                                        {
+                                        IntStream.range(worldObj.rand.nextInt(25), worldObj.rand.nextInt(27)).forEach(i -> {
                                             Item item = stacks.get(i) == null ? Item.getItemFromBlock(Blocks.air) : stacks.get(i);
                                             ((TileEntityChest) te).setInventorySlotContents(i, new ItemStack(item, i));
-                                        }
+                                        });
                                     }
                                 }
                             }

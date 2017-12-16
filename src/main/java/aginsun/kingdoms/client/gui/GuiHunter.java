@@ -19,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-public final class GuiHunter extends GuiScreenToK
+public class GuiHunter extends GuiScreenToK
 {
     private int glory;
     public EntityPlayer player;

@@ -2,7 +2,7 @@ package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.SPacketSpawnEntity;
+import aginsun.kingdoms.server.handlers.packets.server.SPacketSpawnEntity;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
@@ -16,15 +16,15 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Random;
 
-public final class GuiMageHall extends GuiScreenToK
+public class GuiMageHall extends GuiScreenToK
 {
-    public EntityPlayer entityplayer;
+    public EntityPlayer player;
     private boolean goldchecker = false;
 
-    public GuiMageHall(EntityPlayer entityplayer1, World world)
+    public GuiMageHall(EntityPlayer player, World world)
     {
         super(world);
-        this.entityplayer = entityplayer1;
+        this.player = player;
     }
 
     @Override
@@ -42,7 +42,8 @@ public final class GuiMageHall extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                ItemStack var9 = this.entityplayer.inventory.getCurrentItem();
+                ItemStack var9 = this.player.inventory.getCurrentItem();
+
                 if (500 <= EconomyHandler.INSTANCE.getGoldTotal() && var9 != null)
                 {
                     final Random random = new Random();
@@ -67,11 +68,11 @@ public final class GuiMageHall extends GuiScreenToK
                         }
 
                         EconomyHandler.INSTANCE.decreaseGold(500);
-                        this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.mage.enchanted", var9.getDisplayName()));
+                        this.player.addChatMessage(new ChatComponentTranslation("gui.mage.enchanted", var9.getDisplayName()));
                     }
                     else if (!this.world.isRemote)
                     {
-                        this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.mage.dontEnchant"));
+                        this.player.addChatMessage(new ChatComponentTranslation("gui.mage.dontEnchant"));
                     }
                 }
                 else
@@ -101,9 +102,7 @@ public final class GuiMageHall extends GuiScreenToK
     public void onGuiClosed()
     {
         if (!this.world.isRemote)
-        {
-            this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.mage.bye"));
-        }
+            this.player.addChatMessage(new ChatComponentTranslation("gui.mage.bye"));
     }
 
     @Override

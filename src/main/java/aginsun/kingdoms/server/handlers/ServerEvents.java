@@ -2,7 +2,7 @@ package aginsun.kingdoms.server.handlers;
 
 import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.TaleOfKingdoms;
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
+import aginsun.kingdoms.server.handlers.packets.client.CPacketSyncDataPlayer;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import aginsun.kingdoms.server.handlers.schematic.SchematicHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -37,10 +37,8 @@ public final class ServerEvents
         {
             if (e.entity instanceof EntityPlayer)
             {
-                EntityPlayer player = (EntityPlayer) e.entity;
-
-                if (player.getExtendedProperties("tokPlayer") == null)
-                    player.registerExtendedProperties("tokPlayer", new PlayerProvider());
+                if (e.entity.getExtendedProperties("tokPlayer") == null)
+                    e.entity.registerExtendedProperties("tokPlayer", new PlayerProvider());
             }
         }
 
@@ -132,6 +130,7 @@ public final class ServerEvents
         public void onPlayerLogin(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent e)
         {
             Buildings.INSTANCE.registerBuildings();
+            //NetworkHandler.INSTANCE.sendTo(new CPacketSyncBuildings(Buildings.INSTANCE.getBuildingList()), (EntityPlayerMP) e.player);
         }
     }
 }

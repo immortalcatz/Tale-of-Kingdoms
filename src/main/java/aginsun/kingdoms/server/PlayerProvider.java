@@ -2,7 +2,7 @@ package aginsun.kingdoms.server;
 
 import aginsun.kingdoms.server.handlers.Buildings;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncDataPlayer;
+import aginsun.kingdoms.server.handlers.packets.client.CPacketSyncDataPlayer;
 import aginsun.kingdoms.server.handlers.resources.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

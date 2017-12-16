@@ -20,6 +20,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
 import java.util.List;
 
 public final class ItemSpawnEgg extends ItemMonsterPlacer
@@ -40,10 +41,7 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List list)
     {
-        for (EntitiesType type : EntitiesType.values())
-        {
-            list.add(new ItemStack(item, 1, type.ordinal()));
-        }
+        Arrays.stream(EntitiesType.values()).map(type -> new ItemStack(item, 1, type.ordinal())).forEachOrdered(list::add);
     }
 
     @Override
@@ -71,23 +69,17 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
             double d0 = 0.0D;
 
             if (par7 == 1 && block.getRenderType() == 11)
-            {
                 d0 = 0.5D;
-            }
 
             Entity entity = spawnEntity(stack, world, par4 + 0.5D, par5 + d0, par6 + 0.5D);
 
             if (entity != null)
             {
                 if (entity instanceof EntityLivingBase && stack.hasDisplayName())
-                {
-                    ((EntityLiving)entity).setCustomNameTag(stack.getDisplayName());
-                }
+                    ((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
 
                 if (!player.capabilities.isCreativeMode)
-                {
                     --stack.stackSize;
-                }
             }
 
             return true;
@@ -120,15 +112,10 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
                     int k = movingobjectposition.blockZ;
 
                     if (!world.canMineBlock(player, i, j, k))
-                    {
                         return stack;
-                    }
 
-                    if (!player.canPlayerEdit(i, j, k, movingobjectposition
-                            .sideHit, stack))
-                    {
+                    if (!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack))
                         return stack;
-                    }
 
                     if (world.getBlock(i, j, k) instanceof BlockLiquid)
                     {
@@ -136,17 +123,11 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
 
                         if (entity != null)
                         {
-                            if (entity instanceof EntityLivingBase && stack
-                                    .hasDisplayName())
-                            {
-                                ((EntityLiving)entity).setCustomNameTag(stack
-                                        .getDisplayName());
-                            }
+                            if (entity instanceof EntityLivingBase && stack.hasDisplayName())
+                                ((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
 
                             if (!player.capabilities.isCreativeMode)
-                            {
                                 --stack.stackSize;
-                            }
                         }
                     }
                 }
@@ -165,9 +146,7 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
             if (EntityList.stringToClassMapping.containsKey("taleofkingdoms." + nameFull))
             {
                 EntityLiving entity = (EntityLiving) UltimateHelper.INSTANCE.getEntity(nameFull, world);
-                entity.setLocationAndAngles(parX, parY, parZ,
-                        MathHelper.wrapAngleTo180_float(world.rand.nextFloat()
-                                * 360.0F), 0.0F);
+                entity.setLocationAndAngles(parX, parY, parZ, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
                 world.spawnEntityInWorld(entity);
                 entity.onSpawnWithEgg(null);
                 entity.playLivingSound();

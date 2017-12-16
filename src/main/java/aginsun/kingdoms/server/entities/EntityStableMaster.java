@@ -32,9 +32,7 @@ public final class EntityStableMaster extends EntityNPC
     public boolean interact(final EntityPlayer player)
     {
         if (this.canInteractWith(player))
-        {
             player.openGui(TaleOfKingdoms.instance, GUI_STABLE, worldObj, 0, 0, 0);
-        }
         return true;
     }
 }

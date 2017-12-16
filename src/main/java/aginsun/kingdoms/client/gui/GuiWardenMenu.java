@@ -3,7 +3,7 @@ package aginsun.kingdoms.client.gui;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
 import aginsun.kingdoms.server.handlers.UltimateHelper;
-import aginsun.kingdoms.server.handlers.packets.SPacketSpawnEntity;
+import aginsun.kingdoms.server.handlers.packets.server.SPacketSpawnEntity;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
@@ -12,7 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public final class GuiWardenMenu extends GuiScreenToK
+public class GuiWardenMenu extends GuiScreenToK
 {
     private EntityPlayer player;
     private boolean goldchecker;

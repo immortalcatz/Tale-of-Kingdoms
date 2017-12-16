@@ -47,7 +47,7 @@ public final class ContainerSell extends Container
                 return null;
             }
 
-            if(stackInslot.stackSize == 0)
+            if( stackInslot.stackSize == 0)
             {
                 slot.putStack(null);
             }

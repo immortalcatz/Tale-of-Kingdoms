@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.world.World;
 
-public final class GuiStableMaster extends GuiScreenToK
+public class GuiStableMaster extends GuiScreenToK
 {
     private EntityPlayer player;
     private boolean goldchecker = false;

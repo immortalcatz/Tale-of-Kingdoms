@@ -13,7 +13,9 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class EntityReficulMage extends EntityNPC {
 
@@ -35,9 +37,7 @@ public class EntityReficulMage extends EntityNPC {
    public void onLivingUpdate() {
       super.onLivingUpdate();
 
-      for(int i = 0; i < 2; ++i) {
-         this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-      }
+      IntStream.range(0, 2).forEach(i -> this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, this.posY + this.field_70146_Z.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D));
 
    }
 
@@ -126,9 +126,7 @@ public class EntityReficulMage extends EntityNPC {
             this.worldObj.setBlock((int)entity.posX, (int)entity.posY - 1, (int)entity.posZ, Block.getBlockById(51));
             this.attackTime = 40;
 
-            for(int i = 0; i < 8; ++i) {
-               this.worldObj.spawnParticle("portal", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-            }
+            IntStream.range(0, 8).forEach(i -> this.worldObj.spawnParticle("portal", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double) this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D));
 
             this.worldObj.spawnParticle("portal", entity.posX + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ + 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
             this.worldObj.spawnParticle("portal", entity.posX - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, entity.posY - 1.0D + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, entity.posZ - 1.0D + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
@@ -181,13 +179,9 @@ public class EntityReficulMage extends EntityNPC {
 
       this.swingProgress = (float)this.field_110158_av / (float)i;
 
-      int k;
-      for(k = 0; k < this.worldObj.loadedEntityList.size(); ++k) {
-         Entity entity = (Entity)this.worldObj.loadedEntityList.get(k);
-         if(entity instanceof EntityPlayer) {
-            this.player = (EntityPlayer)entity;
-         }
-      }
+      List<Entity> entities = this.worldObj.loadedEntityList;
+
+      entities.stream().filter(entity -> entity instanceof EntityPlayer).forEach(entity -> this.player = (EntityPlayer) entity);
 
       if(this.player != null) {
          if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
@@ -195,9 +189,7 @@ public class EntityReficulMage extends EntityNPC {
             if(this.field_70146_Z.nextInt(6) == 0) {
                this.teleportToEntity(this.player);
                if(this.field_70146_Z.nextInt(10) == 0) {
-                  for(k = 0; k < 8; ++k) {
-                     this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-                  }
+                  IntStream.range(0, 8).forEach(k -> this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, this.posY + this.field_70146_Z.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D));
                }
             }
          } else {

@@ -9,7 +9,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 
-public final class GuiWorker extends GuiScreenToK
+public class GuiWorker extends GuiScreenToK
 {
     public EntityPlayer entityplayer;
     private EntityWorkerMember member;

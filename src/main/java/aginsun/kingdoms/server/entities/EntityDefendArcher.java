@@ -174,9 +174,7 @@ public final class EntityDefendArcher extends EntityNPC
                 ++this.level;
 
                 if (this.level > 12)
-                {
                     this.upgrade();
-                }
             }
 
             this.rotationYaw = (float)(Math.atan2(d1, d) * 180.0D / 3.1415927410125732D) - 90.0F;
@@ -190,14 +188,10 @@ public final class EntityDefendArcher extends EntityNPC
         Entity entity = damagesource.getSourceOfDamage();
 
         if (entity instanceof EntityDefendBandit || entity instanceof EntityDefendKnight || entity instanceof EntityDefendMage || entity instanceof EntityDefendPaladin || entity instanceof EntityDefendWarrior || entity instanceof EntityDefendArcher || entity instanceof EntityHired || entity instanceof EntityPlayer)
-        {
             flag = false;
-        }
 
         if (flag)
-        {
-            super.attackEntityFrom(damagesource, (float)i);
-        }
+            super.attackEntityFrom(damagesource, (float) i);
         return true;
     }
 

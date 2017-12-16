@@ -24,9 +24,7 @@ public class GuiScreenToK extends GuiScreen
     @Override
     protected void keyTyped(char character, int code)
     {
-        if(code == 1 || code == this.mc.gameSettings.keyBindInventory.getKeyCode())
-        {
+        if (code == 1 || code == this.mc.gameSettings.keyBindInventory.getKeyCode())
             this.mc.thePlayer.closeScreen();
-        }
     }
 }

@@ -22,8 +22,10 @@ public class ServerProxy
     {
         config = new Config(e);
         EntitiesRegister.INSTANCE.register();
+
         GameRegistry.registerItem(coins, "Coints");
         GameRegistry.registerItem(new ItemSpawnEgg(), "MonsterPlacer");
+
         new ServerEvents();
         new NetworkHandler();
     }

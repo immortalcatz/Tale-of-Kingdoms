@@ -1,6 +1,5 @@
 package aginsun.kingdoms.client;
 
-import aginsun.kingdoms.client.handlers.ClientEvents;
 import aginsun.kingdoms.server.ServerProxy;
 import aginsun.kingdoms.server.handlers.EntitiesRegister;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;

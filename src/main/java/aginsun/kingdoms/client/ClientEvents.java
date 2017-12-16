@@ -1,6 +1,7 @@
-package aginsun.kingdoms.client.handlers;
+package aginsun.kingdoms.client;
 
 import aginsun.kingdoms.server.TaleOfKingdoms;
+import aginsun.kingdoms.server.handlers.UltimateHelper;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -13,6 +14,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
@@ -40,6 +42,15 @@ public final class ClientEvents
             if (e.gui instanceof GuiInventory)
             {
                 e.gui.drawString(mc.fontRenderer, I18n.format("gui.goldTotal") + " " + EconomyHandler.INSTANCE.getGoldTotal(), scaled.getScaledWidth() / 2 - 2, scaled.getScaledHeight() / 2 - 17, 16763904);
+            }
+        }
+
+        @SubscribeEvent
+        public void onGui(RenderGameOverlayEvent e)
+        {
+            if (!e.isCancelable() && e.type == RenderGameOverlayEvent.ElementType.TEXT)
+            {
+                Minecraft.getMinecraft().fontRenderer.drawString(UltimateHelper.INSTANCE.randbow("Hello, World!"), 0, 0, 0xFFFFFF);
             }
         }
     }

@@ -4,7 +4,7 @@ import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.handlers.Config;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
+import aginsun.kingdoms.server.handlers.packets.client.CPacketSyncShopItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;

@@ -13,18 +13,16 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-public final class GuiStockList extends GuiScreenToK
+public class GuiStockList extends GuiScreenToK
 {
     private EntityPlayer entityplayer;
-    private StringTranslate st = new StringTranslate();
    int checkBounty = 0;
    private Item[] item = new Item[9];
    boolean reachedend = false;
-   public Item itemSelected;
+   public ItemStack stackSelected;
    boolean goldchecker = false;
    private GuiPriceBar[] loadbar = new GuiPriceBar[8];
    public int shopcounter = 20;
@@ -35,10 +33,11 @@ public final class GuiStockList extends GuiScreenToK
       super(world);
       this.entityplayer = entityplayer1;
       this.setItemList();
-      this.itemSelected = (new ItemStack(Items.flint, 1, 0)).getItem();
+      this.stackSelected = new ItemStack(Items.flint, 1, 0);
    }
 
-   public void setItemList() {
+   public void setItemList()
+   {
       this.item[1] = (new ItemStack(Items.flint, 1, 0)).getItem();
       this.item[2] = (new ItemStack(Items.clay_ball, 1, 0)).getItem();
       this.item[3] = (new ItemStack(Items.iron_ingot, 1, 0)).getItem();
@@ -134,7 +133,7 @@ public final class GuiStockList extends GuiScreenToK
    }
 
    protected void actionPerformed(GuiButton guibutton) {
-      if(guibutton.id == 8) {
+      /*if(guibutton.id == 8) {
          this.itemSelected = this.item[1];
          this.goldchecker = false;
       }
@@ -172,7 +171,7 @@ public final class GuiStockList extends GuiScreenToK
       if(guibutton.id == 15) {
          this.itemSelected = this.item[8];
          this.goldchecker = false;
-      }
+      }*/
 
       ItemStack itemstack1;
       Item item2;
@@ -180,7 +179,7 @@ public final class GuiStockList extends GuiScreenToK
       int j;
       float f1;
       if(guibutton.id == 18) {
-         itemstack1 = new ItemStack(this.itemSelected, 1, 0);
+         itemstack1 = stackSelected;
          item2 = itemstack1.getItem();
          j = GoldKeeper.INSTANCE.priceItem(item2);
          f1 = 0.0F;
@@ -230,7 +229,7 @@ public final class GuiStockList extends GuiScreenToK
       }
 
       if(guibutton.id == 21 && this.shopcounter >= 16) {
-         itemstack1 = new ItemStack(this.itemSelected, 1, 0);
+         itemstack1 = stackSelected;
          item2 = itemstack1.getItem();
          j = GoldKeeper.INSTANCE.priceItem(item2);
          f1 = 0.0F;
@@ -289,7 +288,7 @@ public final class GuiStockList extends GuiScreenToK
    public void drawScreen(int i, int j, float f) {
       int f1;
       if(this.shopcounter < 16) {
-         ItemStack s = new ItemStack(this.itemSelected, 1, 0);
+         ItemStack s = stackSelected;
          Item s1 = s.getItem();
          f1 = GoldKeeper.INSTANCE.priceItem(s1);
          float l1 = 0.0F;
@@ -347,9 +346,9 @@ public final class GuiStockList extends GuiScreenToK
       super.drawScreen(i, j, f);
 
       this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
-      String var13 = this.itemSelected.getUnlocalizedName() + ".name";
-      String var17 = this.st.translateKey(var13);
-      int var18 = GoldKeeper.INSTANCE.priceItem(this.itemSelected);
+      //String var13 = this.itemSelected.getUnlocalizedName() + ".name";
+      //String var17 = this.st.translateKey(var13);
+      //int var18 = GoldKeeper.INSTANCE.priceItem(this.itemSelected);
       float var19 = 0.0F;
       /*if(this.itemSelected == Items.flint) {
          var19 = GoldKeeper.INSTANCE.flint;
@@ -384,11 +383,11 @@ public final class GuiStockList extends GuiScreenToK
       }*/
 
       var19 /= 100.0F;
-      var18 = (int)((float)var18 + (float)var18 * var19);
+      //var18 = (int)((float)var18 + (float)var18 * var19);
       if(this.goldchecker) {
-         this.drawString(this.fontRendererObj, "Selected Item Cost: " + var17 + " - NOT ENOUGH GOLD", this.width / 2, 30, 16763904);
+         //this.drawString(this.fontRendererObj, "Selected Item Cost: " + var17 + " - NOT ENOUGH GOLD", this.width / 2, 30, 16763904);
       } else {
-         this.drawString(this.fontRendererObj, "Selected Item Cost: " + var17 + " - " + var18 + " Gold coins", this.width / 2, 30, 16763904);
+         //this.drawString(this.fontRendererObj, "Selected Item Cost: " + var17 + " - " + var18 + " Gold coins", this.width / 2, 30, 16763904);
       }
 
       this.drawString(this.fontRendererObj, "Note: Full bar means full cost!", this.width / 2, 200, 16763904);

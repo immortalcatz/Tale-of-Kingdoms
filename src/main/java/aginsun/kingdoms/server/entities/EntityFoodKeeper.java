@@ -4,16 +4,12 @@ import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.handlers.Config;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
+import aginsun.kingdoms.server.handlers.packets.client.CPacketSyncShopItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;

@@ -7,10 +7,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public final class GuiInnMenu extends GuiScreenToK
+public class GuiInnMenu extends GuiScreenToK
 {
     private EntityPlayer player;
-    private boolean goldchecker = false, screenpause = false, isResting = false;
+    private boolean screenpause = false, isResting = false;
 
     public GuiInnMenu(EntityPlayer player, World world)
     {
@@ -75,7 +75,6 @@ public final class GuiInnMenu extends GuiScreenToK
                 break;
             case 3:
                 this.mc.displayGuiScreen(null);
-                this.goldchecker = false;
                 break;
         }
     }
@@ -90,9 +89,7 @@ public final class GuiInnMenu extends GuiScreenToK
     public void onGuiClosed()
     {
         if (!this.world.isRemote)
-        {
             this.player.addChatMessage(new ChatComponentText("House Keeper: Have a nice day."));
-        }
     }
 
     @Override

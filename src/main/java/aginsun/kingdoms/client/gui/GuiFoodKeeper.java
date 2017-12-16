@@ -10,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-public final class GuiFoodKeeper extends GuiScreenToK
+public class GuiFoodKeeper extends GuiScreenToK
 {
     private EntityPlayer player;
     private boolean freeBread = true;
@@ -39,13 +39,13 @@ public final class GuiFoodKeeper extends GuiScreenToK
                 {
                     if (!this.world.isRemote)
                     {
+                        ItemStack itemstack = new ItemStack(Items.bread, 1, 0);
+                        EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, itemstack);
+                        this.world.spawnEntityInWorld(entityitem);
+                        this.freeBread = false;
+
                         this.player.addChatMessage(new ChatComponentTranslation("gui.farmer.take"));
                     }
-
-                    ItemStack itemstack = new ItemStack(Items.bread, 1, 0);
-                    EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, itemstack);
-                    this.world.spawnEntityInWorld(entityitem);
-                    this.freeBread = false;
                 }
                 else if (!this.world.isRemote)
                 {

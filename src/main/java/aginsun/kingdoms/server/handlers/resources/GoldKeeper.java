@@ -14,12 +14,6 @@ public final class GoldKeeper
 
         name = name.substring(10);
 
-        int price = TaleOfKingdoms.proxy.getConfig().getPrice(name);
-
-        if (price == 0)
-        {
-            return 0;
-        }
-        return price;
+        return TaleOfKingdoms.proxy.getConfig().getPrice(name);
     }
 }

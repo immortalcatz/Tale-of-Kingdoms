@@ -13,7 +13,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import java.util.List;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class EntityReficulSoldier extends EntityNPC {
 
@@ -35,9 +37,7 @@ public class EntityReficulSoldier extends EntityNPC {
    public void onLivingUpdate() {
       super.onLivingUpdate();
 
-      for(int i = 0; i < 2; ++i) {
-         this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-      }
+      IntStream.range(0, 2).forEach(i -> this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, this.posY + this.field_70146_Z.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D));
 
    }
 
@@ -180,13 +180,9 @@ public class EntityReficulSoldier extends EntityNPC {
 
       this.swingProgress = (float)this.field_110158_av / (float)i;
 
-      int k;
-      for(k = 0; k < this.worldObj.loadedEntityList.size(); ++k) {
-         Entity entity = (Entity)this.worldObj.loadedEntityList.get(k);
-         if(entity instanceof EntityPlayer) {
-            this.player = (EntityPlayer)entity;
-         }
-      }
+      List<Entity> entities = this.worldObj.loadedEntityList;
+
+      entities.stream().filter(entity -> entity instanceof EntityPlayer).forEach(entity -> this.player = (EntityPlayer) entity);
 
       if(this.player != null) {
          if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.worldObj.difficultySetting != null) {
@@ -194,9 +190,7 @@ public class EntityReficulSoldier extends EntityNPC {
             if(this.field_70146_Z.nextInt(6) == 0) {
                this.teleportToEntity(this.player);
                if(this.field_70146_Z.nextInt(10) == 0) {
-                  for(k = 0; k < 2; ++k) {
-                     this.worldObj.spawnParticle("largesmoke", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-                  }
+                  IntStream.range(0, 2).forEach(k -> this.worldObj.spawnParticle("largesmoke", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, this.posY + this.field_70146_Z.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D));
                }
             }
          } else {

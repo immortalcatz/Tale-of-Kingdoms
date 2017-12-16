@@ -4,7 +4,6 @@ import aginsun.kingdoms.server.TaleOfKingdoms;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -13,14 +12,10 @@ public abstract class AbstractPacket<REQ extends IMessage> implements IMessage, 
     @Override
     public REQ onMessage(final REQ message, final MessageContext ctx)
     {
-        if(ctx.side == Side.SERVER)
-        {
+        if (ctx.side.isServer())
             handleServerSide(ctx.getServerHandler().playerEntity);
-        }
         else
-        {
             handleClientSide(TaleOfKingdoms.proxy.getPlayer(ctx));
-        }
         return null;
     }
 

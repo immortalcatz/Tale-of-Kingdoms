@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-public final class GuiQuarry extends GuiScreenToK
+public class GuiQuarry extends GuiScreenToK
 {
     private GuiPriceBar bar;
     private EntityPlayer player;
@@ -51,20 +51,17 @@ public final class GuiQuarry extends GuiScreenToK
                     ResourcesHandler.INSTANCE.decreaseCobblePool(64);
                 }
                 else
-                {
                     this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.notResources"));
-                }
                 break;
             case 2:
                 if (EconomyHandler.INSTANCE.getGoldTotal() >= 1500)
                 {
                     if (WorkersHandler.INSTANCE.getQuarryMembers() < 12)
                     {
-                        WorkersHandler.INSTANCE.addQuarryMember((byte) 1);
-                        EconomyHandler.INSTANCE.decreaseGold(1500);
-
                         if (!this.world.isRemote)
                         {
+                            WorkersHandler.INSTANCE.addQuarryMember((byte) 1);
+                            EconomyHandler.INSTANCE.decreaseGold(1500);
                             this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.boughtWorker"));
                         }
                     }
@@ -74,9 +71,7 @@ public final class GuiQuarry extends GuiScreenToK
                     }
                 }
                 else
-                {
                     this.goldchecker = true;
-                }
                 break;
             case 3:
                 this.mc.displayGuiScreen(null);

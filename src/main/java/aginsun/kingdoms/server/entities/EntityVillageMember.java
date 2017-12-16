@@ -36,6 +36,7 @@ public final class EntityVillageMember extends EntityNPC
     public boolean interact(EntityPlayer entityplayer)
     {
         ItemStack itemstack = entityplayer.inventory.getCurrentItem();
+
         if (itemstack != null && !this.hasAxe && (itemstack.getItem() == Items.wooden_axe || itemstack.getItem() == Items.stone_axe || itemstack.getItem() == Items.iron_axe))
         {
             entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, null);
@@ -95,12 +96,14 @@ public final class EntityVillageMember extends EntityNPC
         if (random.nextInt(15) == 0)
         {
             this.motionY = 0.41999998688697815D;
+
             if (this.isSprinting())
             {
                 float f = this.rotationYaw * 0.01745329F;
                 this.motionX -= (double)(MathHelper.sin(f) * 0.2F);
                 this.motionZ += (double)(MathHelper.cos(f) * 0.2F);
             }
+
             this.isAirBorne = true;
         }
     }

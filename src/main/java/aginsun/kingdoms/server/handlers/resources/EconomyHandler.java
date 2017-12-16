@@ -17,7 +17,6 @@ public final class EconomyHandler
     public void setGoldTotal(int count)
     {
         goldTotal = count;
-
     }
     public void setBankGold(int count)
     {

@@ -17,7 +17,7 @@ public final class GuiPriceBar extends Gui
     {
         this.borderColor = -10592674;
 
-        if(f >= 0.0F && f <= 1.0F)
+        if (f >= 0.0F && f <= 1.0F)
         {
             this.barPosition = f;
         }
@@ -45,15 +45,15 @@ public final class GuiPriceBar extends Gui
     {
         this(i, j, k, l, i1, f);
 
-        if(s.equalsIgnoreCase("red"))
+        if (s.equalsIgnoreCase("red"))
         {
             this.colour = -2553077;
         }
-        else if(s.equalsIgnoreCase("green"))
+        else if (s.equalsIgnoreCase("green"))
         {
             this.colour = -16298223;
         }
-        else if(s.equalsIgnoreCase("blue"))
+        else if (s.equalsIgnoreCase("blue"))
         {
             this.colour = -15000608;
         }
@@ -65,7 +65,7 @@ public final class GuiPriceBar extends Gui
 
     public void setBar(float percent)
     {
-        if(percent >= 0.0F && percent <= 1.0F)
+        if (percent >= 0.0F && percent <= 1.0F)
         {
             this.barPosition = percent;
         }
@@ -75,7 +75,7 @@ public final class GuiPriceBar extends Gui
     {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 
-        if(this.border)
+        if (this.border)
         {
             drawRect(this.xPosition, this.yPosition, this.xPosition + this.width, this.yPosition + this.height, this.borderColor);
         }

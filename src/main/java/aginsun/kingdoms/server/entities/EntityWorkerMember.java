@@ -54,20 +54,16 @@ public final class EntityWorkerMember extends EntityNPC
    public boolean interact(EntityPlayer player) {
       boolean flag = false;
 
-      int var10;
-      if(!this.world.loadedEntityList.isEmpty()) {
-         for(var10 = 0; var10 < this.world.loadedEntityList.size(); ++var10) {
-            Entity k = (Entity)this.world.loadedEntityList.get(var10);
-            if(k instanceof EntityMarkerKeeper) {
-               k.setDead();
-            }
-         }
-      }
+      List<Entity> entities = this.world.loadedEntityList;
+
+      entities.stream().filter(entity -> entity instanceof EntityMarkerKeeper).forEach(Entity::setDead);
 
       this.freeze = false;
       if(this.isMining) {
          this.isMining = false;
       }
+
+      int var10;
 
       if(this.worktype == 1) {
          var10 = (int)this.posY;
@@ -93,7 +89,6 @@ public final class EntityWorkerMember extends EntityNPC
                            this.world.spawnEntityInWorld(entity);
                         }
 
-                        System.out.println("newMarker");
                         flag = true;
                         this.markerExist = true;
                      } else {
@@ -335,6 +330,5 @@ public final class EntityWorkerMember extends EntityNPC
       if(!this.world.isRemote) {
          this.world.spawnEntityInWorld(this.marker2);
       }
-
    }
 }

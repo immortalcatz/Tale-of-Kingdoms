@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
-public final class GuiLumber extends GuiScreenToK
+public class GuiLumber extends GuiScreenToK
 {
     private GuiPriceBar bar;
     public EntityPlayer player;

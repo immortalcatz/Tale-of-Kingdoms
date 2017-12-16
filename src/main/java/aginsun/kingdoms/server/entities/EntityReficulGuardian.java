@@ -14,13 +14,13 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.World;
 
-import java.util.Random;
+import java.util.List;
+import java.util.stream.IntStream;
 
 public class EntityReficulGuardian extends EntityNPC
 {
    private EntityPlayer player;
    private boolean playerPresence = true;
-   private Random field_70146_Z = new Random();
    protected int attackStrength;
 
 
@@ -33,24 +33,21 @@ public class EntityReficulGuardian extends EntityNPC
    public void onLivingUpdate() {
       super.onLivingUpdate();
 
-      for(int i = 0; i < 2; ++i) {
-         this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-      }
-
+      IntStream.range(0, 2).forEach(i -> this.worldObj.spawnParticle("portal", this.posX + (this.worldObj.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.worldObj.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.worldObj.rand.nextDouble() - 0.5D) * (double) this.width, (this.worldObj.rand.nextDouble() - 0.5D) * 2.0D, -this.worldObj.rand.nextDouble(), (this.worldObj.rand.nextDouble() - 0.5D) * 2.0D));
    }
 
    protected boolean teleportToEntity(Entity entity) {
       Vec3 vec3d = Vec3.createVectorHelper(this.posX - entity.posX, this.boundingBox.minY + (double)(this.height / 2.0F) - entity.posY + (double)entity.getEyeHeight(), this.posZ - entity.posZ);
       vec3d = vec3d.normalize();
       double d = 16.0D;
-      double d1 = this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * 8.0D - vec3d.xCoord * d;
-      double d2 = this.posY + (double)(this.field_70146_Z.nextInt(16) - 8) - vec3d.yCoord * d;
-      double d3 = this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * 8.0D - vec3d.zCoord * d;
+      double d1 = this.posX + (this.worldObj.rand.nextDouble() - 0.5D) * 8.0D - vec3d.xCoord * d;
+      double d2 = this.posY + (double)(this.worldObj.rand.nextInt(16) - 8) - vec3d.yCoord * d;
+      double d3 = this.posZ + (this.worldObj.rand.nextDouble() - 0.5D) * 8.0D - vec3d.zCoord * d;
       return this.teleportTo(d1, d2, d3);
    }
 
    protected boolean teleportTo(double d, double d1, double d2) {
-      if(this.field_70146_Z.nextInt(10) == 0) {
+      if(this.worldObj.rand.nextInt(10) == 0) {
          double d3 = this.posX;
          double d4 = this.posY;
          double d5 = this.posZ;
@@ -118,8 +115,8 @@ public class EntityReficulGuardian extends EntityNPC
             EntityArrow entityarrow = new EntityArrow(this.worldObj, this, 1.0F);
             double d2 = entity.posY + (double)entity.getEyeHeight() - 0.699999988079071D - entityarrow.posY;
             float f1 = MathHelper.sqrt_double(d * d + d1 * d1) * 0.2F;
-            this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.field_70146_Z.nextFloat() * 0.4F + 0.8F));
-            if(this.field_70146_Z.nextInt(8) != 0) {
+            this.worldObj.playSoundAtEntity(this, "random.bow", 1.0F, 1.0F / (this.worldObj.rand.nextFloat() * 0.4F + 0.8F));
+            if(this.worldObj.rand.nextInt(8) != 0) {
                this.worldObj.spawnEntityInWorld(entityarrow);
                entityarrow.setThrowableHeading(d, d2 + (double)f1, d1, 1.6F, 12.0F);
             }
@@ -138,7 +135,7 @@ public class EntityReficulGuardian extends EntityNPC
    }
 
    public void knockBack(Entity entity, int i, double d, double d1) {
-      if(this.field_70146_Z.nextInt(2) == 0) {
+      if(this.worldObj.rand.nextInt(2) == 0) {
          this.isAirBorne = true;
          float f = MathHelper.sqrt_double(d * d + d1 * d1);
          float f1 = 0.4F;
@@ -158,23 +155,17 @@ public class EntityReficulGuardian extends EntityNPC
    protected void updateEntityActionState() {
       super.updateEntityActionState();
 
-      int j;
-      for(j = 0; j < this.worldObj.loadedEntityList.size(); ++j) {
-         Entity entity = (Entity)this.worldObj.loadedEntityList.get(j);
-         if(entity instanceof EntityPlayer) {
-            this.player = (EntityPlayer)entity;
-         }
-      }
+      List<Entity> entities = this.worldObj.loadedEntityList;
+
+      entities.stream().filter(entity -> entity instanceof EntityPlayer).forEach(entity -> this.player = (EntityPlayer) entity);
 
       if(this.player != null) {
          if(this.player.getDistanceSqToEntity(this) <= 220.0D && this.worldObj.difficultySetting != EnumDifficulty.PEACEFUL) {
             this.playerPresence = false;
-            if(this.field_70146_Z.nextInt(6) == 0) {
+            if(this.worldObj.rand.nextInt(6) == 0) {
                this.teleportToEntity(this.player);
-               if(this.field_70146_Z.nextInt(10) == 0) {
-                  for(j = 0; j < 2; ++j) {
-                     this.worldObj.spawnParticle("largesmoke", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, this.posY + this.field_70146_Z.nextDouble() * (double)this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double)this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
-                  }
+               if(this.worldObj.rand.nextInt(10) == 0) {
+                  IntStream.range(0, 2).forEach(j -> this.worldObj.spawnParticle("largesmoke", this.posX + (this.worldObj.rand.nextDouble() - 0.5D) * (double) this.width, this.posY + this.worldObj.rand.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.worldObj.rand.nextDouble() - 0.5D) * (double) this.width, (this.worldObj.rand.nextDouble() - 0.5D) * 2.0D, -this.worldObj.rand.nextDouble(), (this.worldObj.rand.nextDouble() - 0.5D) * 2.0D));
                }
             }
          } else {

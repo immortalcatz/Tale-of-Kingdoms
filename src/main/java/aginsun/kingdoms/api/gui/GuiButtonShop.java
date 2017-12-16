@@ -13,13 +13,13 @@ public final class GuiButtonShop extends GuiButton
     private GuiShopList gui;
     private GuiStockList gui2;
     private ItemStack stack;
-    private int field_73747_a, field_73745_b, x, y;
+    private int x, y;
     private String text;
     public int id;
     private boolean field_73742_g, enabled2;
     private final ResourceLocation resource = new ResourceLocation("taleofkingdoms", "textures/gui/gui.png");
 
-    public GuiButtonShop(ItemStack stack, GuiShopList guishoplist, int id, int x, int y, int l, int i1, String text)
+    public GuiButtonShop(ItemStack stack, GuiShopList guishoplist, int id, int x, int y, int w, int h, String text)
     {
         super(id, x, y, 200, 20, text);
         this.gui = guishoplist;
@@ -29,25 +29,23 @@ public final class GuiButtonShop extends GuiButton
         this.id = id;
         this.x = x;
         this.y = y;
-        this.field_73747_a = l;
-        this.field_73745_b = i1;
+        this.width = w;
+        this.height = h;
         this.text = text;
     }
 
-    public GuiButtonShop(ItemStack stack, GuiStockList guistocklist, int id, int x, int y, int l, int i1, String text)
+    public GuiButtonShop(ItemStack stack, GuiStockList guistocklist, int id, int x, int y, int w, int h, String text)
     {
         super(id, x, y, 200, 20, text);
         this.gui2 = guistocklist;
         this.stack = stack;
-        this.field_73747_a = 200;
-        this.field_73745_b = 20;
         this.field_73742_g = true;
         this.enabled2 = true;
         this.id = id;
         this.x = x;
         this.y = y;
-        this.field_73747_a = l;
-        this.field_73745_b = i1;
+        this.width = w;
+        this.height = h;
         this.text = text;
     }
 
@@ -74,7 +72,7 @@ public final class GuiButtonShop extends GuiButton
         {
             final FontRenderer fontrenderer = minecraft.fontRenderer;
             minecraft.renderEngine.bindTexture(resource);
-            boolean flag = i >= this.x && j >= this.y && i < this.x + this.field_73747_a && j < this.y + this.field_73745_b;
+            boolean flag = i >= this.x && j >= this.y && i < this.x + this.width && j < this.y + this.height;
             int k = this.getHoverState(flag);
 
             if (this.gui != null)
@@ -82,7 +80,7 @@ public final class GuiButtonShop extends GuiButton
                 k = this.gui.stackSelected == stack ? 2 : 1;
             }
 
-            /*if (this.gui2 != null)
+            if (this.gui2 != null)
             {
                 if (this.gui2.stackSelected == stack)
                 {
@@ -92,18 +90,18 @@ public final class GuiButtonShop extends GuiButton
                 {
                     k = 1;
                 }
-            }*/
+            }
 
-            this.drawTexturedModalRect(this.x + this.field_73747_a / 2 + 55, this.y, 200 - this.field_73747_a / 2, 46 + k * 20, this.field_73747_a / 2, this.field_73745_b);
+            this.drawTexturedModalRect(this.x + this.width / 2 + 55, this.y, 200 - this.width / 2, 46 + k * 20, this.width / 2, this.height);
             this.mouseDragged(minecraft, i, j);
 
             if (!flag)
             {
-                this.drawString(fontrenderer, this.text, this.x + this.field_73747_a / 2 - 20, this.y + (this.field_73745_b - 8) / 2, 16777215);
+                this.drawString(fontrenderer, this.text, this.x + this.width / 2 - 20, this.y + (this.height - 8) / 2, 16777215);
             }
             else
             {
-                this.drawString(fontrenderer, this.text, this.x + this.field_73747_a / 2 - 20, this.y + (this.field_73745_b - 8) / 2, '\ucc00');
+                this.drawString(fontrenderer, this.text, this.x + this.width / 2 - 20, this.y + (this.height - 8) / 2, '\ucc00');
             }
         }
     }

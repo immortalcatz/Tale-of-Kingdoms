@@ -1,4 +1,4 @@
-package aginsun.kingdoms.server.handlers.packets;
+package aginsun.kingdoms.server.handlers.packets.server;
 
 import aginsun.kingdoms.api.network.AbstractPacket;
 import aginsun.kingdoms.server.handlers.UltimateHelper;
@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public class SPacketSpawnEntity extends AbstractPacket<SPacketSpawnEntity>
+public final class SPacketSpawnEntity extends AbstractPacket<SPacketSpawnEntity>
 {
     private static String name;
 

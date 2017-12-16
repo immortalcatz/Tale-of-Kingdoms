@@ -1,4 +1,4 @@
-package aginsun.kingdoms.server.handlers.packets;
+package aginsun.kingdoms.server.handlers.packets.server;
 
 import aginsun.kingdoms.api.network.AbstractPacket;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
@@ -32,9 +32,7 @@ public final class SPacketBuy extends AbstractPacket<SPacketBuy>
         EconomyHandler.INSTANCE.decreaseGold(price);
 
         if (!player.inventory.addItemStackToInventory(stack))
-        {
             player.entityDropItem(stack, 0);
-        }
     }
 
     @Override

@@ -2,14 +2,14 @@ package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiScreenToK;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.SPacketBuild;
+import aginsun.kingdoms.server.handlers.packets.server.SPacketBuild;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 
-public final class GuiStartConquest extends GuiScreenToK
+public class GuiStartConquest extends GuiScreenToK
 {
     private Minecraft mc = Minecraft.getMinecraft();
     private GuiButton start;

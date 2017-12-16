@@ -56,9 +56,7 @@ public final class SchematicHandler
                                     world.setBlock(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ, fakeBlock.block, fakeBlock.metadata, 3);
                                 }
                                 else
-                                {
                                     this.torchList.add(fakeBlock);
-                                }
                             }
 
                             ++this.index;

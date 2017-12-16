@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public final class GuiBank extends GuiScreenToK
+public class GuiBank extends GuiScreenToK
 {
     private EntityPlayer player;
     private boolean check = false;
@@ -100,9 +100,8 @@ public final class GuiBank extends GuiScreenToK
                 break;
             case 13:
                 if (!this.world.isRemote)
-                {
                     this.player.addChatMessage(new ChatComponentTranslation("npc.banker.dialog.bye"));
-                }
+
                 this.mc.displayGuiScreen(null);
                 break;
         }
@@ -119,9 +118,7 @@ public final class GuiBank extends GuiScreenToK
         this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.bank", EconomyHandler.INSTANCE.getBankGold()), this.width / 2, 35, 16777215);
 
         if (this.check)
-        {
             this.drawCenteredString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2, 45, 16777215);
-        }
 
         super.drawScreen(i, j, f);
     }
@@ -134,9 +131,7 @@ public final class GuiBank extends GuiScreenToK
             EconomyHandler.INSTANCE.addBankGold(gold);
         }
         else
-        {
             this.check = true;
-        }
     }
 
     private void withdrawGold(short gold)
@@ -147,8 +142,6 @@ public final class GuiBank extends GuiScreenToK
             EconomyHandler.INSTANCE.decreaseBankGold(gold);
         }
         else
-        {
             this.check = true;
-        }
     }
 }

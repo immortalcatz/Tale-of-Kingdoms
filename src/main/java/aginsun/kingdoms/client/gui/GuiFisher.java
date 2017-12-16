@@ -10,7 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.util.ChatComponentTranslation;
 
 @SideOnly(Side.CLIENT)
-public final class GuiFisher extends GuiScreenToK
+public class GuiFisher extends GuiScreenToK
 {
     private final EntityPlayer player;
 

@@ -2,10 +2,9 @@ package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiButtonShop;
 import aginsun.kingdoms.api.gui.GuiScreenToK;
-import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.SPacketBuy;
-import aginsun.kingdoms.server.handlers.packets.SPacketOpenGui;
+import aginsun.kingdoms.server.handlers.packets.server.SPacketBuy;
+import aginsun.kingdoms.server.handlers.packets.server.SPacketOpenGui;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
@@ -17,7 +16,7 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public final class GuiShopList extends GuiScreenToK
+public class GuiShopList extends GuiScreenToK
 {
     private GuiButton back;
     public EntityPlayer entityplayer;
@@ -25,8 +24,7 @@ public final class GuiShopList extends GuiScreenToK
     private List<ItemStack> stacks;
     private boolean reachedend = false, goldchecker = false;
     public ItemStack stackSelected;
-    private String stringGet = "", stringoutput = "";
-    public static TaleOfKingdoms taleofkingdoms;
+    private String stringoutput = "";
 
     public GuiShopList(EntityPlayer player, World world, List<ItemStack> stacks)
     {
@@ -56,9 +54,7 @@ public final class GuiShopList extends GuiScreenToK
                 int size = column + row * 2;
 
                 if (size < stacks.size())
-                {
                     this.buttonList.add(new GuiButtonShop(stacks.get(size), this, size, (width / 2 - 110) + column * 100, 45 + row * 20, 50, 20, stacks.get(size).getDisplayName()));
-                }
             }
         }
 

@@ -11,7 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 
-public final class GuiTavernGame extends GuiScreenToK {
+public class GuiTavernGame extends GuiScreenToK {
 
    private EntityPlayer entityplayer;
    private Integer dealer;

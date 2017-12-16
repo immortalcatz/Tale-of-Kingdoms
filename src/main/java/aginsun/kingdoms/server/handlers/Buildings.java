@@ -64,25 +64,25 @@ public final class Buildings
         addBuilding(stables);
     }
 
-    public void addBuilding(boolean x)
+    public void addBuilding(boolean name)
     {
-        buildingList.add(x);
+        buildingList.add(name);
     }
 
-    public void setBuildingTrue(int number)
+    public void setBuildingTrue(int name)
     {
-        buildingList.set(number, true);
+        buildingList.set(name, true);
     }
 
-    public void setBuildingState(boolean x, int number)
+    public void setBuildings(List<Boolean> buildings)
     {
-        if (buildingList.get(number))
-            buildingList.set(number, x);
+        this.buildingList.clear();
+        this.buildingList = buildings;
     }
 
-    public boolean getBuilding(final int number)
+    public boolean getBuilding(int name)
     {
-        return getBuildingList().get(number);
+        return getBuildingList().get(name);
     }
 
     public List<Boolean> getBuildingList()

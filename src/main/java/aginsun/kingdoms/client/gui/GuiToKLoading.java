@@ -11,7 +11,7 @@ import net.minecraft.client.resources.I18n;
 import java.awt.*;
 
 @SideOnly(Side.CLIENT)
-public final class GuiToKLoading extends GuiScreenToK
+public class GuiToKLoading extends GuiScreenToK
 {
     private GuiPriceBar bar;
 

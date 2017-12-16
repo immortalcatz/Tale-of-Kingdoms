@@ -10,7 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 
-public final class GuiLibrary extends GuiScreenToK
+public class GuiLibrary extends GuiScreenToK
 {
     private EntityLibraryKeeper get;
     private EntityPlayer entityplayer;
@@ -40,9 +40,9 @@ public final class GuiLibrary extends GuiScreenToK
         {
             if (this.get.studied)
             {
-                this.world.spawnEntityInWorld(new EntityXPOrb(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, 150));
                 if (!this.world.isRemote)
                 {
+                    this.world.spawnEntityInWorld(new EntityXPOrb(this.world, this.entityplayer.posX, this.entityplayer.posY, this.entityplayer.posZ, 150));
                     this.entityplayer.addChatMessage(new ChatComponentText("You have gained experience."));
                 }
 

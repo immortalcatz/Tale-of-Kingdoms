@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
 @SideOnly(Side.CLIENT)
-public final class GuiBuildScreen extends GuiScreenToK
+public class GuiBuildScreen extends GuiScreenToK
 {
     private GuiPriceBar woodBar, cobblestoneBar;
 

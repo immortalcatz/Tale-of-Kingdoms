@@ -35,17 +35,13 @@ public final class ResourcesHandler
     public void decreaseWoodPool(int count)
     {
         if (woodPool > 0)
-        {
             this.woodPool -= count;
-        }
     }
 
     public void decreaseCobblePool(int count)
     {
         if (cobblePool > 0)
-        {
             this.cobblePool -= count;
-        }
     }
 
     public void setwoodResource(int count)
@@ -69,32 +65,24 @@ public final class ResourcesHandler
     public void addwoodResource(int count)
     {
         if (woodResource <= 320)
-        {
             this.woodResource += count;
-        }
     }
 
     public void addcobbleResource(int count)
     {
         if (cobbleResource <= 320)
-        {
             this.cobbleResource += count;
-        }
     }
 
     public void decreasewoodResource(int count)
     {
         if (woodResource > 0)
-        {
             this.woodResource -= count;
-        }
     }
 
     public void decreasecobbleResource(int count)
     {
         if (cobbleResource > 0)
-        {
             this.cobbleResource -= count;
-        }
     }
 }

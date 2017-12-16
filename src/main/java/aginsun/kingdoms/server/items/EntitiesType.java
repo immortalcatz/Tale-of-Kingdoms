@@ -1,5 +1,7 @@
 package aginsun.kingdoms.server.items;
 
+import java.util.Arrays;
+
 public enum EntitiesType
 {
     BANKER("Banker", 5719879, 10722965),
@@ -42,8 +44,8 @@ public enum EntitiesType
     WEAPONKEEPER("WeaponKeeper", 5520701, 0),
     WORKERMEMBER("WorkerMember", 15452507, 4473924);
 
-    private String name;
-    private int base, spots;
+    private final String name;
+    private final int base, spots;
 
     /**
      * EntitiesType
@@ -60,14 +62,7 @@ public enum EntitiesType
 
     public static EntitiesType getByID(int id)
     {
-        for (EntitiesType type : values())
-        {
-            if (type.ordinal() == id)
-            {
-                return type;
-            }
-        }
-        return STABLEMASTER;
+        return Arrays.stream(values()).filter(type -> type.ordinal() == id).findFirst().orElse(STABLEMASTER);
     }
 
     public String getName()

@@ -4,18 +4,17 @@ import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.handlers.Config;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
-import aginsun.kingdoms.server.handlers.packets.CPacketSyncShopItems;
-import aginsun.kingdoms.server.handlers.resources.GoldKeeper;
+import aginsun.kingdoms.server.handlers.packets.client.CPacketSyncShopItems;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Items;
-import net.minecraft.item.*;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StringTranslate;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class EntityWeaponKeeper extends EntityNPC
 {
@@ -51,19 +50,14 @@ public final class EntityWeaponKeeper extends EntityNPC
                 this.heal(100.0F);
                 stacks.clear();
 
-                for (String itemName : cfg.getNames())
-                {
+                Objects.requireNonNull(cfg.getNames()).forEach(itemName -> {
                     ItemStack stack = new ItemStack((Item) Item.itemRegistry.getObject(itemName));
-
-                    if (stack.getTagCompound() == null)
-                    {
+                    if (stack.getTagCompound() == null) {
                         stack.setTagCompound(new NBTTagCompound());
                     }
-
                     stack.getTagCompound().setInteger("price", cfg.getPrice(itemName));
-
                     stacks.add(stack);
-                }
+                });
 
                 NetworkHandler.INSTANCE.sendTo(new CPacketSyncShopItems(stacks), (EntityPlayerMP) player);
             }

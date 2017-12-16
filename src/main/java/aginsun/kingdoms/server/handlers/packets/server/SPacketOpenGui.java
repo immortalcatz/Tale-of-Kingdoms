@@ -1,4 +1,4 @@
-package aginsun.kingdoms.server.handlers.packets;
+package aginsun.kingdoms.server.handlers.packets.server;
 
 import aginsun.kingdoms.api.network.AbstractPacket;
 import aginsun.kingdoms.server.TaleOfKingdoms;
