@@ -3,12 +3,13 @@ package aginsun.kingdoms.server.handlers;
 import aginsun.kingdoms.client.render.RenderBipedToK;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import aginsun.kingdoms.server.entities.*;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -123,7 +124,7 @@ public final class EntitiesRegister
 
     private void setRegister(Class<? extends Entity> entity, String name)
     {
-        EntityRegistry.registerModEntity(entity, name, id++, TaleOfKingdoms.instance, 64, 1, false);
+        EntityRegistry.registerModEntity(new ResourceLocation("taleofkingdoms", name), entity, name, id++, TaleOfKingdoms.instance, 64, 1, false);
     }
 
     @SideOnly(Side.CLIENT)

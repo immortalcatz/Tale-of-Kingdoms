@@ -6,9 +6,9 @@ import aginsun.kingdoms.server.handlers.packets.client.CPacketSyncShopItems;
 import aginsun.kingdoms.server.handlers.packets.server.SPacketBuild;
 import aginsun.kingdoms.server.handlers.packets.server.SPacketBuy;
 import aginsun.kingdoms.server.handlers.packets.server.SPacketOpenGui;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 public final class NetworkHandler
 {

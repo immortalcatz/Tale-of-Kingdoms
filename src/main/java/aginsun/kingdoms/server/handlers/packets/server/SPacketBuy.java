@@ -2,11 +2,11 @@ package aginsun.kingdoms.server.handlers.packets.server;
 
 import aginsun.kingdoms.api.network.AbstractPacket;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
-import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 public final class SPacketBuy extends AbstractPacket<SPacketBuy>
 {
@@ -28,7 +28,7 @@ public final class SPacketBuy extends AbstractPacket<SPacketBuy>
     @Override
     public void handleServerSide(EntityPlayerMP player)
     {
-        stack.stackSize = count;
+        stack.setCount(count);
         EconomyHandler.INSTANCE.decreaseGold(price);
 
         if (!player.inventory.addItemStackToInventory(stack))

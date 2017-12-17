@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 
 public class EntityNPC extends EntityCreature
@@ -21,11 +22,11 @@ public class EntityNPC extends EntityCreature
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
-        this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.5D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.5D);
     }
 
     @Override
-    public ItemStack getHeldItem()
+    public ItemStack getHeldItem(EnumHand hand)
     {
         return this.defaultHeldItem;
     }
@@ -43,13 +44,13 @@ public class EntityNPC extends EntityCreature
     }
 
     @Override
-    protected boolean isMovementCeased()
+    protected boolean isMovementBlocked()
     {
         return false;
     }
 
     public boolean canInteractWith(EntityPlayer entityplayer)
     {
-        return !this.isDead || entityplayer.getDistanceSqToEntity(this) <= 64.0D;
+        return !this.isDead || entityplayer.getDistanceSq(this) <= 64.0D;
     }
 }

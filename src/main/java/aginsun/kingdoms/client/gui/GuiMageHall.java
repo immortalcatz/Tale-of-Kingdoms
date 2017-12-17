@@ -115,9 +115,7 @@ public class GuiMageHall extends GuiScreenToK
         this.drawString(this.fontRendererObj, I18n.format("gui.mage.enchant.selected"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.enchant.selected")) / 2, this.height / 2 - 80, 16763904);
 
         if (this.goldchecker)
-        {
             this.drawString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.notEnough")) / 2, this.height / 2 - 50, 16763904);
-        }
 
         this.drawString(this.fontRendererObj, I18n.format("gui.mage.recruit.price"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.recruit.price")) / 2, this.height / 2 - 65, 16763904);
     }

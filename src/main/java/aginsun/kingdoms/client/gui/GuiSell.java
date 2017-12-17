@@ -6,7 +6,6 @@ import aginsun.kingdoms.server.handlers.UltimateHelper;
 import aginsun.kingdoms.server.handlers.resources.EconomyHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import org.lwjgl.opengl.GL11;
 
 public final class GuiSell extends GuiContainer
 {
@@ -27,7 +26,6 @@ public final class GuiSell extends GuiContainer
     @Override
     protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_)
     {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.renderEngine.bindTexture(UltimateHelper.BACKGROUND);
         this.drawTexturedModalRect((this.width - this.xSize) / 2, (this.height - this.ySize) / 2, 0, 0, this.xSize, this.ySize);
     }

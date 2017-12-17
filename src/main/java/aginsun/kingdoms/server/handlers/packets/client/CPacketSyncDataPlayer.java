@@ -21,7 +21,7 @@ public final class CPacketSyncDataPlayer extends AbstractPacket
     @Override
     public void handleClientSide(EntityPlayer player)
     {
-        if (player != null && player.worldObj != null)
+        if (player != null && player.world != null)
         {
             PlayerProvider.get(player).getEconomy().setGoldTotal(goldTotal);
             PlayerProvider.get(player).setGlory(glory);

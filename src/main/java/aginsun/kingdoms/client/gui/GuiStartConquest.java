@@ -1,6 +1,7 @@
 package aginsun.kingdoms.client.gui;
 
 import aginsun.kingdoms.api.gui.GuiScreenToK;
+import aginsun.kingdoms.server.handlers.Buildings;
 import aginsun.kingdoms.server.handlers.NetworkHandler;
 import aginsun.kingdoms.server.handlers.packets.server.SPacketBuild;
 import com.mojang.realmsclient.gui.ChatFormatting;
@@ -27,7 +28,7 @@ public class GuiStartConquest extends GuiScreenToK
         this.buttonList.clear();
         start = new GuiButton(1, this.width / 2 - 70, this.height / 2 + 40, 140, 20, I18n.format("gui.conquest.start"));
 
-        //if (Buildings.INSTANCE.getBuilding(0))
+        if (Buildings.INSTANCE.getBuilding(0))
         {
             //start.enabled = false;
             start.displayString = ChatFormatting.RED + I18n.format("gui.conquest.created");

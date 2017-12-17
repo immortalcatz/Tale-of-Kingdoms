@@ -5,7 +5,8 @@ import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_BANK;
@@ -14,7 +15,7 @@ public final class EntityBankerKeeper extends EntityNPC
 {
     public EntityBankerKeeper(World world)
     {
-        super(world, new ItemStack(Items.book), 40.0F);
+        super(world, new ItemStack(Items.BOOK), 40.0F);
     }
 
     @Override
@@ -24,23 +25,23 @@ public final class EntityBankerKeeper extends EntityNPC
     }
 
     @Override
-    protected boolean isMovementCeased()
+    protected boolean isMovementBlocked()
     {
         return true;
     }
 
     @Override
-    public boolean interact(EntityPlayer player)
+    protected boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         if (this.canInteractWith(player))
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 this.heal(100.0F);
-                player.addChatMessage(new ChatComponentTranslation("npc.banker.dialog.welcome"));
+                player.sendMessage(new TextComponentString("npc.banker.dialog.welcome"));
             }
-            player.openGui(TaleOfKingdoms.instance, GUI_BANK, worldObj, 0, 0, 0);
+            player.openGui(TaleOfKingdoms.instance, GUI_BANK, world, 0, 0, 0);
         }
-        return false;
+        return true;
     }
 }

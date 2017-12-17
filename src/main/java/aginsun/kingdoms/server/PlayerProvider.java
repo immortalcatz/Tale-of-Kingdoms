@@ -225,10 +225,8 @@ public final class PlayerProvider implements IExtendedEntityProperties
 
     public void sync(EntityPlayer player)
     {
-        if (!player.worldObj.isRemote)
-        {
+        if (!player.world.isRemote)
             NetworkHandler.INSTANCE.sendTo(new CPacketSyncDataPlayer(this), (EntityPlayerMP) player);
-        }
     }
 
     public static PlayerProvider get(EntityPlayer player)

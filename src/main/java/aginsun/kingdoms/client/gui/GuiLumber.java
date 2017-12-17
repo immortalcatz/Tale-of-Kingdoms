@@ -18,8 +18,8 @@ import net.minecraft.world.World;
 public class GuiLumber extends GuiScreenToK
 {
     private GuiPriceBar bar;
-    public EntityPlayer player;
-    boolean goldchecker = false;
+    private EntityPlayer player;
+    private boolean goldchecker = false;
 
     public GuiLumber(EntityPlayer player, World world)
     {

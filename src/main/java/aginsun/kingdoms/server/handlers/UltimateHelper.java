@@ -6,7 +6,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
@@ -27,8 +26,8 @@ public final class UltimateHelper
         if (!world.isRemote)
         {
             EntityLivingBase entity = (EntityLivingBase) getEntity("taleofkingdoms." + name, world);
-            entity.setLocationAndAngles((double) position.posX, (double) position.posY, (double) position.posZ, 0.0F, 0.0F);
-            world.spawnEntityInWorld(entity);
+            entity.setLocationAndAngles((double) position.get, (double) position.posY, (double) position.posZ, 0.0F, 0.0F);
+            world.spawnEntity(entity);
         }
     }
 

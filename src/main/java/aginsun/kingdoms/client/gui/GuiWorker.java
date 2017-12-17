@@ -11,13 +11,13 @@ import net.minecraft.util.ChatComponentTranslation;
 
 public class GuiWorker extends GuiScreenToK
 {
-    public EntityPlayer entityplayer;
+    public EntityPlayer player;
     private EntityWorkerMember member;
 
-    public GuiWorker(EntityPlayer entityplayer1, EntityWorkerMember entityworkermember)
+    public GuiWorker(EntityPlayer player, EntityWorkerMember entityworkermember)
     {
         super(null);
-        this.entityplayer = entityplayer1;
+        this.player = player;
         this.member = entityworkermember;
     }
 
@@ -35,19 +35,18 @@ public class GuiWorker extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.worker.woodcut.go"));
+                this.player.addChatMessage(new ChatComponentTranslation("gui.worker.woodcut.go"));
                 member.defaultHeldItem = new ItemStack(Items.iron_axe, 1);
                 this.member.worktype = 1;
                 this.member.follow = true;
                 this.mc.displayGuiScreen(null);
                 break;
             case 2:
-                this.entityplayer.addChatMessage(new ChatComponentTranslation("gui.worker.mine.go"));
+                this.player.addChatMessage(new ChatComponentTranslation("gui.worker.mine.go"));
                 member.defaultHeldItem = new ItemStack(Items.iron_pickaxe, 1);
                 this.member.worktype = 2;
                 this.member.follow = true;
                 this.mc.displayGuiScreen(null);
-                entityplayer.closeScreen();
                 break;
             case 3:
                 this.mc.displayGuiScreen(null);

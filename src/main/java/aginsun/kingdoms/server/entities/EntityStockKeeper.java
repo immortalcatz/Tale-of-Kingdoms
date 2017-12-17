@@ -3,7 +3,8 @@ package aginsun.kingdoms.server.entities;
 import aginsun.kingdoms.api.entities.EntityNPC;
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_STOCK;
@@ -23,22 +24,22 @@ public final class EntityStockKeeper extends EntityNPC
     }
 
     @Override
-    protected boolean isMovementCeased()
+    protected boolean isMovementBlocked()
     {
         return true;
     }
 
     @Override
-    public boolean interact(EntityPlayer player)
+    public boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         if (this.canInteractWith(player))
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
                 this.heal(100.0F);
-                player.addChatMessage(new ChatComponentTranslation("npc.stockKeeper.dialog"));
+                player.sendMessage(new TextComponentString("npc.stockKeeper.dialog"));
             }
-            player.openGui(TaleOfKingdoms.instance, GUI_STOCK, worldObj, 0, 0, 0);
+            player.openGui(TaleOfKingdoms.instance, GUI_STOCK, world, 0, 0, 0);
         }
         return true;
     }

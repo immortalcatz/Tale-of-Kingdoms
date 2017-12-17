@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 public class GuiPriest extends GuiScreenToK
 {
     public EntityPlayer player;
-    private boolean goldchecker = false;;
+    private boolean goldchecker = false;
 
     public GuiPriest(EntityPlayer player, World world)
     {

@@ -60,6 +60,7 @@ public class GuiLibrary extends GuiScreenToK
             if (500 + PlayerProvider.get(entityplayer).libraryInvestment * 2 <= EconomyHandler.INSTANCE.getGoldTotal())
             {
                 PlayerProvider.get(entityplayer).libraryInvestment += 5;
+
                 if (!this.world.isRemote)
                 {
                     this.entityplayer.addChatMessage(new ChatComponentText("Tax is now increased by " + PlayerProvider.get(entityplayer).libraryInvestment + " gold per house."));

@@ -26,7 +26,7 @@ public final class EntityDefendArcher extends EntityNPC
 
     public EntityDefendArcher(World world)
     {
-        super(world, new ItemStack(Items.bow), 40.0F);
+        super(world, new ItemStack(Items.BOW), 40.0F);
         this.isImmuneToFire = false;
         this.attackStrength = 10;
     }

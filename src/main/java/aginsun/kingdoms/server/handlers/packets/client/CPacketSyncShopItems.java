@@ -3,11 +3,11 @@ package aginsun.kingdoms.server.handlers.packets.client;
 import aginsun.kingdoms.api.network.AbstractPacket;
 import aginsun.kingdoms.server.PlayerProvider;
 import aginsun.kingdoms.server.TaleOfKingdoms;
-import cpw.mods.fml.common.network.ByteBufUtils;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ public final class CPacketSyncShopItems extends AbstractPacket<CPacketSyncShopIt
     public void handleClientSide(EntityPlayer player)
     {
         PlayerProvider.get(player).stacks = stacks;
-        player.openGui(TaleOfKingdoms.instance, 6, player.worldObj, 0, 0, 0);
+        player.openGui(TaleOfKingdoms.instance, 6, player.world, 0, 0, 0);
     }
 
     @Override

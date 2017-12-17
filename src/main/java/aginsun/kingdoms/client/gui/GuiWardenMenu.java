@@ -84,13 +84,9 @@ public class GuiWardenMenu extends GuiScreenToK
        super.drawScreen(x, y, partial);
 
        if (this.goldchecker)
-       {
            this.drawString(this.fontRendererObj, "Barracks Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16763904);
-       }
        else
-       {
            this.drawString(this.fontRendererObj, "Barracks  Total Money: " + EconomyHandler.INSTANCE.getGoldTotal() + " Gold Coins", this.width / 2, 10, 16763904);
-       }
 
        this.drawString(this.fontRendererObj, "Note: The knights and archers will upgrade if they damage enough monsters!", this.width / 2, 20, 16763904);
        this.drawString(this.fontRendererObj, " 1000 gold per hire.", this.width / 2, 30, 16763904);

@@ -2,10 +2,10 @@ package aginsun.kingdoms.client;
 
 import aginsun.kingdoms.server.ServerProxy;
 import aginsun.kingdoms.server.handlers.EntitiesRegister;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public final class ClientProxy extends ServerProxy
 {
@@ -20,6 +20,6 @@ public final class ClientProxy extends ServerProxy
     @Override
     public EntityPlayer getPlayer(MessageContext ctx)
     {
-        return ctx.side.isClient() ? Minecraft.getMinecraft().thePlayer : super.getPlayer(ctx);
+        return ctx.side.isClient() ? Minecraft.getMinecraft().player : super.getPlayer(ctx);
     }
 }

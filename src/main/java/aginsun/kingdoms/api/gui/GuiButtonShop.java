@@ -66,7 +66,7 @@ public final class GuiButtonShop extends GuiButton
     }
 
     @Override
-    public void drawButton(Minecraft minecraft, int i, int j)
+    public void drawButton(Minecraft minecraft, int i, int j, float partialTicks)
     {
         if (this.enabled2)
         {

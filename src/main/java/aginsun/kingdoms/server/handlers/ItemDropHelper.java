@@ -21,7 +21,7 @@ public final class ItemDropHelper
 
     public static void dropCoins(EntityLivingBase entityLiving)
     {
-        if (isHostileEntity(entityLiving) && !entityLiving.worldObj.isRemote)
+        if (isHostileEntity(entityLiving) && !entityLiving.world.isRemote)
             IntStream.range(0, random.nextInt(25)).forEach(i -> dropItem(TaleOfKingdoms.proxy.coins, 1, entityLiving));
     }
 

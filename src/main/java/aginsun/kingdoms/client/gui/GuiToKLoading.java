@@ -32,9 +32,7 @@ public class GuiToKLoading extends GuiScreenToK
     protected void actionPerformed(GuiButton guibutton)
     {
         if (guibutton.id == 0)
-        {
             this.mc.displayGuiScreen(null);
-        }
     }
 
     @Override
@@ -50,9 +48,7 @@ public class GuiToKLoading extends GuiScreenToK
             this.drawString(this.fontRendererObj, "Building the Guild...", this.width / 2 - fontRendererObj.getStringWidth("Building the Guild...") / 2, this.height / 2 + 15, Color.pink.getRGB());
         }
         else
-        {
             this.drawString(this.fontRendererObj, "Press exit to continue...", this.width / 2 - fontRendererObj.getStringWidth("Press exit to continue...") / 2, this.height / 2 + 15, Color.pink.getRGB());
-        }
 
         super.drawScreen(x, y, partial);
     }

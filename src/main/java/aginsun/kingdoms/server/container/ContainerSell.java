@@ -28,7 +28,7 @@ public final class ContainerSell extends Container
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int i)
     {
         ItemStack stack = null;
-        Slot slot = (Slot) this.inventorySlots.get(i);
+        Slot slot = this.inventorySlots.get(i);
 
         if (slot != null && slot.getHasStack())
         {
@@ -47,7 +47,7 @@ public final class ContainerSell extends Container
                 return null;
             }
 
-            if( stackInslot.stackSize == 0)
+            if (stackInslot.getCount() == 0)
             {
                 slot.putStack(null);
             }

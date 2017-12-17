@@ -26,7 +26,7 @@ public final class EntityDefendBandit extends EntityNPC
 
 
    public EntityDefendBandit(World world) {
-      super(world, new ItemStack(Items.bow), 40.0F);
+      super(world, new ItemStack(Items.BOW), 40.0F);
       this.follow = false;
       this.checkPlayer = true;
       this.createdMarker = false;

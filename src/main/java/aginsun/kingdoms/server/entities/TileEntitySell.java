@@ -24,7 +24,7 @@ public final class TileEntitySell implements IInventory {
    public ItemStack getStackInSlot(int i) {
       int j = 0;
       if(this.inventory[i] != null) {
-         for(int k = 0; k < this.inventory[i].stackSize; ++k) {
+         for(int k = 0; k < this.inventory[i].getCount(); ++k) {
             Item item = this.inventory[i].getItem();
             GoldKeeper var10000 = this.gold;
             j = GoldKeeper.INSTANCE.priceItem(item);

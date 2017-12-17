@@ -5,7 +5,8 @@ import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import static aginsun.kingdoms.server.handlers.GuiHandler.GUI_WARDEN;
@@ -14,7 +15,7 @@ public final class EntityBarracksKeeper extends EntityNPC
 {
     public EntityBarracksKeeper(World world)
     {
-        super(world, new ItemStack(Items.iron_sword), 20.0F);
+        super(world, new ItemStack(Items.IRON_SWORD), 20.0F);
     }
 
     @Override
@@ -24,15 +25,15 @@ public final class EntityBarracksKeeper extends EntityNPC
     }
 
     @Override
-    public boolean interact(EntityPlayer player)
+    protected boolean processInteract(EntityPlayer player, EnumHand hand)
     {
         if (this.canInteractWith(player))
         {
-            if (!this.worldObj.isRemote)
+            if (!this.world.isRemote)
             {
-                player.addChatMessage(new ChatComponentTranslation("npc.warden.dialog"));
+                player.sendMessage(new TextComponentString("npc.warden.dialog"));
             }
-            player.openGui(TaleOfKingdoms.instance, GUI_WARDEN, worldObj, 0, 0, 0);
+            player.openGui(TaleOfKingdoms.instance, GUI_WARDEN, world, 0, 0, 0);
         }
         return true;
     }

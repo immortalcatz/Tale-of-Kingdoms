@@ -76,10 +76,10 @@ public class GuiStableMaster extends GuiScreenToK
         this.drawDefaultBackground();
         super.drawScreen(x, y, partial);
         this.drawString(this.fontRendererObj, I18n.format("gui.stable.title", EconomyHandler.INSTANCE.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", EconomyHandler.INSTANCE.getGoldTotal())) / 2, this.height / 2 - 90, 16763904);
+
         if (this.goldchecker)
-        {
             this.drawString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.notEnough")) / 2, this.height / 2 - 45, 16763904);
-        }
+
         this.drawString(this.fontRendererObj, I18n.format("gui.stable.starter.desc"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.stable.starter.desc")) / 2, this.height / 2 - 75, 16763904);
         this.drawString(this.fontRendererObj, I18n.format("gui.stable.expert.desc"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.stable.expert.desc")) / 2, this.height / 2 - 60, 16763904);
     }

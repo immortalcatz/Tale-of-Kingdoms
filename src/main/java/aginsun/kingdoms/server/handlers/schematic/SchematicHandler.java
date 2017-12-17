@@ -7,6 +7,7 @@ import aginsun.kingdoms.server.handlers.UltimateHelper;
 import aginsun.kingdoms.server.handlers.resources.GuildHandler;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -46,14 +47,14 @@ public final class SchematicHandler
                         {
                             FakeBlock fakeBlock = (FakeBlock)arrayList.get(this.index);
 
-                            if (fakeBlock != null && world.getBlock(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ) != fakeBlock.block)
+                            if (fakeBlock != null && world.getBlockState(new BlockPos(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ)) != fakeBlock.block)
                             {
-                                if(fakeBlock.block == Blocks.air)
-                                    world.setBlockToAir(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ);
+                                if(fakeBlock.block == Blocks.AIR)
+                                    world.setBlockToAir(new BlockPos(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ));
 
-                                if (fakeBlock.block != Blocks.torch && fakeBlock.block != Blocks.wooden_door && fakeBlock.block != Blocks.ladder && fakeBlock.block != Blocks.trapdoor)
+                                if (fakeBlock.block != Blocks.TORCH && fakeBlock.block != Blocks.OAK_DOOR && fakeBlock.block != Blocks.LADDER && fakeBlock.block != Blocks.TRAPDOOR)
                                 {
-                                    world.setBlock(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ, fakeBlock.block, fakeBlock.metadata, 3);
+                                    world.setBlockState(new BlockPos(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ), fakeBlock.block.getDefaultState());
                                 }
                                 else
                                     this.torchList.add(fakeBlock);
@@ -77,7 +78,7 @@ public final class SchematicHandler
                                     block.setPosition((double)x.x + var8.posX, (double)x.y + var8.posY + 1.5D, (double)x.z + var8.posZ);
                                 }
 
-                                world.spawnEntityInWorld(block);
+                                world.spawnEntity(block);
                             }
 
                             ++this.index;
@@ -87,7 +88,7 @@ public final class SchematicHandler
                             for (Object aTorchList : this.torchList)
                             {
                                 FakeBlock var10 = (FakeBlock) aTorchList;
-                                world.setBlock(x.x + var10.posX, x.y + var10.posY, x.z + var10.posZ, var10.block, var10.metadata, 3);
+                                world.setBlockState(new BlockPos(x.x + var10.posX, x.y + var10.posY, x.z + var10.posZ), var10.block.getDefaultState());
                             }
 
                             this.index = 0;

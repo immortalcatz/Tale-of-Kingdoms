@@ -2,6 +2,7 @@ package aginsun.kingdoms.server.handlers.resources;
 
 import aginsun.kingdoms.server.TaleOfKingdoms;
 import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
 
 @Deprecated
 public final class GoldKeeper
@@ -10,10 +11,7 @@ public final class GoldKeeper
 
     public int priceItem(Item item)
     {
-        String name = Item.itemRegistry.getNameForObject(item);
-
-        name = name.substring(10);
-
-        return TaleOfKingdoms.proxy.getConfig().getPrice(name);
+        ResourceLocation name = Item.REGISTRY.getNameForObject(item);
+        return TaleOfKingdoms.proxy.getConfig().getPrice(name.getResourcePath());
     }
 }

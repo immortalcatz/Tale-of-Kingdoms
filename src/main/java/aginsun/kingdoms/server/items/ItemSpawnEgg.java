@@ -1,27 +1,24 @@
 package aginsun.kingdoms.server.items;
 
 import aginsun.kingdoms.server.handlers.UltimateHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Facing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Arrays;
-import java.util.List;
 
 public final class ItemSpawnEgg extends ItemMonsterPlacer
 {
@@ -39,9 +36,9 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tabs, List list)
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items)
     {
-        Arrays.stream(EntitiesType.values()).map(type -> new ItemStack(item, 1, type.ordinal())).forEachOrdered(list::add);
+        Arrays.stream(EntitiesType.values()).map(type -> new ItemStack(this, 1, type.ordinal())).forEachOrdered(items::add);
     }
 
     @Override
@@ -62,7 +59,7 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
         }
         else
         {
-            Block block = world.getBlock(par4, par5, par6);
+            IBlockState block = world.getBlockState(new BlockPos(par4, par5, par6));
             par4 += Facing.offsetsXForSide[par7];
             par5 += Facing.offsetsYForSide[par7];
             par6 += Facing.offsetsZForSide[par7];
@@ -76,10 +73,10 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
             if (entity != null)
             {
                 if (entity instanceof EntityLivingBase && stack.hasDisplayName())
-                    ((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
+                    entity.setCustomNameTag(stack.getDisplayName());
 
                 if (!player.capabilities.isCreativeMode)
-                    --stack.stackSize;
+                    stack.shrink(1);
             }
 
             return true;
@@ -95,26 +92,26 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
         }
         else
         {
-            MovingObjectPosition movingobjectposition =
-                    getMovingObjectPositionFromPlayer(world, player, true);
+            RayTraceResult raytraceresult = this.rayTrace(world, player, true);
 
-            if (movingobjectposition == null)
+            if (raytraceresult == null)
             {
                 return stack;
             }
             else
             {
-                if (movingobjectposition.typeOfHit == MovingObjectPosition
-                        .MovingObjectType.BLOCK)
+                if (raytraceresult.typeOfHit == RayTraceResult.Type.BLOCK)
                 {
-                    int i = movingobjectposition.blockX;
-                    int j = movingobjectposition.blockY;
-                    int k = movingobjectposition.blockZ;
+                    BlockPos blockpos = raytraceresult.getBlockPos();
+
+                    int i = raytraceresult.blockX;
+                    int j = raytraceresult.blockY;
+                    int k = raytraceresult.blockZ;
 
                     if (!world.canMineBlock(player, i, j, k))
                         return stack;
 
-                    if (!player.canPlayerEdit(i, j, k, movingobjectposition.sideHit, stack))
+                    if (!player.canPlayerEdit(i, j, k, raytraceresult.sideHit, stack))
                         return stack;
 
                     if (world.getBlock(i, j, k) instanceof BlockLiquid)
@@ -124,10 +121,10 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
                         if (entity != null)
                         {
                             if (entity instanceof EntityLivingBase && stack.hasDisplayName())
-                                ((EntityLiving) entity).setCustomNameTag(stack.getDisplayName());
+                                entity.setCustomNameTag(stack.getDisplayName());
 
                             if (!player.capabilities.isCreativeMode)
-                                --stack.stackSize;
+                                stack.shrink(1);
                         }
                     }
                 }
