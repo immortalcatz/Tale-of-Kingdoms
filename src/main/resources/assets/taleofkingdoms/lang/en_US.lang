@@ -178,6 +178,7 @@ npc.headPriest.dialog=Head Priest: The light order gives blessing to you.
 npc.stockKeeper.dialog=Stock Keeper: Here is my stock for today!
 npc.tavernKeeper.dialog=One-Eyed Gambler: Feeling a bit lucky eh?
 npc.warden.dialog=Warden: The guild's warden at your service.
+npc.inn.dialog=House Keeper: Would you like to take a rest sir?
 
 npc.santa.dialog=Santa Claus: HOU HOU HOU, Happy New Year!
 npc.santa.new.year=Santa Claus: Happy New Year!
