@@ -2,11 +2,9 @@ package kingdoms.client.gui;
 
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.handlers.NetworkHandler;
-import kingdoms.server.handlers.UltimateHelper;
-import kingdoms.server.handlers.packets.server.SPacketSpawnEntity;
+import kingdoms.server.handlers.packets.server.SPacketWarden;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -27,8 +25,7 @@ public class GuiWardenMenu extends GuiScreenToK
         this.buttonList.clear();
         this.buttonList.add(new GuiButton(1, this.width / 2 + 110, 160, 100, 20, "Recruit a Knight."));
         this.buttonList.add(new GuiButton(2, this.width / 2 + 110, 180, 100, 20, "Recruit an Archer."));
-        this.buttonList.add(new GuiButton(4, this.width / 2 + 110, 200, 100, 20, "Recall defenders"));
-        this.buttonList.add(new GuiButton(3, this.width / 2 + 110, 220, 100, 20, I18n.format("gui.exit")));
+        this.buttonList.add(new GuiButton(3, this.width / 2 + 110, 200, 100, 20, I18n.format("gui.exit")));
     }
 
     @Override
@@ -39,8 +36,7 @@ public class GuiWardenMenu extends GuiScreenToK
             case 1:
                 if (1000 <= provider.getGoldTotal())
                 {
-                    NetworkHandler.INSTANCE.sendToServer(new SPacketSpawnEntity("DefendWarrior"));
-                    provider.decreaseGold(1000, player);
+                    NetworkHandler.INSTANCE.sendToServer(new SPacketWarden("DefendWarrior"));
                 }
                 else
                 {
@@ -50,13 +46,7 @@ public class GuiWardenMenu extends GuiScreenToK
             case 2:
                 if(1000 <= provider.getGoldTotal())
                 {
-                    if (!world.isRemote)
-                    {
-                        EntityLivingBase entityliving = (EntityLivingBase) UltimateHelper.INSTANCE.getEntity("DefendArcher", world);
-                        entityliving.setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
-                        world.spawnEntityInWorld(entityliving);
-                    }
-                    provider.decreaseGold(1000, player);
+                    NetworkHandler.INSTANCE.sendToServer(new SPacketWarden("DefendArcher"));
                 }
                 else
                 {
@@ -78,14 +68,12 @@ public class GuiWardenMenu extends GuiScreenToK
    @Override
    public void drawScreen(int x, int y, float partial)
    {
+       if (this.goldchecker)
+           this.drawCenteredString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2, 45, 16777215);
+
        super.drawScreen(x, y, partial);
 
-       if (this.goldchecker)
-           this.drawString(this.fontRendererObj, "Barracks Total Money: " + provider.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16763904);
-       else
-           this.drawString(this.fontRendererObj, "Barracks  Total Money: " + provider.getGoldTotal() + " Gold Coins", this.width / 2, 10, 16763904);
-
-       this.drawString(this.fontRendererObj, "Note: The knights and archers will upgrade if they damage enough monsters!", this.width / 2, 20, 16763904);
-       this.drawString(this.fontRendererObj, " 1000 gold per hire.", this.width / 2, 30, 16763904);
+       this.drawString(this.fontRendererObj, "Note: The knights and archers will upgrade if they damage enough monsters!", this.width / 2 - fontRendererObj.getStringWidth("Note: The knights and archers will upgrade if they damage enough monsters!") / 2, 20, 16763904);
+       this.drawString(this.fontRendererObj, "1000 gold per hire.", this.width / 2 - fontRendererObj.getStringWidth("1000 gold per hire.") / 2, 33, 16763904);
    }
 }

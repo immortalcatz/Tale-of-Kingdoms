@@ -241,23 +241,39 @@ public final class PlayerProvider implements IExtendedEntityProperties
     public void addGold(int count, EntityPlayer player)
     {
         goldTotal += count;
-        NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(goldTotal, false), (EntityPlayerMP) player);
+
+        if (!player.worldObj.isRemote)
+        {
+            NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(goldTotal, false), (EntityPlayerMP) player);
+        }
     }
     public void addBankGold(int count, EntityPlayer player)
     {
         bankGold += count;
-        NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(bankGold, true), (EntityPlayerMP) player);
+
+        if (!player.worldObj.isRemote)
+        {
+            NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(bankGold, true), (EntityPlayerMP) player);
+        }
     }
 
     public void decreaseGold(int count, EntityPlayer player)
     {
         goldTotal -= count;
-        NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(goldTotal, false), (EntityPlayerMP) player);
+
+        if (!player.worldObj.isRemote)
+        {
+            NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(goldTotal, false), (EntityPlayerMP) player);
+        }
     }
     public void decreaseBankGold(int count, EntityPlayer player)
     {
         bankGold -= count;
-        NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(bankGold, true), (EntityPlayerMP) player);
+
+        if (!player.worldObj.isRemote)
+        {
+            NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(bankGold, true), (EntityPlayerMP) player);
+        }
     }
 
     public int getTownX()

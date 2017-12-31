@@ -40,10 +40,8 @@ public class GuiStartConquest extends GuiScreenToK
     {
         if (guibutton.id == 1)
         {
-            // START
             //TODO: sendToPlayer for individual of the Kingdom
             NetworkHandler.INSTANCE.sendToServer(new SPacketBuild((short) 0));
-            // END
             this.mc.displayGuiScreen(null);
             this.mc.displayGuiScreen(new GuiToKLoading(player, world));
         }

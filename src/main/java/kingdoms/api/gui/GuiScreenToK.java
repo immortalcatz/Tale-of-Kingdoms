@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 @SideOnly(Side.CLIENT)
-public class GuiScreenToK extends GuiScreen
+public abstract class GuiScreenToK extends GuiScreen
 {
     protected World world;
     protected EntityPlayer player;

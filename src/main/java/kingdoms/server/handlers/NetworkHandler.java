@@ -20,9 +20,12 @@ public final class NetworkHandler
         register(SPacketBuy.class, Side.SERVER);
         register(SPacketOpenGui.class, Side.SERVER);
         register(CPacketSyncBuildings.class, Side.CLIENT);
-        register(SPacketBank.class, Side.SERVER);
         register(CPacketSyncBank.class, Side.CLIENT);
         register(SPacketAdd.class, Side.SERVER);
+
+        //Entities
+        register(SPacketBank.class, Side.SERVER);
+        register(SPacketWarden.class, Side.SERVER);
     }
 
     private void register(Class<? extends AbstractPacket> packet, Side side)

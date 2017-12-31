@@ -17,7 +17,7 @@ public final class SPacketBuild extends AbstractPacket
     @Override
     public void server(EntityPlayerMP player)
     {
-        //buf().readShort();
+        buf().readShort();
 
         Schematic schematic = (new Schematic("/schematics/GuildCastle")).setPosition((int) player.posX, (int) player.posY, (int) player.posZ).setSpeed(300);
         SchematicHandler.INSTANCE.addBuilding(schematic);

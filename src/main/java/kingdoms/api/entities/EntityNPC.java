@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class EntityNPC extends EntityCreature
+public abstract class EntityNPC extends EntityCreature
 {
     private ItemStack defaultHeldItem;
 

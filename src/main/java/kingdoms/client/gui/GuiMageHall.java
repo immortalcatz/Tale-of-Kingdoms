@@ -2,7 +2,6 @@ package kingdoms.client.gui;
 
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.handlers.NetworkHandler;
-import kingdoms.server.handlers.packets.server.SPacketSpawnEntity;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentData;
@@ -80,7 +79,7 @@ public class GuiMageHall extends GuiScreenToK
             case 2:
                 if(2000 <= provider.getGoldTotal())
                 {
-                    NetworkHandler.INSTANCE.sendToServer(new SPacketSpawnEntity("DefendMage"));
+                    //NetworkHandler.INSTANCE.sendToServer(new SPacketSpawnEntity("DefendMage"));
                     provider.decreaseGold(2000, player);
                 }
                 else

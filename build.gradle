@@ -22,7 +22,7 @@ targetCompatibility = 1.8
 
 version = ""
 group= "com.yourname.modid"
-archivesBaseName = "Tale of Kingdoms 1.7.10 - B9.2"
+archivesBaseName = "Tale of Kingdoms 1.7.10 - B12"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"

@@ -95,6 +95,7 @@ public final class EntityBuilderKeeper extends EntityNPC
     public void onLivingUpdate()
     {
         super.onLivingUpdate();
+
         if (!worldObj.isRemote && !this.follow && !Buildings.INSTANCE.kingdomCreated)
         {
             List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
