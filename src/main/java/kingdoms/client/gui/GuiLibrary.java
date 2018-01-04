@@ -53,16 +53,16 @@ public class GuiLibrary extends GuiScreenToK
 
         if (guibutton.id == 2)
         {
-            if (500 + provider.libraryInvestment * 2 <= provider.getGoldTotal())
+            if (500 + playerProvider.libraryInvestment * 2 <= playerProvider.getGoldTotal())
             {
-                provider.libraryInvestment += 5;
+                playerProvider.libraryInvestment += 5;
 
                 if (!this.world.isRemote)
                 {
-                    this.player.addChatMessage(new ChatComponentText("Tax is now increased by " + provider.libraryInvestment + " gold per house."));
+                    this.player.addChatMessage(new ChatComponentText("Tax is now increased by " + playerProvider.libraryInvestment + " gold per house."));
                 }
 
-                provider.decreaseGold(500 + provider.libraryInvestment * 2, player);
+                playerProvider.decreaseGold(500 + playerProvider.libraryInvestment * 2);
             }
             else
             {
@@ -98,11 +98,11 @@ public class GuiLibrary extends GuiScreenToK
 
         if (this.goldchecker)
         {
-            this.drawString(this.fontRendererObj, "The Library Total Money: " + provider.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16777215);
+            this.drawString(this.fontRendererObj, "The Library Total Money: " + playerProvider.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16777215);
         }
         else
         {
-            this.drawString(this.fontRendererObj, "The Library  Total Money: " + provider.getGoldTotal() + " Gold Coins", this.width / 2, 20, 16777215);
+            this.drawString(this.fontRendererObj, "The Library  Total Money: " + playerProvider.getGoldTotal() + " Gold Coins", this.width / 2, 20, 16777215);
         }
 
         this.drawString(this.fontRendererObj, "Note: The more you invest, the more knowledge people gain to yield more tax.", this.width / 2, 170, 16777215);

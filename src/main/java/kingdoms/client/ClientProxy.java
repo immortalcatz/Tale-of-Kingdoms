@@ -1,8 +1,8 @@
 package kingdoms.client;
 
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import kingdoms.server.ServerProxy;
 import kingdoms.server.handlers.EntitiesRegister;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
 public final class ClientProxy extends ServerProxy
 {

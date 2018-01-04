@@ -1,13 +1,10 @@
 package kingdoms.server.entities;
 
 import kingdoms.api.entities.EntityNPC;
-import kingdoms.server.PlayerProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -84,7 +81,7 @@ public final class EntityGuildMaster extends EntityNPC {
       int k1 = (int)this.posZ;
       if(this.get) {
          if(j - 50 < i1 && j + 50 > i1 && var12 - 50 < j1 && var12 + 50 > j1 && l - 50 < k1 && l + 50 > k1) {
-            if(flag && !PlayerProvider.get(entityplayer).getGuildFightEnded()) {
+            /*if(flag && !PlayerProvider.get(entityplayer).getGuildFightEnded()) {
                if(this.talk == 0) {
                   if(!worldObj.isRemote) {
                      this.player.addChatMessage(new ChatComponentText("Guild Master: My apprentice! The guild is under attack, and I came here to ask for your help. Please let us hurry back to the guild!"));
@@ -120,7 +117,7 @@ public final class EntityGuildMaster extends EntityNPC {
                } else if(!worldObj.isRemote) {
                   this.player.addChatMessage(new ChatComponentText("Master: We did the best we could. Now, we should rebuild the guild and gather 64 wood while the rest do some cleanup and construction."));
                }
-            }
+            }*/
          } else if(!worldObj.isRemote) {
             this.player.addChatMessage(new ChatComponentText("Master: We are too far from the guild!"));
          }
@@ -129,7 +126,7 @@ public final class EntityGuildMaster extends EntityNPC {
             this.player.addChatMessage(new ChatComponentText("Master: Thank you hero, you have proven yourself a worthy leader but your quest for kingship is not over. I will be back at the guild and may you continue this good progress."));
          }
 
-         PlayerProvider.get(entityplayer).setGuildFightEnded(true);
+         //PlayerProvider.get(entityplayer).setGuildFightEnded(true);
          this.setDead();
       }
 
@@ -156,10 +153,10 @@ public final class EntityGuildMaster extends EntityNPC {
          entity1 = (Entity)this.worldObj.loadedEntityList.get(list);
          if(entity1 instanceof EntityPlayer) {
             this.player = (EntityPlayer)entity1;
-            if(this.counterHeal == 5 && !PlayerProvider.get(player).getGuildFightEnded() && !this.said && !worldObj.isRemote) {
+            /*if(this.counterHeal == 5 && !PlayerProvider.get(player).getGuildFightEnded() && !this.said && !worldObj.isRemote) {
                this.player.addChatMessage(new ChatComponentText("Guild Master: My apprentice! The guild is under attack and I came here to ask for your help. Please let us hurry back to the guild!"));
                this.said = true;
-            }
+            }*/
 
             if(this.counterHeal > 30) {
                this.player.heal(2.0F);

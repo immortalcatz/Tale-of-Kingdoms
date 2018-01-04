@@ -1,19 +1,19 @@
 package kingdoms.server.handlers;
 
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import kingdoms.client.gui.*;
 import kingdoms.server.PlayerProvider;
 import kingdoms.server.TaleOfKingdoms;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 public final class GuiHandler implements IGuiHandler
 {
     public static final int
-            GUI_BANK = 0, GUI_SELL = 1, GUI_WARDEN = 2, GUI_BUILD = 3, GUI_FARMER = 4, GUI_FISHER = 5, GUI_SHOPLIST = 6,
+            GUI_BANK = 0, GUI_WARDEN = 2, GUI_BUILD = 3, GUI_FARMER = 4, GUI_FISHER = 5, GUI_SHOPLIST = 6,
             GUI_HEADCOMMANDER = 7, GUI_HUNTER = 8, GUI_INN = 9, GUI_LUMBER = 10, GUI_MAGEHALL = 11, GUI_PRIEST = 12,
-            GUI_QUARRY = 13, GUI_STABLE = 14, GUI_STOCK = 15, GUI_TAVERN = 16, GUI_CONQUEST = 17;
+            GUI_QUARRY = 13, GUI_STOCK = 15, GUI_TAVERN = 16, GUI_CONQUEST = 17;
 
     public GuiHandler()
     {
@@ -56,7 +56,6 @@ public final class GuiHandler implements IGuiHandler
             case GUI_MAGEHALL: return new GuiMageHall(player, world);
             case GUI_PRIEST: return new GuiPriest(player, world);
             case GUI_QUARRY: return new GuiQuarry(player, world);
-            case GUI_STABLE: return new GuiStableMaster(player, world);
             case GUI_STOCK: return new GuiStockList(player, world);
             case GUI_TAVERN: return new GuiTavernGame(player, world);
             case GUI_CONQUEST: return new GuiStartConquest(player, world);

@@ -1,10 +1,10 @@
 package kingdoms.client.gui;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import kingdoms.api.gui.GuiPriceBar;
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.handlers.UltimateHelper;
 import kingdoms.server.handlers.resources.GoldKeeper;
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -214,7 +214,7 @@ public class GuiStockList extends GuiScreenToK
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
-         if(j <= provider.getGoldTotal()) {
+         if(j <= playerProvider.getGoldTotal()) {
             EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, itemstack1);
             this.player.joinEntityItemWithWorld(entityitem);
             if(FMLCommonHandler.instance().getEffectiveSide().isServer()) {
@@ -264,7 +264,7 @@ public class GuiStockList extends GuiScreenToK
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
-         if(j * 16 <= provider.getGoldTotal()) {
+         if(j * 16 <= playerProvider.getGoldTotal()) {
             this.shopcounter = 0;
          } else {
             this.goldchecker = true;
@@ -323,7 +323,7 @@ public class GuiStockList extends GuiScreenToK
 
          l1 /= 100.0F;
          f1 = (int)((float)f1 + (float)f1 * l1);
-         if(f1 <= provider.getGoldTotal()) {
+         if(f1 <= playerProvider.getGoldTotal()) {
             EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, s);
             this.player.joinEntityItemWithWorld(entityitem);
             //provider.decreaseGold(f1);
@@ -342,7 +342,7 @@ public class GuiStockList extends GuiScreenToK
 
       super.drawScreen(i, j, f);
 
-      this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + provider.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
+      this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + playerProvider.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
       //String var13 = this.itemSelected.getUnlocalizedName() + ".name";
       //String var17 = this.st.translateKey(var13);
       //int var18 = GoldKeeper.INSTANCE.priceItem(this.itemSelected);

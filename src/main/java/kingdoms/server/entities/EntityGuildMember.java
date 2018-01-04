@@ -44,6 +44,7 @@ public final class EntityGuildMember extends EntityNPC
     @Override
     public void writeToNBT(NBTTagCompound compound)
     {
+        super.writeToNBT(compound);
         compound.setBoolean("fight", fight);
         compound.setBoolean("ended", ended);
     }
@@ -51,6 +52,7 @@ public final class EntityGuildMember extends EntityNPC
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
+        super.readFromNBT(compound);
         fight = compound.getBoolean("fight");
         ended = compound.getBoolean("ended");
     }
@@ -101,7 +103,7 @@ public final class EntityGuildMember extends EntityNPC
         {
             if (this.fight && this.player != null)
             {
-                PlayerProvider.get(player).addGlory(50, player);
+                PlayerProvider.get(player).addGlory(50);
 
                 this.player.addChatMessage(new ChatComponentText("Guild Member: Your a good fighter my friend, I will let the guild master know of your strength."));
 

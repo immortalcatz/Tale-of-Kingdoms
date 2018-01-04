@@ -1,7 +1,7 @@
 package kingdoms.server.handlers.packets.server;
 
-import kingdoms.api.network.AbstractPacket;
 import cpw.mods.fml.common.network.ByteBufUtils;
+import kingdoms.api.network.AbstractPacket;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;

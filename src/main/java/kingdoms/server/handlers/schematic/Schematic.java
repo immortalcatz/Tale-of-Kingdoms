@@ -10,14 +10,14 @@ import net.minecraft.nbt.NBTTagList;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.stream.IntStream;
+import java.util.List;
+import java.util.Objects;
 
 public final class Schematic
 {
-    private ArrayList blockList = new ArrayList(), entityList = new ArrayList();
-    private byte[] blocksArray, dataArray;
-    private short height, length, width;
     public int x, y, z, speed;
+    private List<FakeBlock> blocks = new ArrayList<>();
+    private List<FakeEntity> entities = new ArrayList<>();
 
     public Schematic(String s)
     {
@@ -25,108 +25,115 @@ public final class Schematic
                 entityData = TaleOfKingdoms.class.getResourceAsStream(s + ".dat"),
                 schematicData = TaleOfKingdoms.class.getResourceAsStream(s + ".schematic");
 
-        NBTTagCompound
-                nbtSchematic = null, nbtEntities = null;
+        NBTTagCompound schematic = null, entities = null;
 
         try
         {
-            nbtSchematic = CompressedStreamTools.readCompressed(schematicData);
-            nbtEntities = CompressedStreamTools.readCompressed(entityData);
+            schematic = CompressedStreamTools.readCompressed(schematicData);
+            entities = CompressedStreamTools.readCompressed(entityData);
         }
         catch (final IOException e)
         {
             e.printStackTrace();
         }
 
-        this.writeSchematic(nbtSchematic);
+        this.writeSchematic(Objects.requireNonNull(schematic));
 
         if (s.contains("Tier4"))
         {
-            this.writeEntitiesTier4(nbtEntities);
+            this.writeEntitiesTier4(Objects.requireNonNull(entities));
         }
         else if (s.contains("Tier3"))
         {
-            this.writeEntitiesTier3(nbtEntities);
+            this.writeEntitiesTier3(Objects.requireNonNull(entities));
         }
         else
         {
-            this.writeEntities(nbtEntities);
+            this.writeEntities(Objects.requireNonNull(entities));
         }
     }
 
-    private void writeSchematic(NBTTagCompound nbt)
+    private void writeSchematic(NBTTagCompound compound)
     {
-        this.height = nbt.getShort("Height");
-        this.length = nbt.getShort("Length");
-        this.width = nbt.getShort("Width");
-        this.blocksArray = nbt.getByteArray("Blocks");
-        this.dataArray = nbt.getByteArray("Data");
+        short
+                height = compound.getShort("Height"),
+                length = compound.getShort("Length"),
+                width = compound.getShort("Width");
+        byte[]
+                blocksArray = compound.getByteArray("Blocks"),
+                dataArray = compound.getByteArray("Data");
 
-        for (int y = 0; y < this.height; ++y)
+        for (int y = 0; y < height; ++y)
         {
-            for (int x = 0; x < this.width; ++x)
+            for (int x = 0; x < width; ++x)
             {
-                for (int z = 0; z < this.length; ++z)
+                for (int z = 0; z < length; ++z)
                 {
-                    int index = y * this.width * this.length + z * this.width + x;
-                    this.blockList.add(new FakeBlock(this.blocksArray[index], this.dataArray[index], x, y, z));
+                    int index = y * width * length + z * width + x;
+                    this.blocks.add(new FakeBlock(blocksArray[index], dataArray[index], x, y, z));
                 }
             }
         }
     }
 
-    private void writeEntities(NBTTagCompound nbt)
+    private void writeEntities(NBTTagCompound compound)
     {
-        NBTTagList list = nbt.getTagList("Entities", 10);
+        NBTTagList list = compound.getTagList("Entities", 10);
 
-        IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt).forEachOrdered(nbt1 -> {
-            String s = nbt1.getString("EntityName");
-            double posX = nbt1.getDouble("posX");
-            double posY = nbt1.getDouble("posY");
-            double posZ = nbt1.getDouble("posZ");
-            this.entityList.add(new FakeEntity(s, posX, posY, posZ));
-        });
+        int bound = list.tagCount();
+
+        for (int i = 0; i < bound; i++)
+        {
+            NBTTagCompound nbt = list.getCompoundTagAt(i);
+            String s = nbt.getString("EntityName");
+            double posX = nbt.getDouble("posX");
+            double posY = nbt.getDouble("posY");
+            double posZ = nbt.getDouble("posZ");
+            this.entities.add(new FakeEntity(s, posX, posY, posZ));
+        }
     }
 
-    private void writeEntitiesTier4(NBTTagCompound nbt)
+    private void writeEntitiesTier4(NBTTagCompound compound)
     {
-        NBTTagList list = nbt.getTagList("Entities", 10);
+        NBTTagList list = compound.getTagList("Entities", 10);
 
-        IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt).forEachOrdered(nbt1 -> {
-            String s = nbt1.getString("EntityName");
-            double posX = nbt1.getDouble("posX");
-            double posY = nbt1.getDouble("posY");
-            double posZ = nbt1.getDouble("posZ");
-            this.entityList.add(new FakeEntity(s, posX + 10.0D, posY, posZ + 5.0D));
-        });
+        int bound = list.tagCount();
+
+        for (int i = 0; i < bound; i++)
+        {
+            NBTTagCompound nbt = list.getCompoundTagAt(i);
+            String s = nbt.getString("EntityName");
+            double posX = nbt.getDouble("posX");
+            double posY = nbt.getDouble("posY");
+            double posZ = nbt.getDouble("posZ");
+            this.entities.add(new FakeEntity(s, posX + 10.0D, posY, posZ + 5.0D));
+        }
     }
 
-    private void writeEntitiesTier3(NBTTagCompound nbt)
+    private void writeEntitiesTier3(NBTTagCompound compound)
     {
-        NBTTagList list = nbt.getTagList("Entities", 10);
+        NBTTagList list = compound.getTagList("Entities", 10);
 
-        IntStream.range(0, list.tagCount()).mapToObj(list::getCompoundTagAt).forEachOrdered(nbt1 -> {
-            String s = nbt1.getString("EntityName");
-            double posX = nbt1.getDouble("posX");
-            double posY = nbt1.getDouble("posY");
-            double posZ = nbt1.getDouble("posZ");
-            this.entityList.add(new FakeEntity(s, posX - 10.0D, posY, posZ - 5.0D));
-        });
+        int bound = list.tagCount();
+
+        for (int i = 0; i < bound; i++)
+        {
+            NBTTagCompound nbt = list.getCompoundTagAt(i);
+            String s = nbt.getString("EntityName");
+            double posX = nbt.getDouble("posX");
+            double posY = nbt.getDouble("posY");
+            double posZ = nbt.getDouble("posZ");
+            this.entities.add(new FakeEntity(s, posX - 10.0D, posY, posZ - 5.0D));
+        }
     }
 
-    public ArrayList getBlockList()
+    public List<FakeBlock> getBlockList()
     {
-        return this.blockList;
+        return this.blocks;
     }
-
-    public ArrayList getEntityList()
+    public List<FakeEntity> getEntityList()
     {
-        return this.entityList;
-    }
-
-    public void setBlockList(ArrayList blockList)
-    {
-        this.blockList = blockList;
+        return this.entities;
     }
 
     public Schematic setPosition(int posX, int posY, int posZ)

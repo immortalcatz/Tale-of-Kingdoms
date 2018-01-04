@@ -1,9 +1,9 @@
 package kingdoms.server.handlers.packets.client;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import kingdoms.api.network.AbstractPacket;
 import kingdoms.server.PlayerProvider;
 import kingdoms.server.TaleOfKingdoms;
-import cpw.mods.fml.common.network.ByteBufUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -24,7 +24,9 @@ public final class CPacketSyncShopItems extends AbstractPacket
     public void client(EntityPlayer player)
     {
         List<ItemStack> stacks = new ArrayList<>();
-        IntStream.range(0, buf().readInt()).forEach(i -> stacks.add(ByteBufUtils.readItemStack(buf())));
+
+        for (int i = 0; i < buf().readInt(); i++)
+            stacks.add(ByteBufUtils.readItemStack(buf()));
 
         PlayerProvider.get(player).stacks = stacks;
         player.openGui(TaleOfKingdoms.instance, 6, player.worldObj, 0, 0, 0);

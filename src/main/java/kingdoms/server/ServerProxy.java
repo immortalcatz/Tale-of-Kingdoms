@@ -1,13 +1,13 @@
 package kingdoms.server;
 
-import kingdoms.server.commands.CommandTOK;
-import kingdoms.server.handlers.*;
-import kingdoms.server.items.ItemCoin;
-import kingdoms.server.items.ItemSpawnEgg;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
+import kingdoms.server.commands.CommandTOK;
+import kingdoms.server.handlers.*;
+import kingdoms.server.items.ItemCoin;
+import kingdoms.server.items.ItemSpawnEgg;
 import net.minecraft.command.CommandHandler;
 import net.minecraft.item.Item;
 

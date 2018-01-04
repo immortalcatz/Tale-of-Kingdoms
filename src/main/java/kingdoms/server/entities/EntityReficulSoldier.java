@@ -127,7 +127,7 @@ public class EntityReficulSoldier extends EntityNPC {
    }
 
    public void onDeath(DamageSource damagesource) {
-      PlayerProvider.get(player).addGlory(80, player);
+      PlayerProvider.get(player).addGlory(80);
    }
 
    protected boolean isMovementCeased() {

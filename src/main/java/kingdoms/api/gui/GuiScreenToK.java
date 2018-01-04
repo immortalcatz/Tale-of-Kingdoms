@@ -1,8 +1,9 @@
 package kingdoms.api.gui;
 
-import kingdoms.server.PlayerProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kingdoms.server.PlayerProvider;
+import kingdoms.server.WorldProvider;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
@@ -12,13 +13,15 @@ public abstract class GuiScreenToK extends GuiScreen
 {
     protected World world;
     protected EntityPlayer player;
-    protected PlayerProvider provider;
+    protected PlayerProvider playerProvider;
+    protected WorldProvider worldProvider;
 
     public GuiScreenToK(EntityPlayer player, World world)
     {
         this.player = player;
         this.world = world;
-        this.provider = PlayerProvider.get(player);
+        this.playerProvider = PlayerProvider.get(player);
+        this.worldProvider = WorldProvider.get(world);
     }
 
     @Override

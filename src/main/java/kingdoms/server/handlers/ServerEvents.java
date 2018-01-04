@@ -1,12 +1,12 @@
 package kingdoms.server.handlers;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
 import kingdoms.server.PlayerProvider;
 import kingdoms.server.TaleOfKingdoms;
 import kingdoms.server.handlers.packets.client.CPacketSyncDataPlayer;
 import kingdoms.server.handlers.schematic.SchematicHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
 import net.minecraft.entity.EntityTracker;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -37,7 +37,7 @@ public final class ServerEvents
             if (e.entity instanceof EntityPlayer)
             {
                 if (e.entity.getExtendedProperties("tokPlayer") == null)
-                    e.entity.registerExtendedProperties("tokPlayer", new PlayerProvider());
+                    e.entity.registerExtendedProperties("tokPlayer", new PlayerProvider((EntityPlayer) e.entity));
             }
         }
 
@@ -120,8 +120,8 @@ public final class ServerEvents
             if (item == TaleOfKingdoms.proxy.coins)
             {
                 e.player.inventory.consumeInventoryItem(item);
-                PlayerProvider.get(e.player).addGold(2, e.player);
-                PlayerProvider.get(e.player).addGlory(random.nextInt(15), e.player);
+                PlayerProvider.get(e.player).addGold(random.nextInt(50));
+                PlayerProvider.get(e.player).addGlory(random.nextInt(15));
             }
         }
 

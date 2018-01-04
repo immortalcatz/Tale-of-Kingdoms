@@ -2,6 +2,7 @@ package kingdoms.server.handlers.schematic;
 
 import kingdoms.api.blocks.FakeBlock;
 import kingdoms.api.entities.FakeEntity;
+import kingdoms.server.WorldProvider;
 import kingdoms.server.handlers.Buildings;
 import kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.entity.EntityLiving;
@@ -9,19 +10,22 @@ import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public final class SchematicHandler
 {
     private int index;
+    private List<FakeBlock> torchList = new ArrayList<>();
+    private List<Schematic> buildingList = new ArrayList<>();
+
     public static final SchematicHandler INSTANCE = new SchematicHandler();
-    private ArrayList torchList = new ArrayList(), buildingList = new ArrayList();
 
     public void addBuilding(Schematic schematic)
     {
         this.buildingList.add(schematic);
     }
 
-    public ArrayList getBuildingList()
+    public List<Schematic> getBuildingList()
     {
         return this.buildingList;
     }
@@ -30,72 +34,67 @@ public final class SchematicHandler
     {
         if (!this.buildingList.isEmpty())
         {
-            Schematic x = (Schematic)this.buildingList.get(0);
+            Schematic first = this.buildingList.get(0);
 
-            if (x != null)
+            if (first != null)
             {
-                ArrayList arrayList = x.getBlockList();
-                ArrayList arrayList1 = x.getEntityList();
+                List<FakeBlock> blocks = first.getBlockList();
+                List<FakeEntity> entities = first.getEntityList();
 
-                if (!arrayList.isEmpty() && !arrayList1.isEmpty())
+                for (int i = 0; i < first.speed; ++i)
                 {
-                    for (int i = 0; i < x.speed; ++i)
+                    if (index < blocks.size())
                     {
-                        if (this.index < arrayList.size())
+                        FakeBlock fakeBlock = blocks.get(index);
+
+                        if (fakeBlock != null && world.getBlock(first.x + fakeBlock.posX, first.y + fakeBlock.posY, first.z + fakeBlock.posZ) != fakeBlock.block)
                         {
-                            FakeBlock fakeBlock = (FakeBlock)arrayList.get(this.index);
+                            if(fakeBlock.block == Blocks.air)
+                                world.setBlockToAir(first.x + fakeBlock.posX, first.y + fakeBlock.posY, first.z + fakeBlock.posZ);
 
-                            if (fakeBlock != null && world.getBlock(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ) != fakeBlock.block)
+                            if (fakeBlock.block != Blocks.torch && fakeBlock.block != Blocks.wooden_door && fakeBlock.block != Blocks.ladder && fakeBlock.block != Blocks.trapdoor)
                             {
-                                if(fakeBlock.block == Blocks.air)
-                                    world.setBlockToAir(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ);
+                                world.setBlock(first.x + fakeBlock.posX, first.y + fakeBlock.posY, first.z + fakeBlock.posZ, fakeBlock.block, fakeBlock.metadata, 3);
+                            }
+                            else
+                                this.torchList.add(fakeBlock);
+                        }
 
-                                if (fakeBlock.block != Blocks.torch && fakeBlock.block != Blocks.wooden_door && fakeBlock.block != Blocks.ladder && fakeBlock.block != Blocks.trapdoor)
-                                {
-                                    world.setBlock(x.x + fakeBlock.posX, x.y + fakeBlock.posY, x.z + fakeBlock.posZ, fakeBlock.block, fakeBlock.metadata, 3);
-                                }
-                                else
-                                    this.torchList.add(fakeBlock);
+                        ++index;
+                    }
+                    else if (index < blocks.size() + entities.size())
+                    {
+                        FakeEntity entity = entities.get(index - blocks.size());
+
+                        WorldProvider worldProvider = WorldProvider.get(world);
+                        EntityLiving entity1 = (EntityLiving) UltimateHelper.INSTANCE.getEntity(entity.entityName, world);
+
+                        if (entity1 != null)
+                        {
+                            if (Buildings.INSTANCE.getBuilding(1))
+                            {
+                                entity1.setPosition((double) worldProvider.guildPosX + entity.posX, (double) worldProvider.guildPosY + entity.posY, (double) worldProvider.guildPosZ + entity.posZ);
+                            }
+                            else
+                            {
+                                entity1.setPosition((double) first.x + entity.posX, (double) first.y + entity.posY + 1.5D, (double) first.z + entity.posZ);
                             }
 
-                            ++this.index;
+                            world.spawnEntityInWorld(entity1);
                         }
-                        else if (this.index < arrayList.size() + arrayList1.size())
-                        {
-                            FakeEntity var8 = (FakeEntity)arrayList1.get(this.index - arrayList.size());
-                            EntityLiving block = (EntityLiving) UltimateHelper.INSTANCE.getEntity(var8.entityName, world);
 
-                            if (block != null)
-                            {
-                                if (Buildings.INSTANCE.getBuilding(1))
-                                {
-                                    //block.setPosition((double) GuildHandler.INSTANCE.getTownX() + var8.posX, (double) GuildHandler.INSTANCE.getTownY() + var8.posY, (double) GuildHandler.INSTANCE.getTownZ() + var8.posZ);
-                                }
-                                else
-                                {
-                                    block.setPosition((double)x.x + var8.posX, (double)x.y + var8.posY + 1.5D, (double)x.z + var8.posZ);
-                                }
+                        ++index;
+                    }
+                    else
+                    {
+                        this.torchList.forEach(block -> world.setBlock(first.x + block.posX, first.y + block.posY, first.z + block.posZ, block.block, block.metadata, 3));
 
-                                world.spawnEntityInWorld(block);
-                            }
+                        index = 0;
 
-                            ++this.index;
-                        }
-                        else
-                        {
-                            for (Object aTorchList : this.torchList)
-                            {
-                                FakeBlock var10 = (FakeBlock) aTorchList;
-                                world.setBlock(x.x + var10.posX, x.y + var10.posY, x.z + var10.posZ, var10.block, var10.metadata, 3);
-                            }
+                        if (!this.buildingList.isEmpty())
+                            this.buildingList.remove(0);
 
-                            this.index = 0;
-
-                            if (!this.buildingList.isEmpty())
-                                this.buildingList.remove(0);
-
-                            this.torchList.clear();
-                        }
+                        this.torchList.clear();
                     }
                 }
             }
@@ -110,8 +109,8 @@ public final class SchematicHandler
         }
         else
         {
-            ArrayList arrayList = ((Schematic) this.buildingList.get(0)).getBlockList();
-            return this.index / (float) arrayList.size() * 100.0F;
+            List<FakeBlock> blocks = this.buildingList.get(0).getBlockList();
+            return index / (float) blocks.size() * 100.0F;
         }
     }
 }

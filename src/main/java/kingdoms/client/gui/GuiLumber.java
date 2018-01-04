@@ -52,12 +52,12 @@ public class GuiLumber extends GuiScreenToK
                 }
                 break;
             case 2:
-                if (provider.getGoldTotal() >= 1500)
+                if (playerProvider.getGoldTotal() >= 1500)
                 {
                     if (WorkersHandler.INSTANCE.getLumberMembers() < 12)
                     {
                         WorkersHandler.INSTANCE.addLumberMember((byte) 1);
-                        provider.decreaseGold(1500, player);
+                        playerProvider.decreaseGold(1500);
                         this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.boughtWorker"));
                     }
                     else
@@ -81,7 +81,7 @@ public class GuiLumber extends GuiScreenToK
     {
         super.drawScreen(x, y, partial);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.title", provider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.title", provider.getGoldTotal())) / 2, 15, 16777215);
+        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.title", playerProvider.getGoldTotal())) / 2, 15, 16777215);
 
         if (this.goldchecker)
         {

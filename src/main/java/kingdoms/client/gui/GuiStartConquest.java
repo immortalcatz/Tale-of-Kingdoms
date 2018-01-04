@@ -1,10 +1,10 @@
 package kingdoms.client.gui;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.handlers.Buildings;
 import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.packets.server.SPacketBuild;
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +27,7 @@ public class GuiStartConquest extends GuiScreenToK
 
         if (Buildings.INSTANCE.getBuilding(0))
         {
-            start.enabled = false;
+            start.enabled = true;
             start.displayString = ChatFormatting.RED + I18n.format("gui.conquest.created");
         }
 
@@ -41,7 +41,7 @@ public class GuiStartConquest extends GuiScreenToK
         if (guibutton.id == 1)
         {
             //TODO: sendToPlayer for individual of the Kingdom
-            NetworkHandler.INSTANCE.sendToServer(new SPacketBuild((short) 0));
+            NetworkHandler.INSTANCE.sendToServer(new SPacketBuild((byte) 0, true));
             this.mc.displayGuiScreen(null);
             this.mc.displayGuiScreen(new GuiToKLoading(player, world));
         }

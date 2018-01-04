@@ -115,7 +115,7 @@ public class GuiShopList extends GuiScreenToK
         {
             int price = stackSelected.getTagCompound().getInteger("price");
 
-            if (price <= provider.getGoldTotal())
+            if (price <= playerProvider.getGoldTotal())
             {
                 NetworkHandler.INSTANCE.sendToServer(new SPacketBuy(stackSelected, (byte) 1, price));
             }
@@ -128,7 +128,7 @@ public class GuiShopList extends GuiScreenToK
         {
             int price = stackSelected.getTagCompound().getInteger("price");
 
-            if (price <= provider.getGoldTotal())
+            if (price <= playerProvider.getGoldTotal())
             {
                 NetworkHandler.INSTANCE.sendToServer(new SPacketBuy(stackSelected, (byte) 16, price));
                 this.shopcounter = 0;
@@ -159,7 +159,7 @@ public class GuiShopList extends GuiScreenToK
         {
             int price = stackSelected.getTagCompound().getInteger("price");
 
-            if (price <= provider.getGoldTotal())
+            if (price <= playerProvider.getGoldTotal())
                 NetworkHandler.INSTANCE.sendToServer(new SPacketBuy(stackSelected, (byte) 1, price));
 
             ++this.shopcounter;
@@ -169,7 +169,7 @@ public class GuiShopList extends GuiScreenToK
         this.mc.renderEngine.bindTexture(new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png"));
         this.drawTexturedModalRect((this.width - 255) / 2, 0, 0, 0, 255, 255);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.shop.title", provider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.shop.title", provider.getGoldTotal())) / 2, 5, 16763904);
+        this.drawString(this.fontRendererObj, I18n.format("gui.shop.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.shop.title", playerProvider.getGoldTotal())) / 2, 5, 16763904);
         this.drawString(this.fontRendererObj, "Selected Item Cost: " + this.stringoutput + " - " + this.price + " Gold coins", this.width / 2 - fontRendererObj.getStringWidth("Selected Item Cost: " + this.stringoutput + " - " + this.price + " Gold coins") / 2, 20, 16763904);
 
         if (this.goldchecker)

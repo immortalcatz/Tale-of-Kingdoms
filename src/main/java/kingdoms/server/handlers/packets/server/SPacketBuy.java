@@ -1,8 +1,8 @@
 package kingdoms.server.handlers.packets.server;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import kingdoms.api.network.AbstractPacket;
 import kingdoms.server.PlayerProvider;
-import cpw.mods.fml.common.network.ByteBufUtils;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 
@@ -22,7 +22,7 @@ public final class SPacketBuy extends AbstractPacket
         ItemStack stack = ByteBufUtils.readItemStack(buf());
 
         stack.stackSize = buf().readByte();
-        PlayerProvider.get(player).decreaseGold(buf().readInt(), player);
+        PlayerProvider.get(player).decreaseGold(buf().readInt());
 
         if (!player.inventory.addItemStackToInventory(stack))
             player.entityDropItem(stack, 0);

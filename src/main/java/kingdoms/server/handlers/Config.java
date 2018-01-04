@@ -1,11 +1,11 @@
 package kingdoms.server.handlers;
 
-import kingdoms.server.ConfigTemplate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import kingdoms.server.ConfigTemplate;
 
 import java.io.*;
 import java.util.List;

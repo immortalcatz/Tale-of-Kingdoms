@@ -9,8 +9,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-import java.util.stream.IntStream;
-
 public final class UltimateHelper
 {
     public static final UltimateHelper INSTANCE = new UltimateHelper();
@@ -40,17 +38,26 @@ public final class UltimateHelper
     {
         StringBuilder output = new StringBuilder();
 
-        IntStream.range(0, text.length()).forEach(i -> {
-            if ((i + Minecraft.getSystemTime() / 40) % 88 == 0) {
+        int bound = text.length();
+
+        for (int i = 0; i < bound; i++)
+        {
+            if ((i + Minecraft.getSystemTime() / 40) % 88 == 0)
+            {
                 output.append(ChatFormatting.WHITE).append(ChatFormatting.BOLD).append(text.substring(i, i + 1));
-            } else if ((i + Minecraft.getSystemTime() / 40) % 88 == 1) {
+            }
+            else if ((i + Minecraft.getSystemTime() / 40) % 88 == 1)
+            {
                 output.append(ChatFormatting.YELLOW).append(ChatFormatting.BOLD).append(text.substring(i, i + 1));
-            } else if ((i + Minecraft.getSystemTime() / 40) % 88 == 87) {
+            }
+            else if ((i + Minecraft.getSystemTime() / 40) % 88 == 87)
+            {
                 output.append(ChatFormatting.YELLOW).append(ChatFormatting.BOLD).append(text.substring(i, i + 1));
-            } else {
+            }
+            else {
                 output.append(ChatFormatting.GOLD).append(ChatFormatting.BOLD).append(text.substring(i, i + 1));
             }
-        });
+        }
 
         return output.toString();
     }

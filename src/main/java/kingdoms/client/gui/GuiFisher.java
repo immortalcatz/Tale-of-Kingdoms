@@ -1,10 +1,10 @@
 package kingdoms.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.packets.server.SPacketAdd;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;

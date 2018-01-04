@@ -104,7 +104,7 @@ public class EntityReficulGuardian extends EntityNPC
 
    public void onDeath(DamageSource damagesource)
    {
-      PlayerProvider.get(player).addGlory(70, player);
+      PlayerProvider.get(player).addGlory(70);
    }
 
    protected void attackEntity(Entity entity, float f) {

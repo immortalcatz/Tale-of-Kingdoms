@@ -1,14 +1,16 @@
 package kingdoms.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import kingdoms.api.gui.GuiPriceBar;
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.handlers.Buildings;
+import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.UltimateHelper;
+import kingdoms.server.handlers.packets.server.SPacketBuild;
 import kingdoms.server.handlers.resources.ResourcesHandler;
 import kingdoms.server.handlers.schematic.SchematicHandler;
 import kingdoms.server.handlers.schematic.SchematicRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -35,17 +37,9 @@ public class GuiBuildScreen extends GuiScreenToK
     {
         this.buttonList.clear();
 
-        if (provider.getTownX() != 0 && provider.getTownY() != 0 && provider.getTownZ() != 0)
-        {
-            SchematicRegistry.registerAllBuildings(provider.getTownX(), provider.getTownY(), provider.getTownZ());
-        }
-        else
-        {
-            SchematicRegistry.registerAllBuildings((int) this.mc.thePlayer.posX, (int) this.mc.thePlayer.posY, (int) this.mc.thePlayer.posZ);
-        }
-
         this.woodBar = new GuiPriceBar(0, this.width / 2 - 100, 40, 90, 12, 1.0F, "red");
         this.woodBar.setBar((float) ResourcesHandler.INSTANCE.getwoodResource() / 320.0F);
+
         this.cobblestoneBar = new GuiPriceBar(1, this.width / 2 - 100, 60, 90, 12, 1.0F, "red");
         this.cobblestoneBar.setBar((float) ResourcesHandler.INSTANCE.getcobbleResource() / 320.0F);
 
@@ -271,7 +265,6 @@ public class GuiBuildScreen extends GuiScreenToK
     @Override
     public void actionPerformed(GuiButton guibutton)
     {
-        short speed = 200;
         int j;
 
         switch(guibutton.id)
@@ -298,251 +291,248 @@ public class GuiBuildScreen extends GuiScreenToK
                 }
                 break;
             case 4:
-                provider.setTownX((int) this.mc.thePlayer.posX);
-                provider.setTownY((int) this.mc.thePlayer.posY);
-                provider.setTownZ((int) this.mc.thePlayer.posZ);
-                this.createBuilding(1, 100, 0, 0);
+                this.createBuilding(1, 0, 0);
                 break;
             case 5:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(2, speed, 128, 192);
+                    this.createBuilding(2, 128, 192);
                 }
                 break;
             case 6:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(3, speed, 128, 192);
+                    this.createBuilding(3, 128, 192);
                 }
                 break;
             case 7:
                 if (this.x(320, 192))
                 {
-                    this.createBuilding(4, speed, 320, 192);
+                    this.createBuilding(4, 320, 192);
                 }
                 break;
             case 8:
                 if (this.x(256, 256))
                 {
-                    this.createBuilding(6, speed, 256, 256);
+                    this.createBuilding(6, 256, 256);
                 }
                 break;
             case 9:
                 if (this.x(128, 128))
                 {
-                    this.createBuilding(7, speed, 192, 192);
+                    this.createBuilding(7, 192, 192);
                 }
                 break;
             case 10:
                 if (this.x(128, 128))
                 {
-                    this.createBuilding(8, speed, 128, 128);
+                    this.createBuilding(8, 128, 128);
                 }
                 break;
             case 11:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(9, speed, 128, 192);
+                    this.createBuilding(9, 128, 192);
                 }
                 break;
             case 12:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(10, speed, 128, 192);
+                    this.createBuilding(10, 128, 192);
                 }
                 break;
             case 13:
                 if (this.x(320, 192))
                 {
-                    this.createBuilding(11, speed, 320, 192);
+                    this.createBuilding(11, 320, 192);
                 }
                 break;
             case 14:
                 if (this.x(128, 128))
                 {
-                    this.createBuilding(12, speed, 128, 128);
+                    this.createBuilding(12, 128, 128);
                 }
                 break;
             case 15:
                 if (this.x(320, 320))
                 {
-                    this.createBuilding(13, speed, 320, 320);
+                    this.createBuilding(13, 320, 320);
                 }
                 break;
             case 16:
                 if (this.x(256, 192))
                 {
-                    this.createBuilding(14, speed, 256, 192);
+                    this.createBuilding(14, 256, 192);
                 }
                 break;
             case 17:
                 if (this.x(320, 256))
                 {
-                    this.createBuilding(15, speed, 320, 256);
+                    this.createBuilding(15, 320, 256);
                 }
                 break;
             case 18:
                 if (this.x(128, 128))
                 {
-                    this.createBuilding(16, speed, 128, 128);
+                    this.createBuilding(16, 128, 128);
                 }
                 break;
             case 19:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(17, speed, 128, 192);
+                    this.createBuilding(17, 128, 192);
                 }
                 break;
             case 20:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(18, speed, 128, 192);
+                    this.createBuilding(18, 128, 192);
                 }
                 break;
             case 21:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(19, speed, 128, 192);
+                    this.createBuilding(19, 128, 192);
                 }
                 break;
             case 22:
                 if (this.x(320, 192))
                 {
-                    this.createBuilding(20, speed, 320, 192);
+                    this.createBuilding(20, 320, 192);
                 }
                 break;
             case 23:
                 if (this.x(128, 320))
                 {
-                    this.createBuilding(21, speed, 128, 320);
+                    this.createBuilding(21, 128, 320);
                 }
                 break;
             case 24:
                 if (this.x(320, 320))
                 {
-                    this.createBuilding(22, speed, 320, 320);
+                    this.createBuilding(22, 320, 320);
                 }
                 break;
             case 25:
                 if (this.x(256, 256))
                 {
-                    this.createBuilding(23, speed, 256, 256);
+                    this.createBuilding(23, 256, 256);
                 }
                 break;
             case 26:
                 if (this.x(320, 256))
                 {
-                    this.createBuilding(24, speed, 320, 256);
+                    this.createBuilding(24, 320, 256);
                 }
                 break;
             case 27:
                 if (this.x(256, 256))
                 {
-                    this.createBuilding(25, 800, 256, 256);
+                    this.createBuilding(25, 256, 256);
                 }
                 break;
             case 28:
                 if (this.x(128, 128))
                 {
-                    this.createBuilding(31, speed, 128, 128);
+                    this.createBuilding(31, 128, 128);
                 }
                 break;
             case 29:
                 if (this.x(256, 128))
                 {
-                    this.createBuilding(29, speed, 256, 128);
+                    this.createBuilding(29, 256, 128);
                 }
                 break;
             case 30:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(30, speed, 128, 192);
+                    this.createBuilding(30, 128, 192);
                 }
                 break;
             case 31:
                 if (this.x(128, 128))
                 {
-                    this.createBuilding(32, speed, 128, 128);
+                    this.createBuilding(32, 128, 128);
                 }
                 break;
             case 32:
                 if (this.x(64, 128))
                 {
-                    this.createBuilding(33, speed, 64, 128);
+                    this.createBuilding(33, 64, 128);
                 }
                 break;
             case 33:
                 if (this.x(64, 0))
                 {
-                    this.createBuilding(26, 5, 64, 0);
+                    this.createBuilding(26, 64, 0);
                 }
                 break;
             case 34:
                 if (this.x(320, 192))
                 {
-                    this.createBuilding(34, speed, 320, 192);
+                    this.createBuilding(34, 320, 192);
                 }
                 break;
             case 35:
                 if (this.x(320, 192))
                 {
-                    this.createBuilding(35, speed, 320, 192);
+                    this.createBuilding(35, 320, 192);
                 }
                 break;
             case 36:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(36, speed, 128, 192);
+                    this.createBuilding(36, 128, 192);
                 }
                 break;
             case 37:
                 if (this.x(128, 192))
                 {
-                    this.createBuilding(37, speed, 128, 192);
+                    this.createBuilding(37, 128, 192);
                 }
                 break;
             case 38:
                 if (this.x(320, 256))
                 {
-                    this.createBuilding(38, speed, 320, 256);
+                    this.createBuilding(38, 320, 256);
                 }
                 break;
             case 39:
                 if (this.x(256, 256))
                 {
-                    this.createBuilding(39, speed, 256, 256);
+                    this.createBuilding(39, 256, 256);
                 }
                 break;
             case 40:
                 if (this.x(256, 256))
                 {
-                    this.createBuilding(40, speed, 256, 256);
+                    this.createBuilding(40, 256, 256);
                 }
                 break;
             case 41:
                 if (this.x(320, 320))
                 {
-                    this.createBuilding(28, speed, 320, 320);
+                    this.createBuilding(28, 320, 320);
                 }
                 break;
             case 42:
                 if (this.x(320, 256))
                 {
-                    this.createBuilding(41, speed, 320, 256);
-                    this.createBuilding(43, speed, 0, 0);
-                    this.createBuilding(44, speed, 0, 0);
+                    this.createBuilding(41, 320, 256);
+                    this.createBuilding(43, 0, 0);
+                    this.createBuilding(44, 0, 0);
                 }
                 break;
             case 43:
                 if (this.x(256, 320))
                 {
-                    this.createBuilding(42, speed, 256, 320);
+                    this.createBuilding(42, 256, 320);
                 }
                 break;
             case 44:
                 if (this.x(320, 320))
                 {
-                    this.createBuilding(27, speed, 320, 320);
+                    this.createBuilding(27, 320, 320);
                 }
                 break;
         }
@@ -550,12 +540,12 @@ public class GuiBuildScreen extends GuiScreenToK
         this.initGui();
     }
 
-    private void createBuilding(int buildingNumber, int speed, int resource1, int resource2)
+    private void createBuilding(int id, int resource1, int resource2)
     {
-        SchematicHandler.INSTANCE.addBuilding(SchematicRegistry.getSchematic(buildingNumber).setSpeed(speed));
+        NetworkHandler.INSTANCE.sendToServer(new SPacketBuild((byte) id, false));
+
         ResourcesHandler.INSTANCE.decreasecobbleResource(resource1);
         ResourcesHandler.INSTANCE.decreasewoodResource(resource2);
-        Buildings.INSTANCE.setBuildingTrue(buildingNumber);
     }
 
     private boolean x(int i, int j)
@@ -570,7 +560,12 @@ public class GuiBuildScreen extends GuiScreenToK
 
     private int getInventorySlotContainItem(Item item, ItemStack[] inv)
     {
-        return IntStream.range(0, inv.length).filter(i -> inv[i] != null && inv[i].getItem() == item).findFirst().orElse(-1);
+        for (int i = 0; i < inv.length; i++)
+        {
+            if (inv[i] != null && inv[i].getItem() == item)
+                return i;
+        }
+        return -1;
     }
 
     @Override
@@ -585,17 +580,17 @@ public class GuiBuildScreen extends GuiScreenToK
 
         if (!Buildings.INSTANCE.isTier2)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_1", provider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_1", provider.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_1", playerProvider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_1", playerProvider.getGoldTotal())) / 2, 15, 16763904);
         }
 
         if (Buildings.INSTANCE.isTier2 && !Buildings.INSTANCE.isTier3)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_2", provider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_2", provider.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_2", playerProvider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_2", playerProvider.getGoldTotal())) / 2, 15, 16763904);
         }
 
         if (Buildings.INSTANCE.isTier3)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_3", provider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_3", provider.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_3", playerProvider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_3", playerProvider.getGoldTotal())) / 2, 15, 16763904);
         }
 
         if (this.woodBar != null)

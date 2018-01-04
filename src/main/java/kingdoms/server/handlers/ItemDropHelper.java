@@ -8,7 +8,6 @@ import net.minecraft.entity.monster.*;
 import net.minecraft.item.Item;
 
 import java.util.Random;
-import java.util.stream.IntStream;
 
 public final class ItemDropHelper
 {
@@ -22,7 +21,14 @@ public final class ItemDropHelper
     public static void dropCoins(EntityLivingBase entityLiving)
     {
         if (isHostileEntity(entityLiving) && !entityLiving.worldObj.isRemote)
-            IntStream.range(0, random.nextInt(25)).forEach(i -> dropItem(TaleOfKingdoms.proxy.coins, 1, entityLiving));
+        {
+            int bound = random.nextInt(25);
+
+            for (int i = 0; i < bound; i++)
+            {
+                dropItem(TaleOfKingdoms.proxy.coins, 1, entityLiving);
+            }
+        }
     }
 
     private static void dropItem(Item item, int meta, EntityLivingBase livingBase)

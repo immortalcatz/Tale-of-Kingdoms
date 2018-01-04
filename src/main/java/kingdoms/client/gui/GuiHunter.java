@@ -1,12 +1,12 @@
 package kingdoms.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import kingdoms.api.gui.GuiPriceBar;
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.entities.EntityHired;
 import kingdoms.server.handlers.UltimateHelper;
 import kingdoms.server.handlers.resources.HunterHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -45,7 +45,7 @@ public class GuiHunter extends GuiScreenToK
         this.buttonList.add(new GuiButton(3, this.width / 2 + 110, 220, 100, 20, I18n.format("gui.exit")));
 
         this.worthness = new GuiPriceBar(0, this.width / 2 + 110, 120, 125, 12, 1.0F, "red");
-        this.worthness.setBar(provider.getGlory() / 10000.0F);
+        this.worthness.setBar(playerProvider.getGlory() / 10000.0F);
     }
 
     @Override
@@ -59,12 +59,12 @@ public class GuiHunter extends GuiScreenToK
                 this.initGui();
                 break;
             case 2:
-                if (1500 <= provider.getGoldTotal())
+                if (1500 <= playerProvider.getGoldTotal())
                 {
                     EntityLiving entityLiving = (EntityLiving) UltimateHelper.INSTANCE.getEntity("Hired", world);
                     entityLiving.setLocationAndAngles(this.player.posX, this.player.posY, this.player.posZ, 0.0F, 0.0F);
                     this.world.spawnEntityInWorld(entityLiving);
-                    provider.decreaseGold(1500, player);
+                    playerProvider.decreaseGold(1500);
                 }
                 else
                 {
@@ -109,7 +109,7 @@ public class GuiHunter extends GuiScreenToK
             case 5:
                 IntStream.range(0, this.world.loadedEntityList.size()).mapToObj(var7 -> (Entity) this.world.loadedEntityList.get(var7)).filter(entity1 -> entity1 instanceof EntityHired).map(entity1 -> (EntityHired) entity1).forEach(var9 -> {
                     var9.setDead();
-                    provider.addGold(1000, player);
+                    playerProvider.addGold(1000);
                 });
                 break;
         }
@@ -127,9 +127,9 @@ public class GuiHunter extends GuiScreenToK
     {
         super.drawScreen(x, y, partial);
 
-        this.drawString(fontRendererObj, "Your glory: " + provider.getGlory(), this.width / 2, height / 2, 16777215);
+        this.drawString(fontRendererObj, "Your glory: " + playerProvider.getGlory(), this.width / 2, height / 2, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.kingship"), this.width / 2 + 100, 110, 11158783);
-        this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.title", provider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.guildMaster.title", provider.getGoldTotal())) / 2, 15, 16777215);
+        this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.guildMaster.title", playerProvider.getGoldTotal())) / 2, 15, 16777215);
 
         if (this.goldchecker)
             this.drawString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.notEnough")) / 2, 27, 16777215);

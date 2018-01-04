@@ -35,7 +35,7 @@ public class GuiTavernGame extends GuiScreenToK
    public boolean deal(int i) {
       Random random = new Random();
       if(i == 0) {
-          provider.decreaseGold(50, player);
+         playerProvider.decreaseGold(50);
          this.fRollp = random.nextInt(6) + 1;
          this.fRolld = random.nextInt(6) + 1;
          this.sRollp = random.nextInt(6) + 1;
@@ -80,7 +80,7 @@ public class GuiTavernGame extends GuiScreenToK
 
          return false;
       } else if(i == 2 && this.playerM > this.dealer) {
-          //provider.addGold(75);
+         playerProvider.addGold(75);
          return true;
       } else {
          if(i == 3) {
@@ -88,7 +88,7 @@ public class GuiTavernGame extends GuiScreenToK
                return true;
             }
 
-             provider.decreaseGold(25, player);
+            playerProvider.decreaseGold(25);
          }
 
          if(i == 4) {
@@ -152,7 +152,7 @@ public class GuiTavernGame extends GuiScreenToK
 
    protected void actionPerformed(GuiButton guibutton) {
       if(guibutton.id == 1) {
-         if(provider.getGoldTotal() >= 50) {
+         if(playerProvider.getGoldTotal() >= 50) {
             this.game = true;
             this.deal(0);
          } else {
@@ -255,11 +255,11 @@ public class GuiTavernGame extends GuiScreenToK
       }
 
       if(!this.notEnough) {
-         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + provider.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16777215);
+         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + playerProvider.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16777215);
       }
 
       if(this.notEnough) {
-         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + provider.getGoldTotal() + " Gold Coins -NOT ENOUGH GOLD", this.width / 2, 15, 16777215);
+         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + playerProvider.getGoldTotal() + " Gold Coins -NOT ENOUGH GOLD", this.width / 2, 15, 16777215);
       }
 
       super.drawScreen(i, j, f);

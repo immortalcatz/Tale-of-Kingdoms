@@ -8,7 +8,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
-@Mod(modid = "taleofkingdoms", name = "Tale of Kingdoms", version = "1.0.12")
+@Mod(modid = "taleofkingdoms", name = "Tale of Kingdoms", version = "1.0.12.4")
 public final class TaleOfKingdoms
 {
     @Instance("taleofkingdoms")

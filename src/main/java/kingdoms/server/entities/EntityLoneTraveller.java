@@ -44,7 +44,7 @@ public final class EntityLoneTraveller extends EntityNPC
                 if (this.canEntityBeSeen(entity) && entity instanceof EntityLostVillager)
                 {
                     entity.setDead();
-                    PlayerProvider.get(player).addGlory(400, player);
+                    PlayerProvider.get(player).addGlory(400);
                     flag1 = true;
                 }
             }

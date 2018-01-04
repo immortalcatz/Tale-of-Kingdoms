@@ -25,14 +25,14 @@ public final class SPacketBank extends AbstractPacket
         {
             if (provider.getGoldTotal() >= count)
             {
-                provider.addBankGold(count, player);
-                provider.decreaseGold(count, player);
+                provider.addBankGold(count);
+                provider.decreaseGold(count);
             }
         }
         else {
             if (provider.getBankGold() >= count)
             {
-                provider.addGold(count, player);
+                provider.addGold(count);
                 provider.decreaseBankGold(count, player);
             }
         }

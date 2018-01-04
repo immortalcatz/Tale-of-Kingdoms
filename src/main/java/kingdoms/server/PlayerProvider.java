@@ -19,11 +19,17 @@ import java.util.List;
 
 public final class PlayerProvider implements IExtendedEntityProperties
 {
-    private int goldTotal, bankGold, glory, townX, townY, townZ;
+    private final EntityPlayer player;
+
+    private int goldTotal, bankGold, glory;
     public int libraryInvestment, burningVillages, reficulHoles, bindLight;
-    private boolean guildFightEnded = true, guildFightStarted = false;
     public boolean badKid;
     public List<ItemStack> stacks;
+
+    public PlayerProvider(EntityPlayer player)
+    {
+        this.player = player;
+    }
 
     @Override
     public void saveNBTData(NBTTagCompound compound)
@@ -41,12 +47,6 @@ public final class PlayerProvider implements IExtendedEntityProperties
         eco.setInteger("GoldTotal", getGoldTotal());
         eco.setInteger("bankGold", getBankGold());
         taleOfKingdoms.setTag("economy", eco);
-
-        NBTTagCompound town = new NBTTagCompound();
-        town.setInteger("townX", getTownX());
-        town.setInteger("townY", getTownY());
-        town.setInteger("townZ", getTownZ());
-        taleOfKingdoms.setTag("town", town);
 
         NBTTagCompound kingdom = new NBTTagCompound();
         kingdom.setBoolean("kingdomCreated", Buildings.INSTANCE.getBuilding(1));
@@ -95,8 +95,6 @@ public final class PlayerProvider implements IExtendedEntityProperties
 
         NBTTagCompound guild = new NBTTagCompound();
         guild.setBoolean("GuildCreated", Buildings.INSTANCE.getBuilding(0));
-        guild.setBoolean("guildFightEnded", getGuildFightEnded());
-        guild.setBoolean("guildFightStarted", getGuildFightStarted());
         taleOfKingdoms.setTag("guild", guild);
 
         NBTTagCompound resources = new NBTTagCompound();
@@ -129,11 +127,6 @@ public final class PlayerProvider implements IExtendedEntityProperties
         NBTTagCompound eco = taleOfKingdoms.getCompoundTag("economy");
         setGoldTotal(eco.getInteger("GoldTotal"));
         setBankGold(eco.getInteger("bankGold"));
-
-        NBTTagCompound town = taleOfKingdoms.getCompoundTag("town");
-        setTownX(town.getInteger("townX"));
-        setTownY(town.getInteger("townY"));
-        setTownZ(town.getInteger("townZ"));
 
         NBTTagCompound kingdom = taleOfKingdoms.getCompoundTag("kingdom");
         Buildings.INSTANCE.kingdomCreated = kingdom.getBoolean("kingdomCreated");
@@ -181,8 +174,6 @@ public final class PlayerProvider implements IExtendedEntityProperties
 
         NBTTagCompound guild = taleOfKingdoms.getCompoundTag("guild");
         Buildings.INSTANCE.createGuild = guild.getBoolean("GuildCreated");
-        setGuildFightEnded(guild.getBoolean("guildFightEnded"));
-        setGuildFightEnded(guild.getBoolean("guildFightStarted"));
 
         NBTTagCompound resources = taleOfKingdoms.getCompoundTag("resources");
         ResourcesHandler.INSTANCE.setWoodPool(resources.getInteger("woodPool"));
@@ -208,16 +199,16 @@ public final class PlayerProvider implements IExtendedEntityProperties
         this.glory = glory;
     }
 
-    public void addGlory(int glory, EntityPlayer player)
+    public void addGlory(int glory)
     {
         this.glory += glory;
-        sync(player);
+        sync();
     }
 
-    public void decreaseGlory(int glory, EntityPlayer player)
+    public void decreaseGlory(int glory)
     {
         this.glory -= glory;
-        sync(player);
+        sync();
     }
 
     public int getGoldTotal()
@@ -238,7 +229,7 @@ public final class PlayerProvider implements IExtendedEntityProperties
         bankGold = count;
     }
 
-    public void addGold(int count, EntityPlayer player)
+    public void addGold(int count)
     {
         goldTotal += count;
 
@@ -247,7 +238,7 @@ public final class PlayerProvider implements IExtendedEntityProperties
             NetworkHandler.INSTANCE.sendTo(new CPacketSyncBank(goldTotal, false), (EntityPlayerMP) player);
         }
     }
-    public void addBankGold(int count, EntityPlayer player)
+    public void addBankGold(int count)
     {
         bankGold += count;
 
@@ -257,7 +248,7 @@ public final class PlayerProvider implements IExtendedEntityProperties
         }
     }
 
-    public void decreaseGold(int count, EntityPlayer player)
+    public void decreaseGold(int count)
     {
         goldTotal -= count;
 
@@ -276,51 +267,7 @@ public final class PlayerProvider implements IExtendedEntityProperties
         }
     }
 
-    public int getTownX()
-    {
-        return townX;
-    }
-    public int getTownY()
-    {
-        return townY;
-    }
-    public int getTownZ()
-    {
-        return townZ;
-    }
-
-    public boolean getGuildFightEnded()
-    {
-        return guildFightEnded;
-    }
-    public boolean getGuildFightStarted()
-    {
-        return guildFightStarted;
-    }
-
-    public void setTownX(int townX)
-    {
-        this.townX = townX;
-    }
-    public void setTownY(int townY)
-    {
-        this.townY = townY;
-    }
-    public void setTownZ(int townZ)
-    {
-        this.townZ = townZ;
-    }
-
-    public void setGuildFightEnded(boolean guildFightEnded)
-    {
-        this.guildFightEnded = guildFightEnded;
-    }
-    public void setGuildFightStarted(boolean guildFightStarted)
-    {
-        this.guildFightStarted = guildFightStarted;
-    }
-
-    public void sync(EntityPlayer player)
+    public void sync()
     {
         if (!player.worldObj.isRemote)
             NetworkHandler.INSTANCE.sendTo(new CPacketSyncDataPlayer(this), (EntityPlayerMP) player);

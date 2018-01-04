@@ -1,12 +1,12 @@
 package kingdoms.server.handlers;
 
-import kingdoms.client.render.RenderBipedToK;
-import kingdoms.server.TaleOfKingdoms;
-import kingdoms.server.entities.*;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kingdoms.client.render.RenderBipedToK;
+import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.entities.*;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.entity.Entity;
 
@@ -17,13 +17,12 @@ public final class EntitiesRegister
 {
     private byte id = 0;
     private int month, day;
-    private Calendar calendar;
 
     public static final EntitiesRegister INSTANCE = new EntitiesRegister();
 
     private EntitiesRegister()
     {
-        calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         month = calendar.get(Calendar.MONTH) + 1;
         day = calendar.get(Calendar.DATE);
@@ -31,7 +30,6 @@ public final class EntitiesRegister
 
     public void register()
     {
-        setRegister(EntityStableMaster.class, "StableMaster");
         setRegister(EntityFisher.class, "Fisher");
         setRegister(EntityLumber.class, "Lumber");
         setRegister(EntityWorkerMember.class, "WorkerMember");
@@ -118,10 +116,9 @@ public final class EntitiesRegister
         setRender(EntityWorkerMember.class, "worker");
         setRender(EntityMageKeeper.class, "headmage");
         setRender(EntityQuarry.class, "foremanquarry");
-        setRender(EntityStableMaster.class, "stable");
         setRender(EntityFisher.class, "fisher");
 
-        if ((calendar.get(2) + 1 == 12 || calendar.get(2) + 1 == 1) && (calendar.get(5) >= 1 && calendar.get(5) <= 31))
+        if ((month == 12 || month == 1) && (day >= 1 && day <= 31))
             setRender(EntitySantaClaus.class, "santaClaus");
     }
 

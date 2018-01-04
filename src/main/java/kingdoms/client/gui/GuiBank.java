@@ -1,11 +1,11 @@
 package kingdoms.client.gui;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.UltimateHelper;
 import kingdoms.server.handlers.packets.server.SPacketBank;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -62,7 +62,7 @@ public final class GuiBank extends GuiScreenToK
                 depositGold((short) 10000);
                 break;
             case 6:
-                depositGold((short) provider.getGoldTotal());
+                depositGold((short) playerProvider.getGoldTotal());
                 break;
             case 7:
                 withdrawGold((short) 1);
@@ -80,7 +80,7 @@ public final class GuiBank extends GuiScreenToK
                 withdrawGold((short) 10000);
                 break;
             case 12:
-                withdrawGold((short) provider.getBankGold());
+                withdrawGold((short) playerProvider.getBankGold());
                 break;
             case 13:
                 if (!this.world.isRemote)
@@ -97,8 +97,8 @@ public final class GuiBank extends GuiScreenToK
         this.mc.renderEngine.bindTexture(UltimateHelper.BACKGROUND);
         this.drawTexturedModalRect((this.width - 255) / 2, 0, 0, 0, 255, 255);
         this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.title"), this.width / 2, 15, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.player", provider.getGoldTotal()), this.width / 2, 25, 16777215);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.bank", provider.getBankGold()), this.width / 2, 35, 16777215);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.player", playerProvider.getGoldTotal()), this.width / 2, 25, 16777215);
+        this.drawCenteredString(this.fontRendererObj, I18n.format("gui.bank.totalMoney.bank", playerProvider.getBankGold()), this.width / 2, 35, 16777215);
 
         if (this.check)
             this.drawCenteredString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2, 45, 16777215);
@@ -108,7 +108,7 @@ public final class GuiBank extends GuiScreenToK
 
     private void depositGold(short gold)
     {
-        if (provider.getGoldTotal() >= gold)
+        if (playerProvider.getGoldTotal() >= gold)
         {
             NetworkHandler.INSTANCE.sendToServer(new SPacketBank(gold, true));
             this.check = false;
@@ -119,7 +119,7 @@ public final class GuiBank extends GuiScreenToK
 
     private void withdrawGold(short gold)
     {
-        if (provider.getBankGold() >= gold)
+        if (playerProvider.getBankGold() >= gold)
         {
             NetworkHandler.INSTANCE.sendToServer(new SPacketBank(gold, false));
             this.check = false;

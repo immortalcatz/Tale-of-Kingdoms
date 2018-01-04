@@ -1,7 +1,6 @@
 package kingdoms.client.gui;
 
 import kingdoms.api.gui.GuiScreenToK;
-import kingdoms.server.handlers.NetworkHandler;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentData;
@@ -40,7 +39,7 @@ public class GuiMageHall extends GuiScreenToK
             case 1:
                 ItemStack var9 = this.player.inventory.getCurrentItem();
 
-                if (500 <= provider.getGoldTotal() && var9 != null)
+                if (500 <= playerProvider.getGoldTotal() && var9 != null)
                 {
                     final Random random = new Random();
                     int[] ai = new int[3];
@@ -63,7 +62,7 @@ public class GuiMageHall extends GuiScreenToK
                             var9.addEnchantment(enchantmentdata.enchantmentobj, enchantmentdata.enchantmentLevel);
                         }
 
-                        provider.decreaseGold(500, player);
+                        playerProvider.decreaseGold(500);
                         this.player.addChatMessage(new ChatComponentTranslation("gui.mage.enchanted", var9.getDisplayName()));
                     }
                     else if (!this.world.isRemote)
@@ -77,10 +76,10 @@ public class GuiMageHall extends GuiScreenToK
                 }
                 break;
             case 2:
-                if(2000 <= provider.getGoldTotal())
+                if(2000 <= playerProvider.getGoldTotal())
                 {
                     //NetworkHandler.INSTANCE.sendToServer(new SPacketSpawnEntity("DefendMage"));
-                    provider.decreaseGold(2000, player);
+                    playerProvider.decreaseGold(2000);
                 }
                 else
                 {
@@ -107,7 +106,7 @@ public class GuiMageHall extends GuiScreenToK
         this.drawDefaultBackground();
         super.drawScreen(i, j, f);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.mage.title", provider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", provider.getGoldTotal())) / 2, this.height / 2 - 95, 16763904);
+        this.drawString(this.fontRendererObj, I18n.format("gui.mage.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", playerProvider.getGoldTotal())) / 2, this.height / 2 - 95, 16763904);
         this.drawString(this.fontRendererObj, I18n.format("gui.mage.enchant.selected"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.enchant.selected")) / 2, this.height / 2 - 80, 16763904);
 
         if (this.goldchecker)

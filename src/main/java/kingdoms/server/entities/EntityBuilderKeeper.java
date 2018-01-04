@@ -40,18 +40,17 @@ public final class EntityBuilderKeeper extends EntityNPC
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound)
+    public void writeToNBT(NBTTagCompound compound)
     {
-        NBTTagCompound compound = new NBTTagCompound();
+        super.writeToNBT(compound);
         compound.setBoolean("follow", follow);
         compound.setBoolean("setted", setted);
-        nbtTagCompound.setTag("builderData", compound);
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbtTagCompound)
+    public void readFromNBT(NBTTagCompound compound)
     {
-        NBTTagCompound compound = nbtTagCompound.getCompoundTag("builderData");
+        super.readFromNBT(compound);
         follow = compound.getBoolean("follow");
         setted = compound.getBoolean("setted");
     }
@@ -69,7 +68,7 @@ public final class EntityBuilderKeeper extends EntityNPC
                 }
             }
 
-            if (!this.follow || setted || PlayerProvider.get(player).getGlory() >= 10000.0F)
+            if (PlayerProvider.get(player).getGlory() >= 10000.0F && !setted)
             {
                 if (!worldObj.isRemote)
                 {
@@ -79,7 +78,7 @@ public final class EntityBuilderKeeper extends EntityNPC
                 }
                 player.openGui(TaleOfKingdoms.instance, GUI_BUILD, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
             }
-            else if (this.canInteractWith(player) && PlayerProvider.get(player).getGlory() >= 10000.0F && this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
+            else if (PlayerProvider.get(player).getGlory() >= 10000.0F && this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
             {
                 if (!worldObj.isRemote)
                 {
@@ -89,6 +88,20 @@ public final class EntityBuilderKeeper extends EntityNPC
             }
         }
         return true;
+    }
+
+    @Override
+    protected void updateEntityActionState()
+    {
+        super.updateEntityActionState();
+
+        if (!worldObj.isRemote)
+        {
+            if (!this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
+            {
+                this.setAIMoveSpeed(1.7F);
+            }
+        }
     }
 
     @Override

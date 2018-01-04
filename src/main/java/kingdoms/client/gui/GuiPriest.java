@@ -32,12 +32,12 @@ public class GuiPriest extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                if (2000 <= provider.getGoldTotal())
+                if (2000 <= playerProvider.getGoldTotal())
                 {
                     EntityLiving entityliving = (EntityLiving) UltimateHelper.INSTANCE.getEntity("DefendPriest", this.world);
                     entityliving.setLocationAndAngles(this.player.posX, this.player.posY, this.player.posZ, 0.0F, 0.0F);
                     this.world.spawnEntityInWorld(entityliving);
-                    provider.decreaseGold(2000, player);
+                    playerProvider.decreaseGold(2000);
                 }
                 else
                     this.goldchecker = true;
@@ -70,9 +70,9 @@ public class GuiPriest extends GuiScreenToK
         super.drawScreen(i, j, f);
 
         if (this.goldchecker)
-            this.drawString(this.fontRendererObj, "The Chapel Total Money: " + provider.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16763904);
+            this.drawString(this.fontRendererObj, "The Chapel Total Money: " + playerProvider.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16763904);
         else
-            this.drawString(this.fontRendererObj, "The Chapel Total Money: " + provider.getGoldTotal() + " Gold Coins", this.width / 2, 10, 16763904);
+            this.drawString(this.fontRendererObj, "The Chapel Total Money: " + playerProvider.getGoldTotal() + " Gold Coins", this.width / 2, 10, 16763904);
 
         this.drawString(this.fontRendererObj, "Note: Recruiting a priest cost 2000", this.width / 2, 20, 16763904);
     }

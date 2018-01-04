@@ -1,8 +1,8 @@
 package kingdoms.server.items;
 
-import kingdoms.server.handlers.UltimateHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.creativetab.CreativeTabs;

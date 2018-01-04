@@ -26,7 +26,7 @@ public final class SPacketWarden extends AbstractPacket
             entity.setLocationAndAngles(player.posX, player.posY, player.posZ, 0.0F, 0.0F);
             player.worldObj.spawnEntityInWorld(entity);
 
-            PlayerProvider.get(player).decreaseGold(1000, player);
+            PlayerProvider.get(player).decreaseGold(1000);
         }
     }
 }

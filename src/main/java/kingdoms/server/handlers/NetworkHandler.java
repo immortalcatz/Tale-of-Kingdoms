@@ -1,11 +1,14 @@
 package kingdoms.server.handlers;
 
-import kingdoms.api.network.AbstractPacket;
-import kingdoms.server.handlers.packets.client.*;
-import kingdoms.server.handlers.packets.server.*;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
+import kingdoms.api.network.AbstractPacket;
+import kingdoms.server.handlers.packets.client.CPacketSyncBank;
+import kingdoms.server.handlers.packets.client.CPacketSyncBuildings;
+import kingdoms.server.handlers.packets.client.CPacketSyncDataPlayer;
+import kingdoms.server.handlers.packets.client.CPacketSyncShopItems;
+import kingdoms.server.handlers.packets.server.*;
 
 public final class NetworkHandler
 {

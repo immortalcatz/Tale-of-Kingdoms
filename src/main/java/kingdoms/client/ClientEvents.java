@@ -1,12 +1,12 @@
 package kingdoms.client;
 
-import kingdoms.server.PlayerProvider;
-import kingdoms.server.TaleOfKingdoms;
-import kingdoms.server.handlers.UltimateHelper;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
+import kingdoms.server.PlayerProvider;
+import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiInventory;

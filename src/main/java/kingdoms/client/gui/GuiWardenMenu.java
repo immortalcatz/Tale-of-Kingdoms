@@ -34,7 +34,7 @@ public class GuiWardenMenu extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                if (1000 <= provider.getGoldTotal())
+                if (1000 <= playerProvider.getGoldTotal())
                 {
                     NetworkHandler.INSTANCE.sendToServer(new SPacketWarden("DefendWarrior"));
                 }
@@ -44,7 +44,7 @@ public class GuiWardenMenu extends GuiScreenToK
                 }
                 break;
             case 2:
-                if(1000 <= provider.getGoldTotal())
+                if(1000 <= playerProvider.getGoldTotal())
                 {
                     NetworkHandler.INSTANCE.sendToServer(new SPacketWarden("DefendArcher"));
                 }
