@@ -1,6 +1,7 @@
 package kingdoms.server.entities;
 
 import kingdoms.api.entities.EntityNPC;
+import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -53,6 +54,11 @@ public final class EntityWorkerMember extends EntityNPC
 
    public boolean interact(EntityPlayer player) {
       boolean flag = false;
+
+      if (this.worktype == 0)
+      {
+         NetworkHandler.INSTANCE.openGui(this.getEntityId(), player);
+      }
 
       List<Entity> entities = this.world.loadedEntityList;
 

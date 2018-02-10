@@ -1,6 +1,6 @@
 package kingdoms.server.handlers;
 
-import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.ServerProxy;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
 import net.minecraft.entity.boss.EntityWither;
@@ -26,7 +26,7 @@ public final class ItemDropHelper
 
             for (int i = 0; i < bound; i++)
             {
-                dropItem(TaleOfKingdoms.proxy.coins, 1, entityLiving);
+                dropItem(ServerProxy.Companion.getCoins(), 1, entityLiving);
             }
         }
     }

@@ -4,13 +4,12 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import kingdoms.api.gui.GuiPriceBar;
 import kingdoms.api.gui.GuiScreenToK;
+import kingdoms.server.entities.EntityBuilderKeeper;
 import kingdoms.server.handlers.Buildings;
 import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.UltimateHelper;
 import kingdoms.server.handlers.packets.server.SPacketBuild;
 import kingdoms.server.handlers.resources.ResourcesHandler;
-import kingdoms.server.handlers.schematic.SchematicHandler;
-import kingdoms.server.handlers.schematic.SchematicRegistry;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,11 +24,13 @@ import java.util.stream.IntStream;
 @SideOnly(Side.CLIENT)
 public class GuiBuildScreen extends GuiScreenToK
 {
+    private final EntityBuilderKeeper builder;
     private GuiPriceBar woodBar, cobblestoneBar;
 
-    public GuiBuildScreen(EntityPlayer player, World world)
+    public GuiBuildScreen(EntityPlayer player, World world, EntityBuilderKeeper builder)
     {
         super(player, world);
+        this.builder = builder;
     }
 
     @Override
@@ -37,10 +38,12 @@ public class GuiBuildScreen extends GuiScreenToK
     {
         this.buttonList.clear();
 
-        this.woodBar = new GuiPriceBar(0, this.width / 2 - 100, 40, 90, 12, 1.0F, "red");
+        int bar = this.width / 2 - 100;
+
+        this.woodBar = new GuiPriceBar(0, bar, 40, 90, 12, 1.0F, "red");
         this.woodBar.setBar((float) ResourcesHandler.INSTANCE.getwoodResource() / 320.0F);
 
-        this.cobblestoneBar = new GuiPriceBar(1, this.width / 2 - 100, 60, 90, 12, 1.0F, "red");
+        this.cobblestoneBar = new GuiPriceBar(1, bar, 60, 90, 12, 1.0F, "red");
         this.cobblestoneBar.setBar((float) ResourcesHandler.INSTANCE.getcobbleResource() / 320.0F);
 
         this.buttonList.add(new GuiButton(1, this.width / 2 - 25, 220, 50, 20, I18n.format("gui.exit")));
@@ -560,12 +563,7 @@ public class GuiBuildScreen extends GuiScreenToK
 
     private int getInventorySlotContainItem(Item item, ItemStack[] inv)
     {
-        for (int i = 0; i < inv.length; i++)
-        {
-            if (inv[i] != null && inv[i].getItem() == item)
-                return i;
-        }
-        return -1;
+        return IntStream.range(0, inv.length).filter(i -> inv[i] != null && inv[i].getItem() == item).findFirst().orElse(-1);
     }
 
     @Override
@@ -580,17 +578,17 @@ public class GuiBuildScreen extends GuiScreenToK
 
         if (!Buildings.INSTANCE.isTier2)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_1", playerProvider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_1", playerProvider.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_1", getPlayerProvider().getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_1", getPlayerProvider().getGoldTotal())) / 2, 15, 16763904);
         }
 
         if (Buildings.INSTANCE.isTier2 && !Buildings.INSTANCE.isTier3)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_2", playerProvider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_2", playerProvider.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_2", getPlayerProvider().getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_2", getPlayerProvider().getGoldTotal())) / 2, 15, 16763904);
         }
 
         if (Buildings.INSTANCE.isTier3)
         {
-            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_3", playerProvider.getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_3", playerProvider.getGoldTotal())) / 2, 15, 16763904);
+            this.drawString(this.fontRendererObj, I18n.format("gui.build.stage_3", getPlayerProvider().getGoldTotal()), (this.width / 2) - fontRendererObj.getStringWidth(I18n.format("gui.build.stage_3", getPlayerProvider().getGoldTotal())) / 2, 15, 16763904);
         }
 
         if (this.woodBar != null)

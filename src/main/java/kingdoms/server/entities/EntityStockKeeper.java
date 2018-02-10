@@ -1,12 +1,10 @@
 package kingdoms.server.entities;
 
 import kingdoms.api.entities.EntityNPC;
-import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.handlers.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
-
-import static kingdoms.server.handlers.GuiHandler.GUI_STOCK;
 
 public final class EntityStockKeeper extends EntityNPC
 {
@@ -31,14 +29,14 @@ public final class EntityStockKeeper extends EntityNPC
     @Override
     public boolean interact(EntityPlayer player)
     {
-        if (this.canInteractWith(player))
+        if (!worldObj.isRemote)
         {
-            if (!this.worldObj.isRemote)
+            if (this.canInteractWith(player))
             {
                 this.heal(100.0F);
                 player.addChatMessage(new ChatComponentTranslation("npc.stockKeeper.dialog"));
+                NetworkHandler.INSTANCE.openGui(this.getEntityId(), player);
             }
-            player.openGui(TaleOfKingdoms.instance, GUI_STOCK, worldObj, 0, 0, 0);
         }
         return true;
     }

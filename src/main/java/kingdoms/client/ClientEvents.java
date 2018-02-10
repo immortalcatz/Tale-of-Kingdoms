@@ -4,8 +4,8 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
+import kingdoms.client.gui.GuiStartConquest;
 import kingdoms.server.PlayerProvider;
-import kingdoms.server.TaleOfKingdoms;
 import kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
@@ -18,14 +18,12 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
-import static kingdoms.server.handlers.GuiHandler.GUI_CONQUEST;
-
-public final class ClientEvents
+final class ClientEvents
 {
     private final Minecraft mc = Minecraft.getMinecraft();
     private final KeyBinding key = new KeyBinding(I18n.format("keyBinding.conquest"), 21, "Tale Of Kingdoms");
 
-    public ClientEvents()
+    ClientEvents()
     {
         ClientRegistry.registerKeyBinding(key);
         MinecraftForge.EVENT_BUS.register(new MF());
@@ -61,7 +59,7 @@ public final class ClientEvents
                 EntityPlayer player = mc.thePlayer;
 
                 if (mc.currentScreen == null)
-                    player.openGui(TaleOfKingdoms.instance, GUI_CONQUEST, player.worldObj, 0, 0, 0);
+                    mc.displayGuiScreen(new GuiStartConquest(player, mc.theWorld));
             }
         }
     }

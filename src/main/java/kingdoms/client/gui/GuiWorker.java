@@ -34,15 +34,15 @@ public class GuiWorker extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                this.player.addChatMessage(new ChatComponentTranslation("gui.worker.woodcut.go"));
-                member.defaultHeldItem = new ItemStack(Items.iron_axe, 1);
+                getPlayer().addChatMessage(new ChatComponentTranslation("gui.worker.woodcut.go"));
+                EntityWorkerMember.defaultHeldItem = new ItemStack(Items.iron_axe, 1);
                 this.member.worktype = 1;
                 this.member.follow = true;
                 this.mc.displayGuiScreen(null);
                 break;
             case 2:
-                this.player.addChatMessage(new ChatComponentTranslation("gui.worker.mine.go"));
-                member.defaultHeldItem = new ItemStack(Items.iron_pickaxe, 1);
+                getPlayer().addChatMessage(new ChatComponentTranslation("gui.worker.mine.go"));
+                EntityWorkerMember.defaultHeldItem = new ItemStack(Items.iron_pickaxe, 1);
                 this.member.worktype = 2;
                 this.member.follow = true;
                 this.mc.displayGuiScreen(null);
@@ -54,10 +54,10 @@ public class GuiWorker extends GuiScreenToK
     }
 
     @Override
-    public void drawScreen(int x, int y, float partial)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
-        super.drawScreen(x, y, partial);
+        super.drawScreen(mouseX, mouseY, partialTicks);
         this.drawString(this.fontRendererObj, I18n.format("gui.worker.title"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.worker.title")) / 2, 60, 16777215);
     }
 }

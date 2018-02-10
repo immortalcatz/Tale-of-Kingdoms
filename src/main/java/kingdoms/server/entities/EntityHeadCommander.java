@@ -1,7 +1,7 @@
 package kingdoms.server.entities;
 
 import kingdoms.api.entities.EntityNPC;
-import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
@@ -15,8 +15,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 
 import java.util.List;
-
-import static kingdoms.server.handlers.GuiHandler.GUI_HEADCOMMANDER;
 
 public final class EntityHeadCommander extends EntityNPC
 {
@@ -98,10 +96,12 @@ public final class EntityHeadCommander extends EntityNPC
     {
         if (!this.worldObj.isRemote)
         {
-            player.addChatMessage(new ChatComponentText("Knight Commander: I will lead your troops to battle!"));
+            if (this.canInteractWith(player))
+            {
+                player.addChatMessage(new ChatComponentText("Knight Commander: I will lead your troops to battle!"));
+                NetworkHandler.INSTANCE.openGui(this.getEntityId(), player);
+            }
         }
-
-        player.openGui(TaleOfKingdoms.instance, GUI_HEADCOMMANDER, worldObj, 0, 0, 0);
         return true;
     }
 

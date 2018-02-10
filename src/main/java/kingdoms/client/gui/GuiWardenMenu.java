@@ -34,7 +34,7 @@ public class GuiWardenMenu extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                if (1000 <= playerProvider.getGoldTotal())
+                if (1000 <= getPlayerProvider().getGoldTotal())
                 {
                     NetworkHandler.INSTANCE.sendToServer(new SPacketWarden("DefendWarrior"));
                 }
@@ -44,7 +44,7 @@ public class GuiWardenMenu extends GuiScreenToK
                 }
                 break;
             case 2:
-                if(1000 <= playerProvider.getGoldTotal())
+                if(1000 <= getPlayerProvider().getGoldTotal())
                 {
                     NetworkHandler.INSTANCE.sendToServer(new SPacketWarden("DefendArcher"));
                 }
@@ -62,16 +62,16 @@ public class GuiWardenMenu extends GuiScreenToK
 
    @Override
    public void onGuiClosed() {
-      this.player.addChatMessage(new ChatComponentText("Warden: Good Day."));
+      getPlayer().addChatMessage(new ChatComponentText("Warden: Good Day."));
    }
 
    @Override
-   public void drawScreen(int x, int y, float partial)
+   public void drawScreen(int mouseX, int mouseY, float partialTicks)
    {
        if (this.goldchecker)
            this.drawCenteredString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2, 45, 16777215);
 
-       super.drawScreen(x, y, partial);
+       super.drawScreen(mouseX, mouseY, partialTicks);
 
        this.drawString(this.fontRendererObj, "Note: The knights and archers will upgrade if they damage enough monsters!", this.width / 2 - fontRendererObj.getStringWidth("Note: The knights and archers will upgrade if they damage enough monsters!") / 2, 20, 16763904);
        this.drawString(this.fontRendererObj, "1000 gold per hire.", this.width / 2 - fontRendererObj.getStringWidth("1000 gold per hire.") / 2, 33, 16763904);

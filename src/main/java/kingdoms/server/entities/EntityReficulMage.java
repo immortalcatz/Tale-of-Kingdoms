@@ -37,8 +37,10 @@ public class EntityReficulMage extends EntityNPC {
    public void onLivingUpdate() {
       super.onLivingUpdate();
 
-      IntStream.range(0, 2).forEach(i -> this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, this.posY + this.field_70146_Z.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D));
-
+      for (int i = 0; i < 2; i++)
+      {
+         this.worldObj.spawnParticle("portal", this.posX + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, this.posY + this.field_70146_Z.nextDouble() * (double) this.height - 0.25D, this.posZ + (this.field_70146_Z.nextDouble() - 0.5D) * (double) this.width, (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D, -this.field_70146_Z.nextDouble(), (this.field_70146_Z.nextDouble() - 0.5D) * 2.0D);
+      }
    }
 
    protected boolean teleportToEntity(Entity entity) {

@@ -42,27 +42,27 @@ public class GuiLumber extends GuiScreenToK
             case 1:
                 if (ResourcesHandler.INSTANCE.getWoodPool() >= 64)
                 {
-                    this.world.spawnEntityInWorld(new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, new ItemStack(Item.getItemFromBlock(Blocks.log), 64)));
+                    this.getWorld().spawnEntityInWorld(new EntityItem(this.getWorld(), getPlayer().posX, getPlayer().posY, getPlayer().posZ, new ItemStack(Item.getItemFromBlock(Blocks.log), 64)));
                     this.goldchecker = false;
                     ResourcesHandler.INSTANCE.decreaseWoodPool(64);
                 }
                 else
                 {
-                    this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.notResources"));
+                    getPlayer().addChatMessage(new ChatComponentTranslation("gui.foreman.notResources"));
                 }
                 break;
             case 2:
-                if (playerProvider.getGoldTotal() >= 1500)
+                if (getPlayerProvider().getGoldTotal() >= 1500)
                 {
                     if (WorkersHandler.INSTANCE.getLumberMembers() < 12)
                     {
                         WorkersHandler.INSTANCE.addLumberMember((byte) 1);
-                        playerProvider.decreaseGold(1500);
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.boughtWorker"));
+                        getPlayerProvider().decreaseGold(1500);
+                        getPlayer().addChatMessage(new ChatComponentTranslation("gui.foreman.boughtWorker"));
                     }
                     else
                     {
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.limitWorkers"));
+                        getPlayer().addChatMessage(new ChatComponentTranslation("gui.foreman.limitWorkers"));
                     }
                 }
                 else
@@ -77,11 +77,11 @@ public class GuiLumber extends GuiScreenToK
     }
 
     @Override
-    public void drawScreen(int x, int y, float partial)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(x, y, partial);
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.title", playerProvider.getGoldTotal())) / 2, 15, 16777215);
+        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.title", getPlayerProvider().getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.title", getPlayerProvider().getGoldTotal())) / 2, 15, 16777215);
 
         if (this.goldchecker)
         {

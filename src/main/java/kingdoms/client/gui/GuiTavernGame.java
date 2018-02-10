@@ -35,18 +35,18 @@ public class GuiTavernGame extends GuiScreenToK
    public boolean deal(int i) {
       Random random = new Random();
       if(i == 0) {
-         playerProvider.decreaseGold(50);
+         getPlayerProvider().decreaseGold(50);
          this.fRollp = random.nextInt(6) + 1;
          this.fRolld = random.nextInt(6) + 1;
          this.sRollp = random.nextInt(6) + 1;
          this.sRolld = random.nextInt(6) + 1;
-         this.playerM = this.fRollp + this.sRollp;
+         playerM = this.fRollp + this.sRollp;
          this.dealer = this.fRolld + this.sRolld;
          if(this.fRollp == this.sRollp) {
             this.wintype = 4;
             this.gameNotEnded = false;
             this.rolledDouble = false;
-             //provider.addGold(100);
+             getPlayerProvider().addGold(100);
             this.initGui();
          }
 
@@ -59,7 +59,7 @@ public class GuiTavernGame extends GuiScreenToK
       }
 
       if(i == 1) {
-         if(this.dealer < this.playerM) {
+         if(this.dealer < playerM) {
             if(this.fRolld > this.sRolld) {
                this.sRolld = random.nextInt(6) + 1;
             }
@@ -79,24 +79,24 @@ public class GuiTavernGame extends GuiScreenToK
          }
 
          return false;
-      } else if(i == 2 && this.playerM > this.dealer) {
-         playerProvider.addGold(75);
+      } else if(i == 2 && playerM > this.dealer) {
+         getPlayerProvider().addGold(75);
          return true;
       } else {
          if(i == 3) {
-            if(this.playerM < this.dealer) {
+            if(playerM < this.dealer) {
                return true;
             }
 
-            playerProvider.decreaseGold(25);
+            getPlayerProvider().decreaseGold(25);
          }
 
          if(i == 4) {
             this.fRollp = random.nextInt(6) + 1;
-            this.playerM = this.fRollp + this.sRollp;
+            playerM = this.fRollp + this.sRollp;
             if(this.fRollp == this.sRollp) {
                this.wintype = 4;
-                //provider.addGold(100);
+                getPlayerProvider().addGold(100);
                this.gameNotEnded = false;
                this.rolledDouble = false;
                this.initGui();
@@ -105,10 +105,10 @@ public class GuiTavernGame extends GuiScreenToK
 
          if(i == 5) {
             this.sRollp = random.nextInt(6) + 1;
-            this.playerM = this.fRollp + this.sRollp;
+            playerM = this.fRollp + this.sRollp;
             if(this.fRollp == this.sRollp) {
                this.wintype = 4;
-                //provider.addGold(100);
+               getPlayerProvider().addGold(100);
                this.gameNotEnded = false;
                this.rolledDouble = false;
                this.initGui();
@@ -129,7 +129,7 @@ public class GuiTavernGame extends GuiScreenToK
       }
 
       if(this.game) {
-         if(!this.playerR && this.rolledDouble) {
+         if(!playerR && this.rolledDouble) {
             this.buttonList.add(new GuiButton(2, this.width / 2 - 105, this.height / 2 + 80, 100, 20, "Re-roll Die 1"));
             this.buttonList.add(new GuiButton(3, this.width / 2 + 5, this.height / 2 + 80, 100, 20, "Re-roll Die 2"));
          }
@@ -147,12 +147,12 @@ public class GuiTavernGame extends GuiScreenToK
 
    public void onGuiClosed()
    {
-      this.player.addChatMessage(new ChatComponentText("One-Eyed Gambler: Just come by if your feeling a bit... lucky."));
+      getPlayer().addChatMessage(new ChatComponentText("One-Eyed Gambler: Just come by if your feeling a bit... lucky."));
    }
 
    protected void actionPerformed(GuiButton guibutton) {
       if(guibutton.id == 1) {
-         if(playerProvider.getGoldTotal() >= 50) {
+         if(getPlayerProvider().getGoldTotal() >= 50) {
             this.game = true;
             this.deal(0);
          } else {
@@ -164,13 +164,13 @@ public class GuiTavernGame extends GuiScreenToK
 
       if(guibutton.id == 2) {
          this.deal(4);
-         this.playerR = true;
+         playerR = true;
          this.initGui();
       }
 
       if(guibutton.id == 3) {
          this.deal(5);
-         this.playerR = true;
+         playerR = true;
          this.initGui();
       }
 
@@ -184,7 +184,7 @@ public class GuiTavernGame extends GuiScreenToK
             this.wintype = 1;
          }
 
-         if(this.dealer == this.playerM) {
+         if(this.dealer == playerM) {
             this.wintype = 3;
          }
 
@@ -205,7 +205,7 @@ public class GuiTavernGame extends GuiScreenToK
    public void drawScreen(int i, int j, float f) {
       this.drawDefaultBackground();
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-      ResourceLocation resource = new ResourceLocation("taleofkingdoms", "textures/gui/round.png");
+      ResourceLocation resource = new ResourceLocation("tok", "textures/gui/round.png");
       this.mc.renderEngine.bindTexture(resource);
       short c = 176;
       short c1 = 166;
@@ -213,7 +213,7 @@ public class GuiTavernGame extends GuiScreenToK
       int i1 = (this.height - c1) / 2;
       this.drawTexturedModalRect(l, i1, 0, 0, c, c1);
       if(this.game) {
-         this.drawString(this.fontRendererObj, "Player: " + this.player, this.width / 2 - 30, i1 + 40, 16777215);
+         this.drawString(this.fontRendererObj, "Player: " + getPlayer(), this.width / 2 - 30, i1 + 40, 16777215);
          this.drawString(this.fontRendererObj, "Die one: " + this.fRollp, this.width / 2 - 30, i1 + 60, 16777215);
          this.drawString(this.fontRendererObj, "Die two: " + this.sRollp, this.width / 2 - 30, i1 + 80, 16777215);
          this.drawString(this.fontRendererObj, "Dealer: " + this.dealer, this.width / 2 + 30, i1 + 40, 16777215);
@@ -246,7 +246,7 @@ public class GuiTavernGame extends GuiScreenToK
          this.drawString(this.fontRendererObj, "You Lose!-Dealer Rolled a Double!", this.width / 2, this.height / 2 - 95, 16777215);
       }
 
-      if(this.playerR) {
+      if(playerR) {
          this.drawString(this.fontRendererObj, "Player Rerolled!", this.width / 2, this.height / 2 + 10, 16777215);
       }
 
@@ -255,11 +255,11 @@ public class GuiTavernGame extends GuiScreenToK
       }
 
       if(!this.notEnough) {
-         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + playerProvider.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16777215);
+         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + getPlayerProvider().getGoldTotal() + " Gold Coins", this.width / 2, 15, 16777215);
       }
 
       if(this.notEnough) {
-         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + playerProvider.getGoldTotal() + " Gold Coins -NOT ENOUGH GOLD", this.width / 2, 15, 16777215);
+         this.drawString(this.fontRendererObj, "Round Robin - Total Money: " + getPlayerProvider().getGoldTotal() + " Gold Coins -NOT ENOUGH GOLD", this.width / 2, 15, 16777215);
       }
 
       super.drawScreen(i, j, f);

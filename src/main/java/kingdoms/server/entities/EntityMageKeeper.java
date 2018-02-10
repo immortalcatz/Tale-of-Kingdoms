@@ -1,14 +1,12 @@
 package kingdoms.server.entities;
 
 import kingdoms.api.entities.EntityNPC;
-import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.handlers.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
-
-import static kingdoms.server.handlers.GuiHandler.GUI_MAGEHALL;
 
 public final class EntityMageKeeper extends EntityNPC
 {
@@ -39,14 +37,14 @@ public final class EntityMageKeeper extends EntityNPC
     @Override
     public boolean interact(EntityPlayer player)
     {
-        if (this.canInteractWith(player))
+        if (!worldObj.isRemote)
         {
-            if (!worldObj.isRemote)
+            if (this.canInteractWith(player))
             {
                 this.heal(100.0F);
                 player.addChatMessage(new ChatComponentTranslation("npc.headMage.dialog"));
+                NetworkHandler.INSTANCE.openGui(this.getEntityId(), player);
             }
-            player.openGui(TaleOfKingdoms.instance, GUI_MAGEHALL, worldObj, 0, 0, 0);
         }
         return true;
     }

@@ -3,7 +3,6 @@ package kingdoms.server.handlers.schematic;
 import kingdoms.api.blocks.FakeBlock;
 import kingdoms.api.entities.FakeEntity;
 import kingdoms.server.WorldProvider;
-import kingdoms.server.handlers.Buildings;
 import kingdoms.server.handlers.UltimateHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.init.Blocks;
@@ -47,14 +46,14 @@ public final class SchematicHandler
                     {
                         FakeBlock fakeBlock = blocks.get(index);
 
-                        if (fakeBlock != null && world.getBlock(first.x + fakeBlock.posX, first.y + fakeBlock.posY, first.z + fakeBlock.posZ) != fakeBlock.block)
+                        if (fakeBlock != null && world.getBlock(first.x + fakeBlock.getPosX(), first.y + fakeBlock.getPosY(), first.z + fakeBlock.getPosZ()) != fakeBlock.getBlock())
                         {
-                            if(fakeBlock.block == Blocks.air)
-                                world.setBlockToAir(first.x + fakeBlock.posX, first.y + fakeBlock.posY, first.z + fakeBlock.posZ);
+                            if(fakeBlock.getBlock() == Blocks.air)
+                                world.setBlockToAir(first.x + fakeBlock.getPosX(), first.y + fakeBlock.getPosY(), first.z + fakeBlock.getPosZ());
 
-                            if (fakeBlock.block != Blocks.torch && fakeBlock.block != Blocks.wooden_door && fakeBlock.block != Blocks.ladder && fakeBlock.block != Blocks.trapdoor)
+                            if (fakeBlock.getBlock() != Blocks.torch && fakeBlock.getBlock() != Blocks.wooden_door && fakeBlock.getBlock() != Blocks.ladder && fakeBlock.getBlock() != Blocks.trapdoor)
                             {
-                                world.setBlock(first.x + fakeBlock.posX, first.y + fakeBlock.posY, first.z + fakeBlock.posZ, fakeBlock.block, fakeBlock.metadata, 3);
+                                world.setBlock(first.x + fakeBlock.getPosX(), first.y + fakeBlock.getPosY(), first.z + fakeBlock.getPosZ(), fakeBlock.getBlock(), fakeBlock.getMetadata(), 3);
                             }
                             else
                                 this.torchList.add(fakeBlock);
@@ -67,17 +66,17 @@ public final class SchematicHandler
                         FakeEntity entity = entities.get(index - blocks.size());
 
                         WorldProvider worldProvider = WorldProvider.get(world);
-                        EntityLiving entity1 = (EntityLiving) UltimateHelper.INSTANCE.getEntity(entity.entityName, world);
+                        EntityLiving entity1 = (EntityLiving) UltimateHelper.INSTANCE.getEntity(entity.getEntityName(), world);
 
                         if (entity1 != null)
                         {
-                            if (Buildings.INSTANCE.getBuilding(1))
+                            if (worldProvider.town)
                             {
-                                entity1.setPosition((double) worldProvider.guildPosX + entity.posX, (double) worldProvider.guildPosY + entity.posY, (double) worldProvider.guildPosZ + entity.posZ);
+                                entity1.setPosition((double) worldProvider.townPosX + entity.getPosX(), (double) worldProvider.townPosY + entity.getPosY(), (double) worldProvider.townPosZ + entity.getPosZ());
                             }
                             else
                             {
-                                entity1.setPosition((double) first.x + entity.posX, (double) first.y + entity.posY + 1.5D, (double) first.z + entity.posZ);
+                                entity1.setPosition((double) first.x + entity.getPosX(), (double) first.y + entity.getPosY() + 1.5D, (double) first.z + entity.getPosZ());
                             }
 
                             world.spawnEntityInWorld(entity1);
@@ -87,7 +86,7 @@ public final class SchematicHandler
                     }
                     else
                     {
-                        this.torchList.forEach(block -> world.setBlock(first.x + block.posX, first.y + block.posY, first.z + block.posZ, block.block, block.metadata, 3));
+                        this.torchList.forEach(block -> world.setBlock(first.x + block.getPosX(), first.y + block.getPosY(), first.z + block.getPosZ(), block.getBlock(), block.getMetadata(), 3));
 
                         index = 0;
 

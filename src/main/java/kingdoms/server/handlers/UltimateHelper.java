@@ -12,11 +12,11 @@ import net.minecraft.world.World;
 public final class UltimateHelper
 {
     public static final UltimateHelper INSTANCE = new UltimateHelper();
-    public static final ResourceLocation BACKGROUND = new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png");
+    public static final ResourceLocation BACKGROUND = new ResourceLocation("tok", "textures/gui/crafting.png");
 
     public Entity getEntity(String name, World world)
     {
-        return EntityList.createEntityByName("taleofkingdoms." + name, world);
+        return EntityList.createEntityByName("tok." + name, world);
     }
 
     public void spawnEntity(World world, String name, double x, double y, double z, float yaw)
@@ -28,7 +28,7 @@ public final class UltimateHelper
     {
         if (!world.isRemote)
         {
-            EntityLivingBase entity = (EntityLivingBase) getEntity("taleofkingdoms." + name, world);
+            EntityLivingBase entity = (EntityLivingBase) getEntity("tok." + name, world);
             entity.setLocationAndAngles(x, y, z, yaw, pitch);
             world.spawnEntityInWorld(entity);
         }
@@ -66,6 +66,7 @@ public final class UltimateHelper
     {
         return createText(text, ChatFormatting.WHITE);
     }
+
     public String createText(String text, ChatFormatting formatting)
     {
         return formatting + I18n.format(text);

@@ -4,7 +4,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import kingdoms.server.PlayerProvider;
-import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.ServerProxy;
 import kingdoms.server.handlers.packets.client.CPacketSyncDataPlayer;
 import kingdoms.server.handlers.schematic.SchematicHandler;
 import net.minecraft.entity.EntityTracker;
@@ -117,19 +117,12 @@ public final class ServerEvents
             final Random random = new Random();
             final Item item = e.pickedUp.getEntityItem().getItem();
 
-            if (item == TaleOfKingdoms.proxy.coins)
+            if (item == ServerProxy.Companion.getCoins())
             {
                 e.player.inventory.consumeInventoryItem(item);
                 PlayerProvider.get(e.player).addGold(random.nextInt(50));
                 PlayerProvider.get(e.player).addGlory(random.nextInt(15));
             }
-        }
-
-        @SubscribeEvent
-        public void onPlayerLogin(cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent e)
-        {
-            Buildings.INSTANCE.registerBuildings();
-            //NetworkHandler.INSTANCE.sendTo(new CPacketSyncBuildings(Buildings.INSTANCE.getBuildingList()), (EntityPlayerMP) e.player);
         }
     }
 }

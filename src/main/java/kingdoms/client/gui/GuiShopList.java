@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class GuiShopList extends GuiScreenToK
 {
@@ -75,19 +74,24 @@ public class GuiShopList extends GuiScreenToK
     @Override
     public void onGuiClosed()
     {
-        if (!this.world.isRemote)
-            this.player.addChatMessage(new ChatComponentTranslation("gui.shop.bye"));
+        if (!this.getWorld().isRemote)
+            getPlayer().addChatMessage(new ChatComponentTranslation("gui.shop.bye"));
     }
 
     @Override
     protected void actionPerformed(GuiButton guibutton)
     {
-        IntStream.range(0, stacks.size()).filter(i -> guibutton.id == i).forEach(i -> {
-            stackSelected = stacks.get(i);
-            this.goldchecker = false;
-            if (stackSelected != null)
-                this.price = stacks.get(i).getTagCompound().getInteger("price");
-        });
+        int bound = stacks.size();
+
+        for (int i = 0; i < bound; i++)
+        {
+            if (guibutton.id == i) {
+                stackSelected = stacks.get(i);
+                this.goldchecker = false;
+                if (stackSelected != null)
+                    this.price = stacks.get(i).getTagCompound().getInteger("price");
+            }
+        }
 
         if (guibutton.id == 16)
         {
@@ -115,7 +119,7 @@ public class GuiShopList extends GuiScreenToK
         {
             int price = stackSelected.getTagCompound().getInteger("price");
 
-            if (price <= playerProvider.getGoldTotal())
+            if (price <= getPlayerProvider().getGoldTotal())
             {
                 NetworkHandler.INSTANCE.sendToServer(new SPacketBuy(stackSelected, (byte) 1, price));
             }
@@ -128,7 +132,7 @@ public class GuiShopList extends GuiScreenToK
         {
             int price = stackSelected.getTagCompound().getInteger("price");
 
-            if (price <= playerProvider.getGoldTotal())
+            if (price <= getPlayerProvider().getGoldTotal())
             {
                 NetworkHandler.INSTANCE.sendToServer(new SPacketBuy(stackSelected, (byte) 16, price));
                 this.shopcounter = 0;
@@ -159,17 +163,17 @@ public class GuiShopList extends GuiScreenToK
         {
             int price = stackSelected.getTagCompound().getInteger("price");
 
-            if (price <= playerProvider.getGoldTotal())
+            if (price <= getPlayerProvider().getGoldTotal())
                 NetworkHandler.INSTANCE.sendToServer(new SPacketBuy(stackSelected, (byte) 1, price));
 
             ++this.shopcounter;
         }
 
         this.drawDefaultBackground();
-        this.mc.renderEngine.bindTexture(new ResourceLocation("taleofkingdoms", "textures/gui/crafting.png"));
+        this.mc.renderEngine.bindTexture(new ResourceLocation("tok", "textures/gui/crafting.png"));
         this.drawTexturedModalRect((this.width - 255) / 2, 0, 0, 0, 255, 255);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.shop.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.shop.title", playerProvider.getGoldTotal())) / 2, 5, 16763904);
+        this.drawString(this.fontRendererObj, I18n.format("gui.shop.title", getPlayerProvider().getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.shop.title", getPlayerProvider().getGoldTotal())) / 2, 5, 16763904);
         this.drawString(this.fontRendererObj, "Selected Item Cost: " + this.stringoutput + " - " + this.price + " Gold coins", this.width / 2 - fontRendererObj.getStringWidth("Selected Item Cost: " + this.stringoutput + " - " + this.price + " Gold coins") / 2, 20, 16763904);
 
         if (this.goldchecker)

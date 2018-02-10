@@ -38,7 +38,7 @@ public class GuiToKLoading extends GuiScreenToK
     }
 
     @Override
-    public void drawScreen(int x, int y, float partial)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         float d = SchematicHandler.INSTANCE.getProgressCurrentBuilding();
@@ -52,6 +52,6 @@ public class GuiToKLoading extends GuiScreenToK
         else
             this.drawString(this.fontRendererObj, "Press exit to continue...", this.width / 2 - fontRendererObj.getStringWidth("Press exit to continue...") / 2, this.height / 2 + 15, Color.pink.getRGB());
 
-        super.drawScreen(x, y, partial);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 public class GuiInnMenu extends GuiScreenToK
 {
-    private boolean screenpause = false, isResting = false;
+    private boolean isResting = false;
 
     public GuiInnMenu(EntityPlayer player, World world)
     {
@@ -41,16 +41,14 @@ public class GuiInnMenu extends GuiScreenToK
             case 1:
                 if (!this.isResting)
                 {
-                    this.screenpause = true;
                     this.isResting = true;
-                    this.player.heal(20.0F);
-                    long l = this.world.getWorldInfo().getWorldTime() + 24000L;
-                    this.world.getWorldInfo().setWorldTime(l - l % 24000L);
+                    getPlayer().heal(20.0F);
+                    long l = this.getWorld().getWorldInfo().getWorldTime() + 24000L;
+                    this.getWorld().getWorldInfo().setWorldTime(l - l % 24000L);
                     this.initGui();
                 }
                 else
                 {
-                    this.screenpause = false;
                     this.isResting = false;
                     this.initGui();
                 }
@@ -58,15 +56,13 @@ public class GuiInnMenu extends GuiScreenToK
             case 2:
                 if (!this.isResting)
                 {
-                    this.screenpause = true;
                     this.isResting = true;
-                    this.player.heal(20.0F);
-                    this.world.getWorldInfo().setWorldTime(14000L);
+                    getPlayer().heal(20.0F);
+                    this.getWorld().getWorldInfo().setWorldTime(14000L);
                     this.initGui();
                 }
                 else
                 {
-                    this.screenpause = false;
                     this.isResting = false;
                     this.initGui();
                 }
@@ -78,20 +74,14 @@ public class GuiInnMenu extends GuiScreenToK
     }
 
     @Override
-    public boolean doesGuiPauseGame()
-    {
-        return this.screenpause;
-    }
-
-    @Override
     public void onGuiClosed()
     {
-        if (!this.world.isRemote)
-            this.player.addChatMessage(new ChatComponentText("House Keeper: Have a nice day."));
+        if (!this.getWorld().isRemote)
+            getPlayer().addChatMessage(new ChatComponentText("House Keeper: Have a nice day."));
     }
 
     @Override
-    public void drawScreen(int i, int j, float f)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         if (!this.isResting)
         {
@@ -103,6 +93,6 @@ public class GuiInnMenu extends GuiScreenToK
             this.drawDefaultBackground();
             this.drawString(this.fontRendererObj, "Resting...", this.width / 2, this.height / 2 - 20, 16772608);
         }
-        super.drawScreen(i, j, f);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

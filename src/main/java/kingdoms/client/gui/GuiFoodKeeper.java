@@ -43,9 +43,9 @@ public final class GuiFoodKeeper extends GuiScreenToK
                     NetworkHandler.INSTANCE.sendToServer(new SPacketAdd(new ItemStack(Items.bread), 1, "gui.farmer.take"));
                     this.freeBread = false;
                 }
-                else if (!this.world.isRemote)
+                else if (!this.getWorld().isRemote)
                 {
-                    this.player.addChatMessage(new ChatComponentTranslation("gui.farmer.have"));
+                    getPlayer().addChatMessage(new ChatComponentTranslation("gui.farmer.have"));
                 }
                 break;
             case 2:

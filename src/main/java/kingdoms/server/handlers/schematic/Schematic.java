@@ -1,15 +1,19 @@
 package kingdoms.server.handlers.schematic;
 
+import cpw.mods.fml.common.FMLLog;
 import kingdoms.api.blocks.FakeBlock;
 import kingdoms.api.entities.FakeEntity;
-import kingdoms.server.TaleOfKingdoms;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
+import org.apache.logging.log4j.Level;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,9 +25,13 @@ public final class Schematic
 
     public Schematic(String s)
     {
+        ResourceLocation
+                ent = new ResourceLocation("tok", s + ".dat"),
+                sch = new ResourceLocation("tok", s + ".schematic");
+
         InputStream
-                entityData = TaleOfKingdoms.class.getResourceAsStream(s + ".dat"),
-                schematicData = TaleOfKingdoms.class.getResourceAsStream(s + ".schematic");
+                entityData = Objects.requireNonNull(inputReader(ent)),
+                schematicData = Objects.requireNonNull(inputReader(sch));
 
         NBTTagCompound schematic = null, entities = null;
 
@@ -51,6 +59,19 @@ public final class Schematic
         {
             this.writeEntities(Objects.requireNonNull(entities));
         }
+    }
+
+    private InputStream inputReader(ResourceLocation resourceLocation)
+    {
+        try
+        {
+            return Minecraft.getMinecraft().getResourceManager().getResource(resourceLocation).getInputStream();
+        }
+        catch (IOException e)
+        {
+            FMLLog.log(Level.ERROR, Arrays.toString(e.getStackTrace()));
+        }
+        return null;
     }
 
     private void writeSchematic(NBTTagCompound compound)

@@ -47,18 +47,15 @@ public final class EntityDefendArcher extends EntityNPC
 
                 if (this.follow)
                 {
-                    if (player != null)
+                    if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
                     {
-                        if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
-                        {
-                            pathEntity = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
-                        }
-                        else
-                        {
-                            pathEntity = null;
-                        }
-                        this.setPathToEntity(pathEntity);
+                        pathEntity = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
                     }
+                    else
+                    {
+                        pathEntity = null;
+                    }
+                    this.setPathToEntity(pathEntity);
                 }
                 else
                 {
@@ -72,7 +69,9 @@ public final class EntityDefendArcher extends EntityNPC
 
                     if (this.createdMarker && this.defend != null)
                     {
-                        if (this.defend.getDistanceToEntity(this) > 5.0F && this.defend.getDistanceToEntity(this) < 40.0F)
+                        float dist = this.defend.getDistanceToEntity(this);
+
+                        if (dist > 5.0F && dist < 20.0F)
                         {
                             pathEntity = this.worldObj.getPathEntityToEntity(this, this.defend, 40.0F, true, false, false, true);
                         }
@@ -110,7 +109,7 @@ public final class EntityDefendArcher extends EntityNPC
         return true;
     }
 
-    public void upgrade()
+    private void upgrade()
     {
         if (!this.worldObj.isRemote)
         {
@@ -136,7 +135,7 @@ public final class EntityDefendArcher extends EntityNPC
                 {
                     EntityPlayer player = (EntityPlayer) entity;
 
-                    if(player.getDistanceSqToEntity(this) <= 64.0D)
+                    if (player.getDistanceSqToEntity(this) <= 64.0D)
                     {
                         this.follow = true;
                     }

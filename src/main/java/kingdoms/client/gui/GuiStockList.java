@@ -123,8 +123,8 @@ public class GuiStockList extends GuiScreenToK
    }
 
    public void onGuiClosed() {
-      if(this.world.isRemote) {
-         this.player.addChatMessage(new ChatComponentText("Stock Keeper: Keep a look out on your stock supplies!"));
+      if(this.getWorld().isRemote) {
+         this.getPlayer().addChatMessage(new ChatComponentText("Stock Keeper: Keep a look out on your stock supplies!"));
       }
 
    }
@@ -214,9 +214,9 @@ public class GuiStockList extends GuiScreenToK
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
-         if(j <= playerProvider.getGoldTotal()) {
-            EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, itemstack1);
-            this.player.joinEntityItemWithWorld(entityitem);
+         if(j <= getPlayerProvider().getGoldTotal()) {
+            EntityItem entityitem = new EntityItem(this.getWorld(), this.getPlayer().posX, this.getPlayer().posY, this.getPlayer().posZ, itemstack1);
+            this.getPlayer().joinEntityItemWithWorld(entityitem);
             if(FMLCommonHandler.instance().getEffectiveSide().isServer()) {
                //provider.decreaseGold(j);
             }
@@ -264,7 +264,7 @@ public class GuiStockList extends GuiScreenToK
 
          f1 /= 100.0F;
          j = (int)((float)j + (float)j * f1);
-         if(j * 16 <= playerProvider.getGoldTotal()) {
+         if(j * 16 <= getPlayerProvider().getGoldTotal()) {
             this.shopcounter = 0;
          } else {
             this.goldchecker = true;
@@ -323,9 +323,9 @@ public class GuiStockList extends GuiScreenToK
 
          l1 /= 100.0F;
          f1 = (int)((float)f1 + (float)f1 * l1);
-         if(f1 <= playerProvider.getGoldTotal()) {
-            EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, s);
-            this.player.joinEntityItemWithWorld(entityitem);
+         if(f1 <= getPlayerProvider().getGoldTotal()) {
+            EntityItem entityitem = new EntityItem(this.getWorld(), this.getPlayer().posX, this.getPlayer().posY, this.getPlayer().posZ, s);
+            this.getPlayer().joinEntityItemWithWorld(entityitem);
             //provider.decreaseGold(f1);
          }
 
@@ -342,7 +342,7 @@ public class GuiStockList extends GuiScreenToK
 
       super.drawScreen(i, j, f);
 
-      this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + playerProvider.getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
+      this.drawString(this.fontRendererObj, "Stock Menu - Total Money: " + getPlayerProvider().getGoldTotal() + " Gold Coins", this.width / 2, 15, 16763904);
       //String var13 = this.itemSelected.getUnlocalizedName() + ".name";
       //String var17 = this.st.translateKey(var13);
       //int var18 = GoldKeeper.INSTANCE.priceItem(this.itemSelected);

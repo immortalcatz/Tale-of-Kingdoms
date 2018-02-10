@@ -149,9 +149,7 @@ public final class EntityDefendWarrior extends EntityNPC
           {
               if (entity instanceof EntityPlayer)
               {
-                  EntityPlayer player = (EntityPlayer) entity;
-
-                  if (player != null && player.getDistanceSqToEntity(this) <= 64.0D)
+                  if (entity.getDistanceSqToEntity(this) <= 64.0D)
                   {
                       this.follow = true;
                   }

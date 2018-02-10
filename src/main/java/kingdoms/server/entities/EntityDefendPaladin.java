@@ -52,19 +52,16 @@ public final class EntityDefendPaladin extends EntityNPC
               {
                   EntityPlayer player = (EntityPlayer) entity;
 
-                  if (player != null)
+                  if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
                   {
-                      if (player.getDistanceToEntity(this) > 5.0F && player.getDistanceToEntity(this) < 18.0F)
-                      {
-                          pathentity1 = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
-                      }
-                      else
-                      {
-                          pathentity1 = null;
-                      }
-
-                      this.setPathToEntity(pathentity1);
+                      pathentity1 = this.worldObj.getPathEntityToEntity(this, player, 16.0F, true, false, false, true);
                   }
+                  else
+                  {
+                      pathentity1 = null;
+                  }
+
+                  this.setPathToEntity(pathentity1);
               }
           }
       } else {
@@ -131,9 +128,7 @@ public final class EntityDefendPaladin extends EntityNPC
           {
               if (entity instanceof EntityPlayer)
               {
-                  EntityPlayer player = (EntityPlayer) entity;
-
-                  if (player != null && player.getDistanceSqToEntity(this) <= 64.0D)
+                  if (entity.getDistanceSqToEntity(this) <= 64.0D)
                   {
                       this.follow = true;
                   }

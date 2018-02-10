@@ -5,8 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import kingdoms.api.gui.GuiPriceBar;
 import kingdoms.api.gui.GuiScreenToK;
 import kingdoms.server.entities.EntityHired;
+import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.UltimateHelper;
-import kingdoms.server.handlers.resources.HunterHandler;
+import kingdoms.server.handlers.packets.server.SPacketHunter;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
@@ -37,7 +38,18 @@ public class GuiHunter extends GuiScreenToK
     {
         this.buttonList.clear();
 
-        this.buttonList.add(!HunterHandler.INSTANCE.getHunter() ? new GuiButton(1, this.width / 2 + 110, 140, 100, 20, I18n.format("gui.guildMaster.sigh")) : new GuiButton(1, this.width / 2 + 110, 140, 100, 20, I18n.format("gui.guildMaster.discard")));
+        String contract;
+
+        if (getPlayerProvider().hunter)
+        {
+            contract = I18n.format("gui.guildMaster.discard");
+        }
+        else
+        {
+            contract = I18n.format("gui.guildMaster.sigh");
+        }
+
+        this.buttonList.add(new GuiButton(1, this.width / 2 + 110, 140, 100, 20, contract));
 
         this.buttonList.add(new GuiButton(2, this.width / 2 + 110, 160, 100, 20, I18n.format("gui.guildMaster.hire")));
         this.buttonList.add(new GuiButton(4, this.width / 2 + 110, 180, 100, 20, I18n.format("gui.guildMaster.fix")));
@@ -45,26 +57,39 @@ public class GuiHunter extends GuiScreenToK
         this.buttonList.add(new GuiButton(3, this.width / 2 + 110, 220, 100, 20, I18n.format("gui.exit")));
 
         this.worthness = new GuiPriceBar(0, this.width / 2 + 110, 120, 125, 12, 1.0F, "red");
-        this.worthness.setBar(playerProvider.getGlory() / 10000.0F);
+        this.worthness.setBar(getPlayerProvider().getGlory() / 10000.0F);
     }
 
     @Override
     protected void actionPerformed(GuiButton button)
     {
+        String contract;
+
+        if (getPlayerProvider().hunter)
+        {
+            contract = "gui.guildMaster.discarded";
+        }
+        else
+        {
+            contract = "gui.guildMaster.killMobs";
+        }
+
         switch (button.id)
         {
             case 1:
-                this.player.addChatMessage(!HunterHandler.INSTANCE.getHunter() ? new ChatComponentTranslation("gui.guildMaster.killMobs") : new ChatComponentTranslation("gui.guildMaster.discarded"));
-                this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.await"));
+                getPlayer().addChatMessage(new ChatComponentTranslation(contract));
+                getPlayerProvider().hunter = !getPlayerProvider().hunter;
+                getPlayer().addChatMessage(new ChatComponentTranslation("gui.guildMaster.await"));
+                NetworkHandler.INSTANCE.sendToServer(new SPacketHunter(getPlayerProvider()));
                 this.initGui();
                 break;
             case 2:
-                if (1500 <= playerProvider.getGoldTotal())
+                if (1500 <= getPlayerProvider().getGoldTotal())
                 {
-                    EntityLiving entityLiving = (EntityLiving) UltimateHelper.INSTANCE.getEntity("Hired", world);
-                    entityLiving.setLocationAndAngles(this.player.posX, this.player.posY, this.player.posZ, 0.0F, 0.0F);
-                    this.world.spawnEntityInWorld(entityLiving);
-                    playerProvider.decreaseGold(1500);
+                    EntityLiving entityLiving = (EntityLiving) UltimateHelper.INSTANCE.getEntity("Hired", getWorld());
+                    entityLiving.setLocationAndAngles(getPlayer().posX, getPlayer().posY, getPlayer().posZ, 0.0F, 0.0F);
+                    this.getWorld().spawnEntityInWorld(entityLiving);
+                    getPlayerProvider().decreaseGold(1500);
                 }
                 else
                 {
@@ -76,7 +101,7 @@ public class GuiHunter extends GuiScreenToK
                 this.goldchecker = false;
                 break;
             case 4:
-                InventoryPlayer inventoryPlayer = this.player.inventory;
+                InventoryPlayer inventoryPlayer = getPlayer().inventory;
                 boolean entity = false;
 
                 if (inventoryPlayer.hasItem(Item.getItemFromBlock(Blocks.log)))
@@ -96,21 +121,26 @@ public class GuiHunter extends GuiScreenToK
 
                 if (!entity)
                 {
-                    if (!this.world.isRemote)
+                    if (!this.getWorld().isRemote)
                     {
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.needMore"));
+                        getPlayer().addChatMessage(new ChatComponentTranslation("gui.guildMaster.needMore"));
                     }
                 }
-                else if (!this.world.isRemote)
+                else if (!this.getWorld().isRemote)
                 {
-                    this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.fixed"));
+                    getPlayer().addChatMessage(new ChatComponentTranslation("gui.guildMaster.fixed"));
                 }
                 break;
             case 5:
-                IntStream.range(0, this.world.loadedEntityList.size()).mapToObj(var7 -> (Entity) this.world.loadedEntityList.get(var7)).filter(entity1 -> entity1 instanceof EntityHired).map(entity1 -> (EntityHired) entity1).forEach(var9 -> {
-                    var9.setDead();
-                    playerProvider.addGold(1000);
-                });
+                int bound = this.getWorld().loadedEntityList.size();
+                for (int var7 = 0; var7 < bound; var7++) {
+                    Entity entity1 = (Entity) this.getWorld().loadedEntityList.get(var7);
+                    if (entity1 instanceof EntityHired) {
+                        EntityHired var9 = (EntityHired) entity1;
+                        var9.setDead();
+                        getPlayerProvider().addGold(1000);
+                    }
+                }
                 break;
         }
     }
@@ -118,21 +148,16 @@ public class GuiHunter extends GuiScreenToK
     @Override
     public void onGuiClosed()
     {
-        if (!this.world.isRemote)
-            this.player.addChatMessage(new ChatComponentTranslation("gui.guildMaster.bye"));
+        if (!this.getWorld().isRemote)
+            getPlayer().addChatMessage(new ChatComponentTranslation("gui.guildMaster.bye"));
     }
 
     @Override
-    public void drawScreen(int x, int y, float partial)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(x, y, partial);
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
-        this.drawString(fontRendererObj, "Your glory: " + playerProvider.getGlory(), this.width / 2, height / 2, 16777215);
         this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.kingship"), this.width / 2 + 100, 110, 11158783);
-        this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.guildMaster.title", playerProvider.getGoldTotal())) / 2, 15, 16777215);
-
-        if (this.goldchecker)
-            this.drawString(this.fontRendererObj, I18n.format("gui.notEnough"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.notEnough")) / 2, 27, 16777215);
 
         this.drawString(this.fontRendererObj, I18n.format("gui.guildMaster.note"), this.width / 2, 10, 16772608);
         this.worthness.drawBar();

@@ -2,7 +2,6 @@ package kingdoms.client.gui;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import kingdoms.api.gui.GuiScreenToK;
-import kingdoms.server.handlers.Buildings;
 import kingdoms.server.handlers.NetworkHandler;
 import kingdoms.server.handlers.packets.server.SPacketBuild;
 import net.minecraft.client.gui.GuiButton;
@@ -25,7 +24,7 @@ public class GuiStartConquest extends GuiScreenToK
         this.buttonList.clear();
         start = new GuiButton(1, this.width / 2 - 70, this.height / 2 + 40, 140, 20, I18n.format("gui.conquest.start"));
 
-        if (Buildings.INSTANCE.getBuilding(0))
+        if (getWorldProvider().guild)
         {
             start.enabled = true;
             start.displayString = ChatFormatting.RED + I18n.format("gui.conquest.created");
@@ -43,7 +42,7 @@ public class GuiStartConquest extends GuiScreenToK
             //TODO: sendToPlayer for individual of the Kingdom
             NetworkHandler.INSTANCE.sendToServer(new SPacketBuild((byte) 0, true));
             this.mc.displayGuiScreen(null);
-            this.mc.displayGuiScreen(new GuiToKLoading(player, world));
+            this.mc.displayGuiScreen(new GuiToKLoading(getPlayer(), getWorld()));
         }
         else if (guibutton.id == 2)
         {
@@ -52,7 +51,7 @@ public class GuiStartConquest extends GuiScreenToK
     }
 
     @Override
-    public void drawScreen(int x, int y, float partial)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         this.drawDefaultBackground();
         this.drawString(this.fontRendererObj, ChatFormatting.GOLD + "The Tale of Kingdoms", this.width / 2 - fontRendererObj.getStringWidth("The Tale of Kingdoms") / 2, this.height / 2 - 80, 16777215);
@@ -62,6 +61,6 @@ public class GuiStartConquest extends GuiScreenToK
         this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_4"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_4")) / 2, this.height / 2 - 40, 16777215);
         this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_5"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_5")) / 2, this.height / 2, 16777215);
         this.drawString(this.fontRendererObj, ChatFormatting.GRAY + I18n.format("gui.startConquest.line_6"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.startConquest.line_6")) / 2, this.height / 2 + 10, 16777215);
-        super.drawScreen(x, y, partial);
+        super.drawScreen(mouseX, mouseY, partialTicks);
     }
 }

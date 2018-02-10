@@ -30,11 +30,9 @@ public final class GuiReinforcementPool extends GuiScreenToK
     protected void actionPerformed(GuiButton guibutton)
     {
       if (guibutton.id == 0) {
-         ;
       }
 
       if (guibutton.id == 1) {
-         ;
       }
 
       if (guibutton.id == 2) {

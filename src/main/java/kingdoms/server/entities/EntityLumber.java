@@ -1,12 +1,10 @@
 package kingdoms.server.entities;
 
-import kingdoms.server.TaleOfKingdoms;
+import kingdoms.server.handlers.NetworkHandler;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
-
-import static kingdoms.server.handlers.GuiHandler.GUI_LUMBER;
 
 public final class EntityLumber extends EntityCreature
 {
@@ -42,14 +40,14 @@ public final class EntityLumber extends EntityCreature
     @Override
     public boolean interact(EntityPlayer player)
     {
-        if (this.canInteractWith(player))
+        if (!this.worldObj.isRemote)
         {
-            if (!this.worldObj.isRemote)
+            if (this.canInteractWith(player))
             {
                 this.heal(100.0F);
                 player.addChatMessage(new ChatComponentTranslation("npc.foreman.dialog"));
+                NetworkHandler.INSTANCE.openGui(this.getEntityId(), player);
             }
-            player.openGui(TaleOfKingdoms.instance, GUI_LUMBER, worldObj, 0, 0, 0);
         }
         return true;
     }

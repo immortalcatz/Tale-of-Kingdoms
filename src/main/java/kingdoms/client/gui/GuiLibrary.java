@@ -36,33 +36,33 @@ public class GuiLibrary extends GuiScreenToK
         {
             if (this.get.studied)
             {
-                if (!this.world.isRemote)
+                if (!this.getWorld().isRemote)
                 {
-                    this.world.spawnEntityInWorld(new EntityXPOrb(this.world, this.player.posX, this.player.posY, this.player.posZ, 150));
-                    this.player.addChatMessage(new ChatComponentText("You have gained experience."));
+                    this.getWorld().spawnEntityInWorld(new EntityXPOrb(this.getWorld(), getPlayer().posX, getPlayer().posY, getPlayer().posZ, 150));
+                    getPlayer().addChatMessage(new ChatComponentText("You have gained experience."));
                 }
 
                 this.get.studied = false;
             }
-            else if (!this.world.isRemote)
+            else if (!this.getWorld().isRemote)
             {
-                this.player.addChatMessage(new ChatComponentText("You have already studied for a while, go back in a few moments"));
+                getPlayer().addChatMessage(new ChatComponentText("You have already studied for a while, go back in a few moments"));
             }
             this.goldchecker = false;
         }
 
         if (guibutton.id == 2)
         {
-            if (500 + playerProvider.libraryInvestment * 2 <= playerProvider.getGoldTotal())
+            if (500 + getPlayerProvider().libraryInvestment * 2 <= getPlayerProvider().getGoldTotal())
             {
-                playerProvider.libraryInvestment += 5;
+                getPlayerProvider().libraryInvestment += 5;
 
-                if (!this.world.isRemote)
+                if (!this.getWorld().isRemote)
                 {
-                    this.player.addChatMessage(new ChatComponentText("Tax is now increased by " + playerProvider.libraryInvestment + " gold per house."));
+                    getPlayer().addChatMessage(new ChatComponentText("Tax is now increased by " + getPlayerProvider().libraryInvestment + " gold per house."));
                 }
 
-                playerProvider.decreaseGold(500 + playerProvider.libraryInvestment * 2);
+                getPlayerProvider().decreaseGold(500 + getPlayerProvider().libraryInvestment * 2);
             }
             else
             {
@@ -78,16 +78,15 @@ public class GuiLibrary extends GuiScreenToK
 
         if (guibutton.id == 4)
         {
-            ;
         }
     }
 
     @Override
     public void onGuiClosed()
     {
-        if (!this.world.isRemote)
+        if (!this.getWorld().isRemote)
         {
-            this.player.addChatMessage(new ChatComponentText("Librarian: I will see you again hero."));
+            getPlayer().addChatMessage(new ChatComponentText("Librarian: I will see you again hero."));
         }
     }
 
@@ -98,11 +97,11 @@ public class GuiLibrary extends GuiScreenToK
 
         if (this.goldchecker)
         {
-            this.drawString(this.fontRendererObj, "The Library Total Money: " + playerProvider.getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16777215);
+            this.drawString(this.fontRendererObj, "The Library Total Money: " + getPlayerProvider().getGoldTotal() + " Gold Coins - NOT ENOUGH GOLD", this.width / 2, 20, 16777215);
         }
         else
         {
-            this.drawString(this.fontRendererObj, "The Library  Total Money: " + playerProvider.getGoldTotal() + " Gold Coins", this.width / 2, 20, 16777215);
+            this.drawString(this.fontRendererObj, "The Library  Total Money: " + getPlayerProvider().getGoldTotal() + " Gold Coins", this.width / 2, 20, 16777215);
         }
 
         this.drawString(this.fontRendererObj, "Note: The more you invest, the more knowledge people gain to yield more tax.", this.width / 2, 170, 16777215);

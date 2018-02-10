@@ -42,29 +42,29 @@ public class GuiQuarry extends GuiScreenToK
                 if (ResourcesHandler.INSTANCE.getCobblePool() >= 64)
                 {
                     ItemStack itemstack = new ItemStack(Blocks.cobblestone, 64, 0);
-                    EntityItem entityitem = new EntityItem(this.world, this.player.posX, this.player.posY, this.player.posZ, itemstack);
-                    this.world.spawnEntityInWorld(entityitem);
+                    EntityItem entityitem = new EntityItem(this.getWorld(), getPlayer().posX, getPlayer().posY, getPlayer().posZ, itemstack);
+                    this.getWorld().spawnEntityInWorld(entityitem);
                     this.goldchecker = false;
                     ResourcesHandler.INSTANCE.decreaseCobblePool(64);
                 }
                 else
-                    this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.notResources"));
+                    getPlayer().addChatMessage(new ChatComponentTranslation("gui.foreman.notResources"));
                 break;
             case 2:
-                if (playerProvider.getGoldTotal() >= 1500)
+                if (getPlayerProvider().getGoldTotal() >= 1500)
                 {
                     if (WorkersHandler.INSTANCE.getQuarryMembers() < 12)
                     {
-                        if (!this.world.isRemote)
+                        if (!this.getWorld().isRemote)
                         {
                             WorkersHandler.INSTANCE.addQuarryMember((byte) 1);
-                            playerProvider.decreaseGold(1500);
-                            this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.boughtWorker"));
+                            getPlayerProvider().decreaseGold(1500);
+                            getPlayer().addChatMessage(new ChatComponentTranslation("gui.foreman.boughtWorker"));
                         }
                     }
-                    else if (!this.world.isRemote)
+                    else if (!this.getWorld().isRemote)
                     {
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.foreman.limitWorkers"));
+                        getPlayer().addChatMessage(new ChatComponentTranslation("gui.foreman.limitWorkers"));
                     }
                 }
                 else
@@ -77,11 +77,11 @@ public class GuiQuarry extends GuiScreenToK
     }
 
     @Override
-    public void drawScreen(int x, int y, float partial)
+    public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        super.drawScreen(x, y, partial);
+        super.drawScreen(mouseX, mouseY, partialTicks);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.title", playerProvider.getGoldTotal())) / 2, 15, 16777215);
+        this.drawString(this.fontRendererObj, I18n.format("gui.foreman.title", getPlayerProvider().getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.foreman.title", getPlayerProvider().getGoldTotal())) / 2, 15, 16777215);
 
         if (this.goldchecker)
         {

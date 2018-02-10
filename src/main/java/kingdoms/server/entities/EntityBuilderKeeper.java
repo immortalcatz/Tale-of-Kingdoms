@@ -2,8 +2,7 @@ package kingdoms.server.entities;
 
 import kingdoms.api.entities.EntityNPC;
 import kingdoms.server.PlayerProvider;
-import kingdoms.server.TaleOfKingdoms;
-import kingdoms.server.handlers.Buildings;
+import kingdoms.server.handlers.NetworkHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -14,8 +13,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.world.World;
 
 import java.util.List;
-
-import static kingdoms.server.handlers.GuiHandler.GUI_BUILD;
 
 public final class EntityBuilderKeeper extends EntityNPC
 {
@@ -58,29 +55,25 @@ public final class EntityBuilderKeeper extends EntityNPC
     @Override
     public boolean interact(EntityPlayer player)
     {
-        if (this.canInteractWith(player))
+        if (!worldObj.isRemote)
         {
-            if (PlayerProvider.get(player).getGlory() < 10000 && !Buildings.INSTANCE.kingdomCreated)
+            if (this.canInteractWith(player))
             {
-                if (!worldObj.isRemote)
+                int glory = PlayerProvider.get(player).getGlory();
+
+                if (glory < 10000 && !getWorldProvider().town)
                 {
                     player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_1"));
                 }
-            }
 
-            if (PlayerProvider.get(player).getGlory() >= 10000.0F && !setted)
-            {
-                if (!worldObj.isRemote)
+                if (glory >= 10000.0F && follow && !setted)
                 {
                     player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_2"));
                     this.follow = true;
                     this.setted = true;
+                    NetworkHandler.INSTANCE.openGui(this.getEntityId(), player);
                 }
-                player.openGui(TaleOfKingdoms.instance, GUI_BUILD, worldObj, (int) this.posX, (int) this.posY, (int) this.posZ);
-            }
-            else if (PlayerProvider.get(player).getGlory() >= 10000.0F && this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
-            {
-                if (!worldObj.isRemote)
+                else if (glory >= 10000.0F && follow && !getWorldProvider().town && !setted)
                 {
                     player.addChatMessage(new ChatComponentTranslation("npc.cityBuilder.dialog_3"));
                     this.follow = false;
@@ -97,7 +90,7 @@ public final class EntityBuilderKeeper extends EntityNPC
 
         if (!worldObj.isRemote)
         {
-            if (!this.follow && !Buildings.INSTANCE.kingdomCreated && !setted)
+            if (!this.follow && !getWorldProvider().town && !setted)
             {
                 this.setAIMoveSpeed(1.7F);
             }
@@ -109,7 +102,7 @@ public final class EntityBuilderKeeper extends EntityNPC
     {
         super.onLivingUpdate();
 
-        if (!worldObj.isRemote && !this.follow && !Buildings.INSTANCE.kingdomCreated)
+        if (!worldObj.isRemote && !this.follow && !getWorldProvider().town)
         {
             List<Entity> list = worldObj.getEntitiesWithinAABBExcludingEntity(this, this.boundingBox.expand(30, 30, 30));
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 public final class Buildings
 {
-    private List<Boolean> buildingList = new ArrayList<>();
     public static final Buildings INSTANCE = new Buildings();
+    private List<Boolean> buildingList = new ArrayList<>(45);
     public boolean
             createGuild, kingdomCreated = false, smallhouse1, smallhouse2, largehouse1, well, itemshop, stockmarket, isTier2,
             smallhouse3, smallhouse4, largehouse2, builderhouse, barracks, foodshop, blockshop, isTier3, smallhouse5,
@@ -14,7 +14,7 @@ public final class Buildings
             easternTower, fishHut, lightHouse, mill, observerPost, smallhouse8, smallhouse9, smallhouse10, smallhouse11,
             largehouse4, northernTower1, northernTower2, stables, zeppelin;
 
-    public void registerBuildings()
+    private Buildings()
     {
         clear();
         addBuilding(createGuild);

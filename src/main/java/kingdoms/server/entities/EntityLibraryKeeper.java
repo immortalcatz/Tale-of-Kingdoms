@@ -1,8 +1,7 @@
 package kingdoms.server.entities;
 
 import kingdoms.api.entities.EntityNPC;
-import kingdoms.client.gui.GuiLibrary;
-import net.minecraft.client.Minecraft;
+import kingdoms.server.handlers.NetworkHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
@@ -29,11 +28,12 @@ public final class EntityLibraryKeeper extends EntityNPC
     {
         super.updateEntityActionState();
 
-        if(this.counter > 10000)
+        if (this.counter > 10000)
         {
             this.studied = true;
             this.counter = 0;
         }
+
         ++this.counter;
     }
 
@@ -46,16 +46,13 @@ public final class EntityLibraryKeeper extends EntityNPC
     @Override
     public boolean interact(EntityPlayer player)
     {
-        if(this.canInteractWith(player))
+        if (!this.worldObj.isRemote)
         {
-            if (!this.worldObj.isRemote)
+            if (this.canInteractWith(player))
             {
                 this.heal(100.0F);
                 player.addChatMessage(new ChatComponentText("Librarian: You picked a good day to visit the library, young one"));
-            }
-            else
-            {
-                Minecraft.getMinecraft().displayGuiScreen(new GuiLibrary(player, this.worldObj, this));
+                NetworkHandler.INSTANCE.openGui(this.getEntityId(), player);
             }
         }
         return true;

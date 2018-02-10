@@ -43,6 +43,7 @@ options.txt
 build.bat
 *.rar
 *.zip
+libs/
 
 # Forge info
 forge-*

@@ -37,9 +37,9 @@ public class GuiMageHall extends GuiScreenToK
         switch (button.id)
         {
             case 1:
-                ItemStack var9 = this.player.inventory.getCurrentItem();
+                ItemStack var9 = getPlayer().inventory.getCurrentItem();
 
-                if (500 <= playerProvider.getGoldTotal() && var9 != null)
+                if (500 <= getPlayerProvider().getGoldTotal() && var9 != null)
                 {
                     final Random random = new Random();
                     int[] ai = new int[3];
@@ -62,12 +62,12 @@ public class GuiMageHall extends GuiScreenToK
                             var9.addEnchantment(enchantmentdata.enchantmentobj, enchantmentdata.enchantmentLevel);
                         }
 
-                        playerProvider.decreaseGold(500);
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.mage.enchanted", var9.getDisplayName()));
+                        getPlayerProvider().decreaseGold(500);
+                        getPlayer().addChatMessage(new ChatComponentTranslation("gui.mage.enchanted", var9.getDisplayName()));
                     }
-                    else if (!this.world.isRemote)
+                    else if (!this.getWorld().isRemote)
                     {
-                        this.player.addChatMessage(new ChatComponentTranslation("gui.mage.dontEnchant"));
+                        getPlayer().addChatMessage(new ChatComponentTranslation("gui.mage.dontEnchant"));
                     }
                 }
                 else
@@ -76,10 +76,10 @@ public class GuiMageHall extends GuiScreenToK
                 }
                 break;
             case 2:
-                if(2000 <= playerProvider.getGoldTotal())
+                if(2000 <= getPlayerProvider().getGoldTotal())
                 {
                     //NetworkHandler.INSTANCE.sendToServer(new SPacketSpawnEntity("DefendMage"));
-                    playerProvider.decreaseGold(2000);
+                    getPlayerProvider().decreaseGold(2000);
                 }
                 else
                 {
@@ -96,8 +96,8 @@ public class GuiMageHall extends GuiScreenToK
     @Override
     public void onGuiClosed()
     {
-        if (!this.world.isRemote)
-            this.player.addChatMessage(new ChatComponentTranslation("gui.mage.bye"));
+        if (!this.getWorld().isRemote)
+            getPlayer().addChatMessage(new ChatComponentTranslation("gui.mage.bye"));
     }
 
     @Override
@@ -106,7 +106,7 @@ public class GuiMageHall extends GuiScreenToK
         this.drawDefaultBackground();
         super.drawScreen(i, j, f);
 
-        this.drawString(this.fontRendererObj, I18n.format("gui.mage.title", playerProvider.getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", playerProvider.getGoldTotal())) / 2, this.height / 2 - 95, 16763904);
+        this.drawString(this.fontRendererObj, I18n.format("gui.mage.title", getPlayerProvider().getGoldTotal()), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.title", getPlayerProvider().getGoldTotal())) / 2, this.height / 2 - 95, 16763904);
         this.drawString(this.fontRendererObj, I18n.format("gui.mage.enchant.selected"), this.width / 2 - fontRendererObj.getStringWidth(I18n.format("gui.mage.enchant.selected")) / 2, this.height / 2 - 80, 16763904);
 
         if (this.goldchecker)

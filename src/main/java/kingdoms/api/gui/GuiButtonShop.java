@@ -17,7 +17,7 @@ public final class GuiButtonShop extends GuiButton
     private String text;
     public int id;
     private boolean field_73742_g, enabled2;
-    private final ResourceLocation resource = new ResourceLocation("taleofkingdoms", "textures/gui/gui.png");
+    private final ResourceLocation resource = new ResourceLocation("tok", "textures/gui/gui.png");
 
     public GuiButtonShop(ItemStack stack, GuiShopList guishoplist, int id, int x, int y, int w, int h, String text)
     {

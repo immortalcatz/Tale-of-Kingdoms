@@ -66,7 +66,7 @@ public final class EntitySantaClaus extends EntityNPC
         if (!worldObj.isRemote)
         {
             if (this.canInteractWith(player))
-                player.addChatMessage(!PlayerProvider.get(player).badKid ? calendar.get(2) + 1 == 1 && calendar.get(5) == 1 ? new ChatComponentTranslation("npc.santa.new.year") : new ChatComponentTranslation("npc.santa.dialog") : new ChatComponentTranslation("npc.santa.badKid"));
+                player.addChatMessage(!PlayerProvider.get(player).badKid ? calendar.get(Calendar.MONTH) + 1 == 1 && calendar.get(Calendar.DATE) == Calendar.SUNDAY ? new ChatComponentTranslation("npc.santa.new.year") : new ChatComponentTranslation("npc.santa.dialog") : new ChatComponentTranslation("npc.santa.badKid"));
         }
         return true;
     }
@@ -84,11 +84,15 @@ public final class EntitySantaClaus extends EntityNPC
 
                 PlayerProvider.get(player).badKid = true;
 
-                IntStream.range(1, rand.nextInt(5)).mapToObj(i -> new EntitySnowman(worldObj)).forEach(golem -> {
+                int bound = rand.nextInt(5);
+
+                for (int i = 1; i < bound; i++)
+                {
+                    EntitySnowman golem = new EntitySnowman(worldObj);
                     golem.setLocationAndAngles(this.posX, this.posY, this.posZ, 0.0F, 0.0F);
                     golem.setAttackTarget(player);
                     worldObj.spawnEntityInWorld(golem);
-                });
+                }
             }
         }
     }

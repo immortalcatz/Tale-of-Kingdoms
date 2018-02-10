@@ -34,21 +34,21 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
     @Override
     public String getItemStackDisplayName(ItemStack stack)
     {
-        return ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim() + " " + StatCollector.translateToLocal("entity." + EntitiesType.getByID(stack.getItemDamage()).getName() + ".name");
+        return ("" + StatCollector.translateToLocal(this.getUnlocalizedName() + ".name")).trim() + " " + StatCollector.translateToLocal("entity." + EntitiesType.Companion.getByID(stack.getItemDamage()).getNames() + ".name");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tabs, List list)
     {
-        Arrays.stream(EntitiesType.values()).map(type -> new ItemStack(item, 1, type.ordinal())).forEachOrdered(list::add);
+        Arrays.stream(EntitiesType.values()).map(type -> new ItemStack(item, 1, type.ordinal())).forEach(list::add);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public int getColorFromItemStack(ItemStack stack, int color)
     {
-        return (color == 0) ? EntitiesType.getByID(stack.getItemDamage()).getBase() : EntitiesType.getByID(stack.getItemDamage()).getSpots();
+        return (color == 0) ? EntitiesType.Companion.getByID(stack.getItemDamage()).getBase() : EntitiesType.Companion.getByID(stack.getItemDamage()).getSpots();
     }
 
     @Override
@@ -141,9 +141,9 @@ public final class ItemSpawnEgg extends ItemMonsterPlacer
     {
         if (!world.isRemote)
         {
-            String nameFull = EntitiesType.getByID(stack.getItemDamage()).getName();
+            String nameFull = EntitiesType.Companion.getByID(stack.getItemDamage()).getNames();
 
-            if (EntityList.stringToClassMapping.containsKey("taleofkingdoms." + nameFull))
+            if (EntityList.stringToClassMapping.containsKey("tok." + nameFull))
             {
                 EntityLiving entity = (EntityLiving) UltimateHelper.INSTANCE.getEntity(nameFull, world);
                 entity.setLocationAndAngles(x, y, z, MathHelper.wrapAngleTo180_float(world.rand.nextFloat() * 360.0F), 0.0F);
